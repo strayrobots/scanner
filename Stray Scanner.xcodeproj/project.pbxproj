@@ -1,0 +1,495 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		385999BD25616F2B00F3F681 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385999BC25616F2B00F3F681 /* AppDelegate.swift */; };
+		385999BF25616F2B00F3F681 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385999BE25616F2B00F3F681 /* SceneDelegate.swift */; };
+		385999C225616F2B00F3F681 /* Stray_Scanner.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 385999C025616F2B00F3F681 /* Stray_Scanner.xcdatamodeld */; };
+		385999C425616F2B00F3F681 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385999C325616F2B00F3F681 /* ContentView.swift */; };
+		385999C625616F3000F3F681 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 385999C525616F3000F3F681 /* Assets.xcassets */; };
+		385999C925616F3000F3F681 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 385999C825616F3000F3F681 /* Preview Assets.xcassets */; };
+		385999CC25616F3000F3F681 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 385999CA25616F3000F3F681 /* LaunchScreen.storyboard */; };
+		385999D725616F3100F3F681 /* Stray_ScannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385999D625616F3100F3F681 /* Stray_ScannerTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		385999D325616F3100F3F681 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 385999B125616F2A00F3F681 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 385999B825616F2A00F3F681;
+			remoteInfo = "Stray Scanner";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		385999B925616F2B00F3F681 /* Stray Scanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Stray Scanner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		385999BC25616F2B00F3F681 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		385999BE25616F2B00F3F681 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		385999C125616F2B00F3F681 /* Stray_Scanner.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Stray_Scanner.xcdatamodel; sourceTree = "<group>"; };
+		385999C325616F2B00F3F681 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		385999C525616F3000F3F681 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		385999C825616F3000F3F681 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		385999CB25616F3000F3F681 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		385999CD25616F3000F3F681 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		385999D225616F3100F3F681 /* Stray ScannerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Stray ScannerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		385999D625616F3100F3F681 /* Stray_ScannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stray_ScannerTests.swift; sourceTree = "<group>"; };
+		385999D825616F3100F3F681 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		385999B625616F2A00F3F681 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		385999CF25616F3100F3F681 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		385999B025616F2A00F3F681 = {
+			isa = PBXGroup;
+			children = (
+				385999BB25616F2B00F3F681 /* Stray Scanner */,
+				385999D525616F3100F3F681 /* Stray ScannerTests */,
+				385999BA25616F2B00F3F681 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		385999BA25616F2B00F3F681 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				385999B925616F2B00F3F681 /* Stray Scanner.app */,
+				385999D225616F3100F3F681 /* Stray ScannerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		385999BB25616F2B00F3F681 /* Stray Scanner */ = {
+			isa = PBXGroup;
+			children = (
+				385999BC25616F2B00F3F681 /* AppDelegate.swift */,
+				385999BE25616F2B00F3F681 /* SceneDelegate.swift */,
+				385999C325616F2B00F3F681 /* ContentView.swift */,
+				385999C525616F3000F3F681 /* Assets.xcassets */,
+				385999CA25616F3000F3F681 /* LaunchScreen.storyboard */,
+				385999CD25616F3000F3F681 /* Info.plist */,
+				385999C025616F2B00F3F681 /* Stray_Scanner.xcdatamodeld */,
+				385999C725616F3000F3F681 /* Preview Content */,
+			);
+			path = "Stray Scanner";
+			sourceTree = "<group>";
+		};
+		385999C725616F3000F3F681 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				385999C825616F3000F3F681 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		385999D525616F3100F3F681 /* Stray ScannerTests */ = {
+			isa = PBXGroup;
+			children = (
+				385999D625616F3100F3F681 /* Stray_ScannerTests.swift */,
+				385999D825616F3100F3F681 /* Info.plist */,
+			);
+			path = "Stray ScannerTests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		385999B825616F2A00F3F681 /* Stray Scanner */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 385999DB25616F3100F3F681 /* Build configuration list for PBXNativeTarget "Stray Scanner" */;
+			buildPhases = (
+				385999B525616F2A00F3F681 /* Sources */,
+				385999B625616F2A00F3F681 /* Frameworks */,
+				385999B725616F2A00F3F681 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Stray Scanner";
+			productName = "Stray Scanner";
+			productReference = 385999B925616F2B00F3F681 /* Stray Scanner.app */;
+			productType = "com.apple.product-type.application";
+		};
+		385999D125616F3100F3F681 /* Stray ScannerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 385999DE25616F3100F3F681 /* Build configuration list for PBXNativeTarget "Stray ScannerTests" */;
+			buildPhases = (
+				385999CE25616F3100F3F681 /* Sources */,
+				385999CF25616F3100F3F681 /* Frameworks */,
+				385999D025616F3100F3F681 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				385999D425616F3100F3F681 /* PBXTargetDependency */,
+			);
+			name = "Stray ScannerTests";
+			productName = "Stray ScannerTests";
+			productReference = 385999D225616F3100F3F681 /* Stray ScannerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		385999B125616F2A00F3F681 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1170;
+				LastUpgradeCheck = 1170;
+				ORGANIZATIONNAME = "Stray Robots";
+				TargetAttributes = {
+					385999B825616F2A00F3F681 = {
+						CreatedOnToolsVersion = 11.7;
+					};
+					385999D125616F3100F3F681 = {
+						CreatedOnToolsVersion = 11.7;
+						TestTargetID = 385999B825616F2A00F3F681;
+					};
+				};
+			};
+			buildConfigurationList = 385999B425616F2A00F3F681 /* Build configuration list for PBXProject "Stray Scanner" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 385999B025616F2A00F3F681;
+			productRefGroup = 385999BA25616F2B00F3F681 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				385999B825616F2A00F3F681 /* Stray Scanner */,
+				385999D125616F3100F3F681 /* Stray ScannerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		385999B725616F2A00F3F681 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				385999CC25616F3000F3F681 /* LaunchScreen.storyboard in Resources */,
+				385999C925616F3000F3F681 /* Preview Assets.xcassets in Resources */,
+				385999C625616F3000F3F681 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		385999D025616F3100F3F681 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		385999B525616F2A00F3F681 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				385999BD25616F2B00F3F681 /* AppDelegate.swift in Sources */,
+				385999C225616F2B00F3F681 /* Stray_Scanner.xcdatamodeld in Sources */,
+				385999C425616F2B00F3F681 /* ContentView.swift in Sources */,
+				385999BF25616F2B00F3F681 /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		385999CE25616F3100F3F681 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				385999D725616F3100F3F681 /* Stray_ScannerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		385999D425616F3100F3F681 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 385999B825616F2A00F3F681 /* Stray Scanner */;
+			targetProxy = 385999D325616F3100F3F681 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		385999CA25616F3000F3F681 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				385999CB25616F3000F3F681 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		385999D925616F3100F3F681 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		385999DA25616F3100F3F681 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		385999DC25616F3100F3F681 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"Stray Scanner/Preview Content\"";
+				DEVELOPMENT_TEAM = 2QREBG9C6Y;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "Stray Scanner/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.keke.Stray-Scanner";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		385999DD25616F3100F3F681 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"Stray Scanner/Preview Content\"";
+				DEVELOPMENT_TEAM = 2QREBG9C6Y;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "Stray Scanner/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.keke.Stray-Scanner";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		385999DF25616F3100F3F681 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2QREBG9C6Y;
+				INFOPLIST_FILE = "Stray ScannerTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.keke.Stray-ScannerTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Stray Scanner.app/Stray Scanner";
+			};
+			name = Debug;
+		};
+		385999E025616F3100F3F681 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2QREBG9C6Y;
+				INFOPLIST_FILE = "Stray ScannerTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.keke.Stray-ScannerTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Stray Scanner.app/Stray Scanner";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		385999B425616F2A00F3F681 /* Build configuration list for PBXProject "Stray Scanner" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				385999D925616F3100F3F681 /* Debug */,
+				385999DA25616F3100F3F681 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		385999DB25616F3100F3F681 /* Build configuration list for PBXNativeTarget "Stray Scanner" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				385999DC25616F3100F3F681 /* Debug */,
+				385999DD25616F3100F3F681 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		385999DE25616F3100F3F681 /* Build configuration list for PBXNativeTarget "Stray ScannerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				385999DF25616F3100F3F681 /* Debug */,
+				385999E025616F3100F3F681 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		385999C025616F2B00F3F681 /* Stray_Scanner.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				385999C125616F2B00F3F681 /* Stray_Scanner.xcdatamodel */,
+			);
+			currentVersion = 385999C125616F2B00F3F681 /* Stray_Scanner.xcdatamodel */;
+			path = Stray_Scanner.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 385999B125616F2A00F3F681 /* Project object */;
+}
