@@ -7,14 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		38045D522561A4FD0004F23C /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38045D512561A4FD0004F23C /* Session.swift */; };
+		38045D552561A5940004F23C /* Sessions.json in Resources */ = {isa = PBXBuildFile; fileRef = 38045D542561A5940004F23C /* Sessions.json */; };
+		38045D582561A7370004F23C /* SessionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38045D572561A7370004F23C /* SessionRow.swift */; };
+		38045D5A2561AC000004F23C /* SessionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38045D592561AC000004F23C /* SessionList.swift */; };
+		38045D5C2561AC620004F23C /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38045D5B2561AC620004F23C /* Data.swift */; };
 		385999BD25616F2B00F3F681 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385999BC25616F2B00F3F681 /* AppDelegate.swift */; };
 		385999BF25616F2B00F3F681 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385999BE25616F2B00F3F681 /* SceneDelegate.swift */; };
 		385999C225616F2B00F3F681 /* Stray_Scanner.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 385999C025616F2B00F3F681 /* Stray_Scanner.xcdatamodeld */; };
-		385999C425616F2B00F3F681 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385999C325616F2B00F3F681 /* ContentView.swift */; };
 		385999C625616F3000F3F681 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 385999C525616F3000F3F681 /* Assets.xcassets */; };
 		385999C925616F3000F3F681 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 385999C825616F3000F3F681 /* Preview Assets.xcassets */; };
 		385999CC25616F3000F3F681 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 385999CA25616F3000F3F681 /* LaunchScreen.storyboard */; };
 		385999D725616F3100F3F681 /* Stray_ScannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385999D625616F3100F3F681 /* Stray_ScannerTests.swift */; };
+		38E969CB2572608E00054CC4 /* NewSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E969CA2572608E00054CC4 /* NewSession.swift */; };
+		38FB730F2572A9FA007D9CB0 /* RecordSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38FB730E2572A9FA007D9CB0 /* RecordSessionViewController.swift */; };
+		38FB73162572AF63007D9CB0 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 38FB73152572AF63007D9CB0 /* Shaders.metal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,11 +35,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		38045D512561A4FD0004F23C /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		38045D542561A5940004F23C /* Sessions.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Sessions.json; sourceTree = "<group>"; };
+		38045D572561A7370004F23C /* SessionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRow.swift; sourceTree = "<group>"; };
+		38045D592561AC000004F23C /* SessionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionList.swift; sourceTree = "<group>"; };
+		38045D5B2561AC620004F23C /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		385999B925616F2B00F3F681 /* Stray Scanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Stray Scanner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		385999BC25616F2B00F3F681 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		385999BE25616F2B00F3F681 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		385999C125616F2B00F3F681 /* Stray_Scanner.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Stray_Scanner.xcdatamodel; sourceTree = "<group>"; };
-		385999C325616F2B00F3F681 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		385999C525616F3000F3F681 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		385999C825616F3000F3F681 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		385999CB25616F3000F3F681 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -40,6 +51,9 @@
 		385999D225616F3100F3F681 /* Stray ScannerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Stray ScannerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		385999D625616F3100F3F681 /* Stray_ScannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stray_ScannerTests.swift; sourceTree = "<group>"; };
 		385999D825616F3100F3F681 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		38E969CA2572608E00054CC4 /* NewSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSession.swift; sourceTree = "<group>"; };
+		38FB730E2572A9FA007D9CB0 /* RecordSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordSessionViewController.swift; sourceTree = "<group>"; };
+		38FB73152572AF63007D9CB0 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +74,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		38045D502561A4C80004F23C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				38045D512561A4FD0004F23C /* Session.swift */,
+				38045D5B2561AC620004F23C /* Data.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		38045D532561A55A0004F23C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				38045D542561A5940004F23C /* Sessions.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		38045D562561A6D20004F23C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				38045D572561A7370004F23C /* SessionRow.swift */,
+				38045D592561AC000004F23C /* SessionList.swift */,
+				38E969CA2572608E00054CC4 /* NewSession.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		385999B025616F2A00F3F681 = {
 			isa = PBXGroup;
 			children = (
@@ -81,9 +122,13 @@
 		385999BB25616F2B00F3F681 /* Stray Scanner */ = {
 			isa = PBXGroup;
 			children = (
+				38FB73142572AF50007D9CB0 /* Shaders */,
+				38FB730D2572A91D007D9CB0 /* Controllers */,
+				38045D562561A6D20004F23C /* Views */,
+				38045D532561A55A0004F23C /* Resources */,
+				38045D502561A4C80004F23C /* Models */,
 				385999BC25616F2B00F3F681 /* AppDelegate.swift */,
 				385999BE25616F2B00F3F681 /* SceneDelegate.swift */,
-				385999C325616F2B00F3F681 /* ContentView.swift */,
 				385999C525616F3000F3F681 /* Assets.xcassets */,
 				385999CA25616F3000F3F681 /* LaunchScreen.storyboard */,
 				385999CD25616F3000F3F681 /* Info.plist */,
@@ -108,6 +153,22 @@
 				385999D825616F3100F3F681 /* Info.plist */,
 			);
 			path = "Stray ScannerTests";
+			sourceTree = "<group>";
+		};
+		38FB730D2572A91D007D9CB0 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				38FB730E2572A9FA007D9CB0 /* RecordSessionViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		38FB73142572AF50007D9CB0 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				38FB73152572AF63007D9CB0 /* Shaders.metal */,
+			);
+			path = Shaders;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -155,7 +216,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1170;
-				LastUpgradeCheck = 1170;
+				LastUpgradeCheck = 1220;
 				ORGANIZATIONNAME = "Stray Robots";
 				TargetAttributes = {
 					385999B825616F2A00F3F681 = {
@@ -191,6 +252,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38045D552561A5940004F23C /* Sessions.json in Resources */,
 				385999CC25616F3000F3F681 /* LaunchScreen.storyboard in Resources */,
 				385999C925616F3000F3F681 /* Preview Assets.xcassets in Resources */,
 				385999C625616F3000F3F681 /* Assets.xcassets in Resources */,
@@ -211,10 +273,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38045D522561A4FD0004F23C /* Session.swift in Sources */,
+				38E969CB2572608E00054CC4 /* NewSession.swift in Sources */,
+				38FB730F2572A9FA007D9CB0 /* RecordSessionViewController.swift in Sources */,
+				38045D582561A7370004F23C /* SessionRow.swift in Sources */,
+				38FB73162572AF63007D9CB0 /* Shaders.metal in Sources */,
 				385999BD25616F2B00F3F681 /* AppDelegate.swift in Sources */,
 				385999C225616F2B00F3F681 /* Stray_Scanner.xcdatamodeld in Sources */,
-				385999C425616F2B00F3F681 /* ContentView.swift in Sources */,
+				38045D5A2561AC000004F23C /* SessionList.swift in Sources */,
 				385999BF25616F2B00F3F681 /* SceneDelegate.swift in Sources */,
+				38045D5C2561AC620004F23C /* Data.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,6 +342,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -334,6 +403,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
