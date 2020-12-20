@@ -19,6 +19,7 @@
 		385999C925616F3000F3F681 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 385999C825616F3000F3F681 /* Preview Assets.xcassets */; };
 		385999CC25616F3000F3F681 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 385999CA25616F3000F3F681 /* LaunchScreen.storyboard */; };
 		385999D725616F3100F3F681 /* Stray_ScannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385999D625616F3100F3F681 /* Stray_ScannerTests.swift */; };
+		38B54AEA258FB066009506AF /* CameraRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B54AE9258FB066009506AF /* CameraRenderer.swift */; };
 		38E969CB2572608E00054CC4 /* NewSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E969CA2572608E00054CC4 /* NewSession.swift */; };
 		38FB730F2572A9FA007D9CB0 /* RecordSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38FB730E2572A9FA007D9CB0 /* RecordSessionViewController.swift */; };
 		38FB73162572AF63007D9CB0 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 38FB73152572AF63007D9CB0 /* Shaders.metal */; };
@@ -51,6 +52,7 @@
 		385999D225616F3100F3F681 /* StrayScannerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StrayScannerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		385999D625616F3100F3F681 /* Stray_ScannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stray_ScannerTests.swift; sourceTree = "<group>"; };
 		385999D825616F3100F3F681 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		38B54AE9258FB066009506AF /* CameraRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraRenderer.swift; sourceTree = "<group>"; };
 		38E969CA2572608E00054CC4 /* NewSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSession.swift; sourceTree = "<group>"; };
 		38FB730E2572A9FA007D9CB0 /* RecordSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordSessionViewController.swift; sourceTree = "<group>"; };
 		38FB73152572AF63007D9CB0 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 				38045D572561A7370004F23C /* SessionRow.swift */,
 				38045D592561AC000004F23C /* SessionList.swift */,
 				38E969CA2572608E00054CC4 /* NewSession.swift */,
+				38B54AE9258FB066009506AF /* CameraRenderer.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -286,6 +289,7 @@
 				385999C225616F2B00F3F681 /* Stray_Scanner.xcdatamodeld in Sources */,
 				38045D5A2561AC000004F23C /* SessionList.swift in Sources */,
 				385999BF25616F2B00F3F681 /* SceneDelegate.swift in Sources */,
+				38B54AEA258FB066009506AF /* CameraRenderer.swift in Sources */,
 				38045D5C2561AC620004F23C /* Data.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -20,7 +20,9 @@ struct RecordSessionManager: UIViewControllerRepresentable {
 struct NewSessionView : View {
 
     var body: some View {
-        RecordSessionManager()
+        HStack {
+            RecordSessionManager()
+        }
     }
 }
 
