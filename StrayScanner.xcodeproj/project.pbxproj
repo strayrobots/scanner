@@ -30,7 +30,7 @@
 			containerPortal = 385999B125616F2A00F3F681 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 385999B825616F2A00F3F681;
-			remoteInfo = "Stray Scanner";
+			remoteInfo = StrayScanner;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -40,7 +40,7 @@
 		38045D572561A7370004F23C /* SessionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRow.swift; sourceTree = "<group>"; };
 		38045D592561AC000004F23C /* SessionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionList.swift; sourceTree = "<group>"; };
 		38045D5B2561AC620004F23C /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
-		385999B925616F2B00F3F681 /* Stray Scanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Stray Scanner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		385999B925616F2B00F3F681 /* StrayScanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StrayScanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		385999BC25616F2B00F3F681 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		385999BE25616F2B00F3F681 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		385999C125616F2B00F3F681 /* Stray_Scanner.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Stray_Scanner.xcdatamodel; sourceTree = "<group>"; };
@@ -48,12 +48,14 @@
 		385999C825616F3000F3F681 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		385999CB25616F3000F3F681 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		385999CD25616F3000F3F681 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		385999D225616F3100F3F681 /* Stray ScannerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Stray ScannerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		385999D225616F3100F3F681 /* StrayScannerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StrayScannerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		385999D625616F3100F3F681 /* Stray_ScannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stray_ScannerTests.swift; sourceTree = "<group>"; };
 		385999D825616F3100F3F681 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		38E969CA2572608E00054CC4 /* NewSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSession.swift; sourceTree = "<group>"; };
 		38FB730E2572A9FA007D9CB0 /* RecordSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordSessionViewController.swift; sourceTree = "<group>"; };
 		38FB73152572AF63007D9CB0 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		38FB731F2573EABB007D9CB0 /* ShaderTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
+		38FB73242573ECE2007D9CB0 /* BridgeHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BridgeHeader.h; path = StrayScanner/BridgeHeader.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,8 +106,9 @@
 		385999B025616F2A00F3F681 = {
 			isa = PBXGroup;
 			children = (
-				385999BB25616F2B00F3F681 /* Stray Scanner */,
-				385999D525616F3100F3F681 /* Stray ScannerTests */,
+				38FB73242573ECE2007D9CB0 /* BridgeHeader.h */,
+				385999BB25616F2B00F3F681 /* StrayScanner */,
+				385999D525616F3100F3F681 /* StrayScannerTests */,
 				385999BA25616F2B00F3F681 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -113,13 +116,13 @@
 		385999BA25616F2B00F3F681 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				385999B925616F2B00F3F681 /* Stray Scanner.app */,
-				385999D225616F3100F3F681 /* Stray ScannerTests.xctest */,
+				385999B925616F2B00F3F681 /* StrayScanner.app */,
+				385999D225616F3100F3F681 /* StrayScannerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		385999BB25616F2B00F3F681 /* Stray Scanner */ = {
+		385999BB25616F2B00F3F681 /* StrayScanner */ = {
 			isa = PBXGroup;
 			children = (
 				38FB73142572AF50007D9CB0 /* Shaders */,
@@ -135,7 +138,7 @@
 				385999C025616F2B00F3F681 /* Stray_Scanner.xcdatamodeld */,
 				385999C725616F3000F3F681 /* Preview Content */,
 			);
-			path = "Stray Scanner";
+			path = StrayScanner;
 			sourceTree = "<group>";
 		};
 		385999C725616F3000F3F681 /* Preview Content */ = {
@@ -146,13 +149,13 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		385999D525616F3100F3F681 /* Stray ScannerTests */ = {
+		385999D525616F3100F3F681 /* StrayScannerTests */ = {
 			isa = PBXGroup;
 			children = (
 				385999D625616F3100F3F681 /* Stray_ScannerTests.swift */,
 				385999D825616F3100F3F681 /* Info.plist */,
 			);
-			path = "Stray ScannerTests";
+			path = StrayScannerTests;
 			sourceTree = "<group>";
 		};
 		38FB730D2572A91D007D9CB0 /* Controllers */ = {
@@ -166,6 +169,7 @@
 		38FB73142572AF50007D9CB0 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				38FB731F2573EABB007D9CB0 /* ShaderTypes.h */,
 				38FB73152572AF63007D9CB0 /* Shaders.metal */,
 			);
 			path = Shaders;
@@ -174,9 +178,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		385999B825616F2A00F3F681 /* Stray Scanner */ = {
+		385999B825616F2A00F3F681 /* StrayScanner */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 385999DB25616F3100F3F681 /* Build configuration list for PBXNativeTarget "Stray Scanner" */;
+			buildConfigurationList = 385999DB25616F3100F3F681 /* Build configuration list for PBXNativeTarget "StrayScanner" */;
 			buildPhases = (
 				385999B525616F2A00F3F681 /* Sources */,
 				385999B625616F2A00F3F681 /* Frameworks */,
@@ -186,14 +190,14 @@
 			);
 			dependencies = (
 			);
-			name = "Stray Scanner";
-			productName = "Stray Scanner";
-			productReference = 385999B925616F2B00F3F681 /* Stray Scanner.app */;
+			name = StrayScanner;
+			productName = StrayScanner;
+			productReference = 385999B925616F2B00F3F681 /* StrayScanner.app */;
 			productType = "com.apple.product-type.application";
 		};
-		385999D125616F3100F3F681 /* Stray ScannerTests */ = {
+		385999D125616F3100F3F681 /* StrayScannerTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 385999DE25616F3100F3F681 /* Build configuration list for PBXNativeTarget "Stray ScannerTests" */;
+			buildConfigurationList = 385999DE25616F3100F3F681 /* Build configuration list for PBXNativeTarget "StrayScannerTests" */;
 			buildPhases = (
 				385999CE25616F3100F3F681 /* Sources */,
 				385999CF25616F3100F3F681 /* Frameworks */,
@@ -204,9 +208,9 @@
 			dependencies = (
 				385999D425616F3100F3F681 /* PBXTargetDependency */,
 			);
-			name = "Stray ScannerTests";
-			productName = "Stray ScannerTests";
-			productReference = 385999D225616F3100F3F681 /* Stray ScannerTests.xctest */;
+			name = StrayScannerTests;
+			productName = StrayScannerTests;
+			productReference = 385999D225616F3100F3F681 /* StrayScannerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -228,7 +232,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 385999B425616F2A00F3F681 /* Build configuration list for PBXProject "Stray Scanner" */;
+			buildConfigurationList = 385999B425616F2A00F3F681 /* Build configuration list for PBXProject "StrayScanner" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -241,8 +245,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				385999B825616F2A00F3F681 /* Stray Scanner */,
-				385999D125616F3100F3F681 /* Stray ScannerTests */,
+				385999B825616F2A00F3F681 /* StrayScanner */,
+				385999D125616F3100F3F681 /* StrayScannerTests */,
 			);
 		};
 /* End PBXProject section */
@@ -299,7 +303,7 @@
 /* Begin PBXTargetDependency section */
 		385999D425616F3100F3F681 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 385999B825616F2A00F3F681 /* Stray Scanner */;
+			target = 385999B825616F2A00F3F681 /* StrayScanner */;
 			targetProxy = 385999D325616F3100F3F681 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -367,12 +371,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "Stray\\ Scanner/BridgeHeader.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -422,11 +427,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OBJC_BRIDGING_HEADER = "Stray\\ Scanner/BridgeHeader.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -437,18 +443,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"Stray Scanner/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"StrayScanner/Preview Content\"";
 				DEVELOPMENT_TEAM = 2QREBG9C6Y;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = "Stray Scanner/Info.plist";
+				INFOPLIST_FILE = StrayScanner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "dev.keke.Stray-Scanner";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = StrayScanner/BridgeHeader.h;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -457,18 +465,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"Stray Scanner/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"StrayScanner/Preview Content\"";
 				DEVELOPMENT_TEAM = 2QREBG9C6Y;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = "Stray Scanner/Info.plist";
+				INFOPLIST_FILE = StrayScanner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "dev.keke.Stray-Scanner";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = StrayScanner/BridgeHeader.h;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -479,7 +489,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2QREBG9C6Y;
-				INFOPLIST_FILE = "Stray ScannerTests/Info.plist";
+				INFOPLIST_FILE = StrayScannerTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -490,7 +500,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Stray Scanner.app/Stray Scanner";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StrayScanner.app/StrayScanner";
 			};
 			name = Debug;
 		};
@@ -501,7 +511,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2QREBG9C6Y;
-				INFOPLIST_FILE = "Stray ScannerTests/Info.plist";
+				INFOPLIST_FILE = StrayScannerTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -512,14 +522,14 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Stray Scanner.app/Stray Scanner";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StrayScanner.app/StrayScanner";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		385999B425616F2A00F3F681 /* Build configuration list for PBXProject "Stray Scanner" */ = {
+		385999B425616F2A00F3F681 /* Build configuration list for PBXProject "StrayScanner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				385999D925616F3100F3F681 /* Debug */,
@@ -528,7 +538,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		385999DB25616F3100F3F681 /* Build configuration list for PBXNativeTarget "Stray Scanner" */ = {
+		385999DB25616F3100F3F681 /* Build configuration list for PBXNativeTarget "StrayScanner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				385999DC25616F3100F3F681 /* Debug */,
@@ -537,7 +547,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		385999DE25616F3100F3F681 /* Build configuration list for PBXNativeTarget "Stray ScannerTests" */ = {
+		385999DE25616F3100F3F681 /* Build configuration list for PBXNativeTarget "StrayScannerTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				385999DF25616F3100F3F681 /* Debug */,
