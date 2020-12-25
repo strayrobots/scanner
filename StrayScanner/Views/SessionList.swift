@@ -9,15 +9,39 @@
 import SwiftUI
 
 struct SessionList: View {
+    init() {
+        UITableView.appearance().backgroundColor = UIColor(named: "BackgroundColor")
+
+    }
     var body: some View {
         NavigationView {
-            List(sessionData) { session in
-                SessionRow(session: session)
+            ZStack {
+                Color("BackgroundColor")
+                    .edgesIgnoringSafeArea(.all)
+                VStack(alignment: .leading) {
+                    List(sessionData) { session in
+                        SessionRow(session: session)
+                    }
+                    .navigationBarTitle("Recordings")
+                    .background(Color.green)
+                    .edgesIgnoringSafeArea(.all)
+                    HStack {
+                        Spacer()
+                        NavigationLink(destination: NewSessionView(), label: {
+                            Button(action: {}, label: {
+                                Text("Record new session")
+                                    .font(.title)
+                                    .padding(25)
+                                    .background(Color("DarkGrey"))
+                                    .foregroundColor(Color.white)
+                                    .cornerRadius(50)
+                                    .padding(25)
+                            })
+                        })
+                        Spacer()
+                    }
+                }
             }
-            .navigationBarTitle("Recordings", displayMode: .inline)
-            .navigationBarItems(trailing: NavigationLink(destination: NewSessionView(), label: {
-                Image(systemName: "plus")
-            }))
         }
     }
 }
