@@ -11,6 +11,9 @@
 
 using namespace metal;
 
+constant half MaxDepth = 10.0;
+constant half MinDepth = 0.1;
+
 struct VertexIn {
     float2 vertexCoordinates [[attribute(0)]]; // Position index 0.
     float2 textureCoordinates [[attribute(1)]]; // Texture coordinate index 1.
@@ -35,26 +38,30 @@ vertex VertexOut drawRectangle(const device VertexIn* vertexIn[[ buffer(0) ]],
     return out;
 }
 
-fragment half4 constantColor() {
-    return half4(0.2, 0.2, 0.8, 1.0);
-}
-
-fragment float4 displayTexture(VertexOut in [[stage_in]],
+fragment half4 displayTexture(VertexOut in [[stage_in]],
                             texture2d<float, access::sample> capturedImageTextureY [[ texture(kTextureIndexY) ]],
                             texture2d<float, access::sample> capturedImageTextureCbCr [[ texture(kTextureIndexCbCr) ]]) {
 
     constexpr sampler colorSampler(address::clamp_to_edge, filter::linear);
 
-    float4 ycbcr = float4(capturedImageTextureY.sample(colorSampler, in.textureCoordinate).r,
-                          capturedImageTextureCbCr.sample(colorSampler, in.textureCoordinate).rg, 1.0);
+    half4 ycbcr = half4(half(capturedImageTextureY.sample(colorSampler, in.textureCoordinate).r),
+                          half2(capturedImageTextureCbCr.sample(colorSampler, in.textureCoordinate).rg), 1.0);
 
-    const float4x4 ycbcrToRGBTransform = float4x4(
-        float4(+1.0000f, +1.0000f, +1.0000f, +0.0000f),
-        float4(+0.0000f, -0.3441f, +1.7720f, +0.0000f),
-        float4(+1.4020f, -0.7141f, +0.0000f, +0.0000f),
-        float4(-0.7010f, +0.5291f, -0.8860f, +1.0000f)
+    const half4x4 ycbcrToRGBTransform = half4x4(
+        half4(+1.0000f, +1.0000f, +1.0000f, +0.0000f),
+        half4(+0.0000f, -0.3441f, +1.7720f, +0.0000f),
+        half4(+1.4020f, -0.7141f, +0.0000f, +0.0000f),
+        half4(-0.7010f, +0.5291f, -0.8860f, +1.0000f)
     );
 
     return ycbcrToRGBTransform * ycbcr;
 }
 
+fragment half4 depthFragment(VertexOut in [[stage_in]], depth2d<float, access::sample> depthFrame [[ texture(0) ]]) {
+    constexpr sampler depthSampler(address::clamp_to_edge, filter::linear);
+    float depth = depthFrame.sample(depthSampler, in.textureCoordinate);
+
+    half scaled = max(half(depth), MinDepth);
+    half clamped = 1.0 - clamp(log(1.0 + scaled * 0.35), 0.0, 1.0);
+    return half4(clamped, clamped, clamped, 1.0);
+}

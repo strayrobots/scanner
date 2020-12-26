@@ -38,16 +38,17 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         timer.add(to: RunLoop.main, forMode: .default)
 
         let arConfiguration = ARWorldTrackingConfiguration()
-        if !ARWorldTrackingConfiguration.isSupported {
+        if !ARWorldTrackingConfiguration.isSupported || !ARWorldTrackingConfiguration.supportsFrameSemantics(.sceneDepth) {
             print("AR is not supported.")
+        } else {
+            arConfiguration.frameSemantics.insert(.sceneDepth)
+            session.run(arConfiguration)
         }
-        session.run(arConfiguration)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         session.pause();
     }
-
 
     @objc func renderLoop() {
         autoreleasepool {

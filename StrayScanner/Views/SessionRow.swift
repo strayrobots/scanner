@@ -20,11 +20,9 @@ struct SessionRow: View {
                     .font(.caption)
                     .multilineTextAlignment(.leading)
                     .padding(.leading, 0.0)
-
             }
             Spacer()
         }
-
     }
 }
 

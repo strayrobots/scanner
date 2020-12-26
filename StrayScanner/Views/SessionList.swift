@@ -28,15 +28,13 @@ struct SessionList: View {
                     HStack {
                         Spacer()
                         NavigationLink(destination: NewSessionView(), label: {
-                            Button(action: {}, label: {
-                                Text("Record new session")
-                                    .font(.title)
-                                    .padding(25)
-                                    .background(Color("DarkGrey"))
-                                    .foregroundColor(Color.white)
-                                    .cornerRadius(50)
-                                    .padding(25)
-                            })
+                            Text("Record new session")
+                                .font(.title)
+                                .padding(25)
+                                .background(Color("DarkGrey"))
+                                .foregroundColor(Color.white)
+                                .cornerRadius(50)
+                                .padding(25)
                         })
                         Spacer()
                     }
