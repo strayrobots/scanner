@@ -11,7 +11,9 @@ import UIKit
 
 class RecordButton : UIView {
     private let circleStroke: CGFloat = 5.0
+    private let animationDuration = 0.1
     private var recording: Bool = false
+    private var disk: CALayer!
 
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -25,12 +27,18 @@ class RecordButton : UIView {
         setup()
     }
 
-    func setup() {
-        drawInner()
-        drawEdge()
+    @objc func buttonPressed() {
+        self.animateButton()
+        self.recording = !self.recording
     }
 
-    func drawEdge() {
+    private func setup() {
+        drawInner()
+        drawEdge()
+        self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(buttonPressed)))
+    }
+
+    private func drawEdge() {
         let circleLayer = CAShapeLayer()
         let circleRadius: CGFloat = self.bounds.height * 0.5 - circleStroke;
         let x: CGFloat = self.bounds.size.width / 2
@@ -45,18 +53,69 @@ class RecordButton : UIView {
         self.layer.addSublayer(circleLayer)
     }
 
-    func drawInner() {
-        let disk = CAShapeLayer()
+    private func drawInner() {
+        disk = CALayer()
         let diameter = self.bounds.height - circleStroke * 4.0
         let radius = diameter * 0.5
-        let x: CGFloat = self.bounds.width * 0.5 - radius
-        let y: CGFloat = self.bounds.height * 0.5 - radius
-        let rect = CGRect(x: x, y: y, width: diameter, height: diameter)
-        let path = CGMutablePath()
-        path.addEllipse(in: rect)
-        disk.path = path
-        disk.fillColor = UIColor.red.cgColor
+        let x: CGFloat = self.bounds.width * 0.5
+        let y: CGFloat = self.bounds.height * 0.5
+        let rect = CGRect(x: 0, y: 0, width: diameter, height: diameter)
+        disk.backgroundColor = UIColor.red.cgColor
+        disk.position.x = x
+        disk.position.y = y
+        disk.bounds = rect
+        disk.cornerRadius = radius
         disk.opacity = 1.0
+        disk.transform = CATransform3DIdentity
         self.layer.addSublayer(disk)
+    }
+
+    private func animateButton() {
+        // Called before the flag is flipped.
+        if self.recording {
+            // Finished recording.
+            self.animateToIdle()
+        } else {
+            self.animateToRecording()
+        }
+    }
+
+    private func animateToRecording() {
+        let squaringAnimation = CABasicAnimation(keyPath: "cornerRadius")
+        squaringAnimation.fromValue = disk.cornerRadius
+        squaringAnimation.toValue = 10
+
+        let scaleAnimation = CABasicAnimation(keyPath: "transform.scale")
+        scaleAnimation.fromValue = 1.0
+        scaleAnimation.toValue = 0.5
+
+        let animationGroup = CAAnimationGroup()
+        animationGroup.animations = [squaringAnimation, scaleAnimation]
+        animationGroup.isRemovedOnCompletion = false
+        animationGroup.fillMode = CAMediaTimingFillMode.forwards
+        animationGroup.duration = animationDuration
+        disk.transform = CATransform3DIdentity
+        disk.cornerRadius = (self.bounds.height - circleStroke * 4.0) * 0.5
+        disk.add(animationGroup, forKey: "cornerRadius")
+    }
+
+    private func animateToIdle() {
+        let roundingAnimation = CABasicAnimation(keyPath: "cornerRadius")
+        let oldRadius: CGFloat = 10
+        roundingAnimation.fromValue = oldRadius
+        let newRadius = (self.bounds.height - circleStroke * 4.0) * 0.5
+        roundingAnimation.toValue = newRadius
+
+        let scaleAnimation = CABasicAnimation(keyPath: "transform.scale")
+        scaleAnimation.fromValue = 0.5
+        scaleAnimation.toValue = 1.0
+
+        let animationGroup = CAAnimationGroup()
+        animationGroup.animations = [roundingAnimation, scaleAnimation]
+        animationGroup.isRemovedOnCompletion = false
+        animationGroup.duration = animationDuration
+        animationGroup.fillMode = CAMediaTimingFillMode.forwards
+        disk.transform = CATransform3DScale(CATransform3DIdentity, 0.5, 0.5, 0.5)
+        disk.add(animationGroup, forKey: "cornerRadius")
     }
 }

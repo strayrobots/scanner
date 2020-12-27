@@ -35,7 +35,7 @@ class MetalView : UIView {
 }
 
 class RecordSessionViewController : UIViewController, ARSessionDelegate {
-    private let recordButtonSize: Float = 90.0
+    private let recordButtonSize: CGFloat = 90.0
     private var timer: CADisplayLink!
     private let session = ARSession()
     private var renderer: CameraRenderer?
@@ -69,11 +69,22 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     override func viewDidAppear(_ animated: Bool) {
         let offsetY: CGFloat = (view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0.0) +
             (self.navigationController?.navigationBar.frame.height ?? 0.0)
-        let viewFrame = CGRect(x: 0, y: offsetY, width: view.bounds.size.width, height: view.bounds.size.width * 1920.0/1440.0)
-        rgbView.frame = viewFrame
-        depthView.frame = viewFrame
+        let pictureFrame = CGRect(x: 0, y: offsetY, width: view.bounds.size.width, height: view.bounds.size.width * 1920.0/1440.0)
+        rgbView.frame = pictureFrame
+        depthView.frame = pictureFrame
         rgbView.setNeedsDisplay()
         depthView.setNeedsDisplay()
+
+
+        let bottomOffset = view.window?.safeAreaInsets.bottom ?? 0.0;
+
+        let pictureFrameEnd = offsetY + pictureFrame.height
+        let distanceToBottom = view.bounds.maxY - bottomOffset - pictureFrameEnd
+        let y = pictureFrameEnd + (0.5 * distanceToBottom) - recordButtonSize * 0.5
+        let middle: CGFloat = self.view.frame.width / 2.0 - CGFloat(recordButtonSize / 2.0)
+        let rect = CGRect(x: middle, y: y, width: CGFloat(recordButtonSize), height: CGFloat(recordButtonSize))
+        recordButton.frame = rect
+
         startSession()
     }
 
@@ -88,10 +99,8 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         depthView.frame = viewFrame
         view.addSubview(depthView)
 
-        let recordButtonStart: Float = Float(self.view.frame.maxY) - 75.0 - recordButtonSize
-        let middle: CGFloat = self.view.frame.width / 2.0 - CGFloat(recordButtonSize / 2.0)
-        let rect = CGRect(x: middle, y: CGFloat(recordButtonStart), width: CGFloat(recordButtonSize), height: CGFloat(recordButtonSize))
-        let recordButton = RecordButton(frame: rect)
+        let rect = CGRect(x: 0, y: 0, width: CGFloat(recordButtonSize), height: CGFloat(recordButtonSize))
+        recordButton = RecordButton(frame: rect)
         self.view.addSubview(recordButton)
     }
 
