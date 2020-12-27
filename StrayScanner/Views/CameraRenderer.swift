@@ -10,10 +10,15 @@ import Foundation
 import Metal
 import ARKit
 
+enum RenderMode {
+    case depth
+    case rgb
+}
+
 class CameraRenderer {
     private var device: MTLDevice!
-    private var rgbLayer: CAMetalLayer!
-    private var depthLayer: CAMetalLayer!
+    private let rgbLayer: CAMetalLayer
+    private let depthLayer: CAMetalLayer
     private var vertexBuffer: MTLBuffer!
     private var rgbPipelineState: MTLRenderPipelineState!
     private var depthPipelineState: MTLRenderPipelineState!
@@ -22,17 +27,24 @@ class CameraRenderer {
     private var rgbTextureCbCr: MTLTexture!
     private var depthTexture: MTLTexture!
     private lazy var textureCache: CVMetalTextureCache = makeTextureCache()
+    
+    public var renderMode: RenderMode = RenderMode.depth 
 
-    init(parentView: UIView) {
-        initMetal(view: parentView)
+    init(rgbLayer: CAMetalLayer, depthLayer: CAMetalLayer) {
+        self.rgbLayer = rgbLayer
+        self.depthLayer = depthLayer
+        initMetal()
     }
 
     func render(frame: ARFrame) {
-        updateRGBTexture(frame: frame)
-        updateDepthTexture(frame: frame)
-
-        renderRGB()
-        renderDepth()
+        switch (renderMode) {
+            case .depth:
+                updateDepthTexture(frame: frame)
+                renderDepth()
+            case .rgb:
+                updateRGBTexture(frame: frame)
+                renderRGB()
+        }
     }
 
     private func renderRGB() {
@@ -85,20 +97,15 @@ class CameraRenderer {
         commandBuffer.commit()
     }
 
-    private func initMetal(view: UIView) {
+    private func initMetal() {
         device = MTLCreateSystemDefaultDevice()
-        rgbLayer = CAMetalLayer()
         rgbLayer.device = device
         rgbLayer.pixelFormat = .bgra8Unorm
         rgbLayer.framebufferOnly = true
-        rgbLayer.frame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.width * 1920.0/1440.0)
-        view.layer.addSublayer(rgbLayer)
 
-        depthLayer = CAMetalLayer()
         depthLayer.device = device
+        depthLayer.pixelFormat = .bgra8Unorm
         depthLayer.framebufferOnly = true
-        depthLayer.frame = CGRect(x: 0, y: 50, width: view.bounds.size.width, height: view.bounds.size.width * 1920.0/1440.0)
-        view.layer.addSublayer(depthLayer)
 
         let dataSize = vertexData.count * MemoryLayout<Float>.size
         vertexBuffer = device.makeBuffer(bytes: vertexData, length: dataSize, options: [])

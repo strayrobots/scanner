@@ -11,8 +11,9 @@
 
 using namespace metal;
 
-constant half MaxDepth = 10.0;
-constant half MinDepth = 0.1;
+constant float MinDepth = 0.05;
+constant float InvMaxDepth = 1.0 / 10.0;
+constant float InvE3 = 1.0 / (M_E_F * M_E_F * M_E_F);
 
 struct VertexIn {
     float2 vertexCoordinates [[attribute(0)]]; // Position index 0.
@@ -45,7 +46,7 @@ fragment half4 displayTexture(VertexOut in [[stage_in]],
     constexpr sampler colorSampler(address::clamp_to_edge, filter::linear);
 
     half4 ycbcr = half4(half(capturedImageTextureY.sample(colorSampler, in.textureCoordinate).r),
-                          half2(capturedImageTextureCbCr.sample(colorSampler, in.textureCoordinate).rg), 1.0);
+                        half2(capturedImageTextureCbCr.sample(colorSampler, in.textureCoordinate).rg), 1.0);
 
     const half4x4 ycbcrToRGBTransform = half4x4(
         half4(+1.0000f, +1.0000f, +1.0000f, +0.0000f),
@@ -58,10 +59,11 @@ fragment half4 displayTexture(VertexOut in [[stage_in]],
 }
 
 fragment half4 depthFragment(VertexOut in [[stage_in]], depth2d<float, access::sample> depthFrame [[ texture(0) ]]) {
-    constexpr sampler depthSampler(address::clamp_to_edge, filter::linear);
+    constexpr sampler depthSampler(address::clamp_to_edge, filter::bicubic);
     float depth = depthFrame.sample(depthSampler, in.textureCoordinate);
 
-    half scaled = max(half(depth), MinDepth);
-    half clamped = 1.0 - clamp(log(1.0 + scaled * 0.35), 0.0, 1.0);
+    depth = max(depth - MinDepth, 0.0);
+    depth = min(depth * InvMaxDepth, M_E_F - InvE3);
+    half clamped = 0.1 + (1.0 - (log(InvE3 + depth) + 3.0) / 4.0) * 0.8;
     return half4(clamped, clamped, clamped, 1.0);
 }
