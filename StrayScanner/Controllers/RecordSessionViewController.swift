@@ -35,22 +35,16 @@ class MetalView : UIView {
 }
 
 class RecordSessionViewController : UIViewController, ARSessionDelegate {
+    private let recordButtonSize: Float = 90.0
     private var timer: CADisplayLink!
     private let session = ARSession()
     private var renderer: CameraRenderer?
     private var rgbView: MetalView!
     private var depthView: MetalView!
+    private var recordButton: RecordButton!
 
     override func viewDidLoad() {
-        rgbView = MetalView()
-        let viewFrame = CGRect(x: 0, y: 50, width: view.bounds.size.width, height: view.bounds.size.width * 1920.0/1440.0)
-        rgbView.frame = viewFrame
-        rgbView.isHidden = true
-        view.addSubview(rgbView)
-
-        depthView = MetalView()
-        depthView.frame = viewFrame
-        view.addSubview(depthView)
+        setupViews()
 
         self.renderer = CameraRenderer(rgbLayer: rgbView.layer, depthLayer: depthView.layer)
 
@@ -81,6 +75,24 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         rgbView.setNeedsDisplay()
         depthView.setNeedsDisplay()
         startSession()
+    }
+
+    private func setupViews() {
+        rgbView = MetalView()
+        let viewFrame = CGRect(x: 0, y: 50, width: view.bounds.size.width, height: view.bounds.size.width * 1920.0/1440.0)
+        rgbView.frame = viewFrame
+        rgbView.isHidden = true
+        view.addSubview(rgbView)
+
+        depthView = MetalView()
+        depthView.frame = viewFrame
+        view.addSubview(depthView)
+
+        let recordButtonStart: Float = Float(self.view.frame.maxY) - 75.0 - recordButtonSize
+        let middle: CGFloat = self.view.frame.width / 2.0 - CGFloat(recordButtonSize / 2.0)
+        let rect = CGRect(x: middle, y: CGFloat(recordButtonStart), width: CGFloat(recordButtonSize), height: CGFloat(recordButtonSize))
+        let recordButton = RecordButton(frame: rect)
+        self.view.addSubview(recordButton)
     }
 
     private func startSession() {
