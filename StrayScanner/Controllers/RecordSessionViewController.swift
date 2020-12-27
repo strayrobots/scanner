@@ -43,7 +43,7 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
 
     override func viewDidLoad() {
         rgbView = MetalView()
-        let viewFrame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.width * 1920.0/1440.0)
+        let viewFrame = CGRect(x: 0, y: 50, width: view.bounds.size.width, height: view.bounds.size.width * 1920.0/1440.0)
         rgbView.frame = viewFrame
         rgbView.isHidden = true
         view.addSubview(rgbView)
@@ -62,7 +62,28 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
 
         timer = CADisplayLink(target: self, selector: #selector(renderLoop))
         timer.add(to: RunLoop.main, forMode: .default)
+    }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        session.pause();
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        startSession()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        let offsetY: CGFloat = (view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0.0) +
+            (self.navigationController?.navigationBar.frame.height ?? 0.0)
+        let viewFrame = CGRect(x: 0, y: offsetY, width: view.bounds.size.width, height: view.bounds.size.width * 1920.0/1440.0)
+        rgbView.frame = viewFrame
+        depthView.frame = viewFrame
+        rgbView.setNeedsDisplay()
+        depthView.setNeedsDisplay()
+        startSession()
+    }
+
+    private func startSession() {
         let arConfiguration = ARWorldTrackingConfiguration()
         if !ARWorldTrackingConfiguration.isSupported || !ARWorldTrackingConfiguration.supportsFrameSemantics(.sceneDepth) {
             print("AR is not supported.")
@@ -70,10 +91,6 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
             arConfiguration.frameSemantics.insert(.sceneDepth)
             session.run(arConfiguration)
         }
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        session.pause();
     }
 
     @objc func viewTapped() {
@@ -96,7 +113,6 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         }
     }
     private func setViewProperties() {
-        view.backgroundColor = UIColor.black
-        view.setNeedsDisplay()
+        self.view.backgroundColor = UIColor(named: "DarkGrey")
     }
 }

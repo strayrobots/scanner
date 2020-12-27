@@ -8,19 +8,39 @@
 
 import SwiftUI
 
+struct NavigationConfigurator: UIViewControllerRepresentable {
+    var configure: (UINavigationController) -> Void = { _ in }
+
+    func makeUIViewController(context: UIViewControllerRepresentableContext<NavigationConfigurator>) -> UIViewController {
+        UIViewController()
+    }
+    func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<NavigationConfigurator>) {
+        if let nc = uiViewController.navigationController {
+            self.configure(nc)
+        }
+    }
+}
+
 struct RecordSessionManager: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> some UIViewController {
         return RecordSessionViewController()
     }
 
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-    }
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
 }
 
 struct NewSessionView : View {
 
     var body: some View {
         RecordSessionManager()
+            .padding(.vertical, 0.0)
+            .navigationBarTitle("Recording")
+            .navigationBarTitleDisplayMode(.inline)
+            .edgesIgnoringSafeArea(.all)
+            .background(NavigationConfigurator { nc in
+                nc.navigationBar.barTintColor = UIColor(named: "BackgroundColor")
+            })
+
     }
 }
 

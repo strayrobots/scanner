@@ -23,7 +23,6 @@ struct SessionList: View {
                         SessionRow(session: session)
                     }
                     .navigationBarTitle("Recordings")
-                    .background(Color.green)
                     .edgesIgnoringSafeArea(.all)
                     HStack {
                         Spacer()
