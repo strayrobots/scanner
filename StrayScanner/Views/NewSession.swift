@@ -23,7 +23,7 @@ struct NavigationConfigurator: UIViewControllerRepresentable {
 
 struct RecordSessionManager: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> some UIViewController {
-        return RecordSessionViewController()
+        return RecordSessionViewController(nibName: "RecordSessionView", bundle: nil)
     }
 
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}

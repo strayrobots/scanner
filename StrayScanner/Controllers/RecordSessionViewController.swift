@@ -35,17 +35,17 @@ class MetalView : UIView {
 }
 
 class RecordSessionViewController : UIViewController, ARSessionDelegate {
-    private let recordButtonSize: CGFloat = 90.0
     private var timer: CADisplayLink!
     private let session = ARSession()
     private var renderer: CameraRenderer?
-    private var rgbView: MetalView!
-    private var depthView: MetalView!
-    private var recordButton: RecordButton!
+    private var updateLabelTimer: Timer?
+    private var startedRecording: Date?
+    @IBOutlet private var rgbView: MetalView!
+    @IBOutlet private var depthView: MetalView!
+    @IBOutlet private var recordButton: RecordButton!
+    @IBOutlet private var timeLabel: UILabel!
 
     override func viewDidLoad() {
-        setupViews()
-
         self.renderer = CameraRenderer(rgbLayer: rgbView.layer, depthLayer: depthView.layer)
 
         depthView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(viewTapped)))
@@ -56,6 +56,10 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
 
         timer = CADisplayLink(target: self, selector: #selector(renderLoop))
         timer.add(to: RunLoop.main, forMode: .default)
+
+        recordButton.setCallback {
+            self.toggleRecording()
+        }
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -66,42 +70,12 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         startSession()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        let offsetY: CGFloat = (view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0.0) +
-            (self.navigationController?.navigationBar.frame.height ?? 0.0)
-        let pictureFrame = CGRect(x: 0, y: offsetY, width: view.bounds.size.width, height: view.bounds.size.width * 1920.0/1440.0)
-        rgbView.frame = pictureFrame
-        depthView.frame = pictureFrame
-        rgbView.setNeedsDisplay()
-        depthView.setNeedsDisplay()
-
-
-        let bottomOffset = view.window?.safeAreaInsets.bottom ?? 0.0;
-
-        let pictureFrameEnd = offsetY + pictureFrame.height
-        let distanceToBottom = view.bounds.maxY - bottomOffset - pictureFrameEnd
-        let y = pictureFrameEnd + (0.5 * distanceToBottom) - recordButtonSize * 0.5
-        let middle: CGFloat = self.view.frame.width / 2.0 - CGFloat(recordButtonSize / 2.0)
-        let rect = CGRect(x: middle, y: y, width: CGFloat(recordButtonSize), height: CGFloat(recordButtonSize))
-        recordButton.frame = rect
-
-        startSession()
+    override func viewWillDisappear(_ animated: Bool) {
+        updateLabelTimer?.invalidate()
     }
 
-    private func setupViews() {
-        rgbView = MetalView()
-        let viewFrame = CGRect(x: 0, y: 50, width: view.bounds.size.width, height: view.bounds.size.width * 1920.0/1440.0)
-        rgbView.frame = viewFrame
-        rgbView.isHidden = true
-        view.addSubview(rgbView)
-
-        depthView = MetalView()
-        depthView.frame = viewFrame
-        view.addSubview(depthView)
-
-        let rect = CGRect(x: 0, y: 0, width: CGFloat(recordButtonSize), height: CGFloat(recordButtonSize))
-        recordButton = RecordButton(frame: rect)
-        self.view.addSubview(recordButton)
+    override func viewDidAppear(_ animated: Bool) {
+        startSession()
     }
 
     private func startSession() {
@@ -112,6 +86,37 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
             arConfiguration.frameSemantics.insert(.sceneDepth)
             session.run(arConfiguration)
         }
+    }
+
+    private func toggleRecording() {
+        if startedRecording == nil {
+            startRecording()
+        } else {
+            stopRecording()
+        }
+    }
+
+    private func startRecording() {
+        startedRecording = Date()
+        updateTime()
+        updateLabelTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            self.updateTime()
+        }
+    }
+
+    private func stopRecording() {
+        startedRecording = nil
+        updateLabelTimer?.invalidate()
+        updateLabelTimer = nil
+    }
+
+    private func updateTime() {
+        guard let started = self.startedRecording else { return }
+        let seconds = Date().timeIntervalSince(started)
+        let minutes: Int = Int(floor(seconds / 60).truncatingRemainder(dividingBy: 60))
+        let hours: Int = Int(floor(seconds / 3600))
+        let roundSeconds: Int = Int(floor(seconds.truncatingRemainder(dividingBy: 60)))
+        self.timeLabel.text = String(format: "%02d:%02d:%02d", hours, minutes, roundSeconds)
     }
 
     @objc func viewTapped() {

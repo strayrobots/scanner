@@ -9,27 +9,36 @@
 import Foundation
 import UIKit
 
+@IBDesignable
 class RecordButton : UIView {
     private let circleStroke: CGFloat = 5.0
     private let animationDuration = 0.1
     private var recording: Bool = false
     private var disk: CALayer!
+    private var callback: Optional<() -> Void> = Optional.none
 
     override public init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.clear
+    }
+
+    override func layoutSubviews() {
         setup()
     }
 
     required public init?(coder aCoder: NSCoder) {
         super.init(coder: aCoder)
         self.backgroundColor = UIColor.clear
-        setup()
+    }
+
+    func setCallback(callback: @escaping () -> Void) {
+        self.callback = Optional.some(callback)
     }
 
     @objc func buttonPressed() {
         self.animateButton()
         self.recording = !self.recording
+        self.callback?()
     }
 
     private func setup() {
@@ -81,41 +90,61 @@ class RecordButton : UIView {
     }
 
     private func animateToRecording() {
+        print("cornerRadius: \(disk.cornerRadius)")
         let squaringAnimation = CABasicAnimation(keyPath: "cornerRadius")
-        squaringAnimation.fromValue = disk.cornerRadius
-        squaringAnimation.toValue = 10
+        squaringAnimation.fromValue = cornerRadius(recording: false)
+        squaringAnimation.toValue = cornerRadius(recording: true)
+        squaringAnimation.isRemovedOnCompletion = false
+        squaringAnimation.fillMode = CAMediaTimingFillMode.forwards
 
         let scaleAnimation = CABasicAnimation(keyPath: "transform.scale")
         scaleAnimation.fromValue = 1.0
         scaleAnimation.toValue = 0.5
+        scaleAnimation.isRemovedOnCompletion = false
+        scaleAnimation.fillMode = CAMediaTimingFillMode.forwards
 
         let animationGroup = CAAnimationGroup()
         animationGroup.animations = [squaringAnimation, scaleAnimation]
         animationGroup.isRemovedOnCompletion = false
         animationGroup.fillMode = CAMediaTimingFillMode.forwards
         animationGroup.duration = animationDuration
-        disk.transform = CATransform3DIdentity
-        disk.cornerRadius = (self.bounds.height - circleStroke * 4.0) * 0.5
         disk.add(animationGroup, forKey: "cornerRadius")
     }
 
     private func animateToIdle() {
+        print("cornerRadius: \(disk.cornerRadius)")
         let roundingAnimation = CABasicAnimation(keyPath: "cornerRadius")
-        let oldRadius: CGFloat = 10
-        roundingAnimation.fromValue = oldRadius
-        let newRadius = (self.bounds.height - circleStroke * 4.0) * 0.5
-        roundingAnimation.toValue = newRadius
+        roundingAnimation.fromValue = cornerRadius(recording: true)
+        roundingAnimation.toValue = cornerRadius(recording: false)
+        roundingAnimation.fillMode = CAMediaTimingFillMode.forwards
+        roundingAnimation.isRemovedOnCompletion = false
 
         let scaleAnimation = CABasicAnimation(keyPath: "transform.scale")
         scaleAnimation.fromValue = 0.5
         scaleAnimation.toValue = 1.0
+        scaleAnimation.isRemovedOnCompletion = false
+        scaleAnimation.fillMode = CAMediaTimingFillMode.forwards
 
         let animationGroup = CAAnimationGroup()
         animationGroup.animations = [roundingAnimation, scaleAnimation]
         animationGroup.isRemovedOnCompletion = false
-        animationGroup.duration = animationDuration
         animationGroup.fillMode = CAMediaTimingFillMode.forwards
-        disk.transform = CATransform3DScale(CATransform3DIdentity, 0.5, 0.5, 0.5)
+        animationGroup.duration = animationDuration
         disk.add(animationGroup, forKey: "cornerRadius")
+    }
+
+    @objc override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
+        drawInner()
+        drawEdge()
+        self.backgroundColor = UIColor.clear
+    }
+
+    private func cornerRadius(recording: Bool) -> CGFloat {
+        if recording {
+            return 10.0
+        } else {
+            return (self.bounds.height - circleStroke * 4.0) * 0.5
+        }
     }
 }
