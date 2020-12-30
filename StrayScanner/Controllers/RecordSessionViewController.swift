@@ -10,18 +10,7 @@ import Foundation
 import UIKit
 import Metal
 import ARKit
-
-let vertexData: [Float] = [
-    -1.0, -1.0, 1.0, 1.0,
-     1.0, -1.0, 1.0, 0.0,
-    -1.0,  1.0, 0.0, 1.0,
-     1.0,  1.0, 0.0, 0.0
-]
-
-let vertexIndices: [UInt16] = [
-    0, 3, 1,
-    0, 2, 3,
-]
+import CoreData
 
 class MetalView : UIView {
     override class var layerClass: AnyClass {
@@ -36,16 +25,22 @@ class MetalView : UIView {
 
 class RecordSessionViewController : UIViewController, ARSessionDelegate {
     private var timer: CADisplayLink!
+    private var arConfiguration: ARConfiguration?
     private let session = ARSession()
     private var renderer: CameraRenderer?
     private var updateLabelTimer: Timer?
     private var startedRecording: Date?
+    private var dataContext: NSManagedObjectContext!
+    private var videoEncoder: VideoEncoder?
+    private var videoId: UUID?
     @IBOutlet private var rgbView: MetalView!
     @IBOutlet private var depthView: MetalView!
     @IBOutlet private var recordButton: RecordButton!
     @IBOutlet private var timeLabel: UILabel!
 
     override func viewDidLoad() {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        self.dataContext = appDelegate.persistentContainer.newBackgroundContext()
         self.renderer = CameraRenderer(rgbLayer: rgbView.layer, depthLayer: depthView.layer)
 
         depthView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(viewTapped)))
@@ -79,17 +74,18 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     }
 
     private func startSession() {
-        let arConfiguration = ARWorldTrackingConfiguration()
+        let config = ARWorldTrackingConfiguration()
+        arConfiguration = config
         if !ARWorldTrackingConfiguration.isSupported || !ARWorldTrackingConfiguration.supportsFrameSemantics(.sceneDepth) {
             print("AR is not supported.")
         } else {
-            arConfiguration.frameSemantics.insert(.sceneDepth)
-            session.run(arConfiguration)
+            config.frameSemantics.insert(.sceneDepth)
+            session.run(config)
         }
     }
 
     private func toggleRecording() {
-        if startedRecording == nil {
+        if self.startedRecording == nil {
             startRecording()
         } else {
             stopRecording()
@@ -97,17 +93,38 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     }
 
     private func startRecording() {
-        startedRecording = Date()
+        self.startedRecording = Date()
         updateTime()
         updateLabelTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             self.updateTime()
         }
+        videoId = UUID()
+        let width = arConfiguration!.videoFormat.imageResolution.width
+        let height = arConfiguration!.videoFormat.imageResolution.height
+        videoEncoder = VideoEncoder(recordStart: self.startedRecording!, videoId: videoId!, width: width, height: height)
     }
 
     private func stopRecording() {
-        startedRecording = nil
-        updateLabelTimer?.invalidate()
-        updateLabelTimer = nil
+        if let started = startedRecording {
+            let duration = Date().timeIntervalSince(started)
+            let entity = NSEntityDescription.entity(forEntityName: "Recording", in: self.dataContext)!
+            let recording: Recording = Recording(entity: entity, insertInto: self.dataContext)
+            recording.id = videoId!
+            recording.duration = duration
+            recording.createdAt = started
+            recording.name = "Placeholder"
+            recording.rgbFilePath = videoEncoder?.filePath
+            do {
+                try self.dataContext.save()
+            } catch let error as NSError {
+                print("Could not save recording. \(error), \(error.userInfo)")
+            }
+            startedRecording = nil
+            updateLabelTimer?.invalidate()
+            updateLabelTimer = nil
+        } else {
+            print("Hasn't started recording. Something is wrong.")
+        }
     }
 
     private func updateTime() {

@@ -7,23 +7,59 @@
 //
 
 import SwiftUI
+import CoreData
+
+class SessionListViewModel: ObservableObject {
+    private var dataContext: NSManagedObjectContext?
+    @Published var sessions: [Recording] = []
+
+    init() {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        dataContext = appDelegate.persistentContainer.viewContext
+        self.sessions = []
+    }
+
+    func fetchSessions() {
+        let request = NSFetchRequest<NSManagedObject>(entityName: "Recording")
+        do {
+            let fetched: [NSManagedObject] = try dataContext?.fetch(request) ?? []
+            sessions = fetched.map { session in
+                return session as! Recording
+            }
+
+        } catch let error as NSError {
+            print("Something went wrong. Error: \(error), \(error.userInfo)")
+        }
+    }
+
+}
 
 struct SessionList: View {
+    @ObservedObject var viewModel = SessionListViewModel()
+
     init() {
         UITableView.appearance().backgroundColor = UIColor(named: "BackgroundColor")
-
     }
+
     var body: some View {
         NavigationView {
             ZStack {
                 Color("BackgroundColor")
                     .edgesIgnoringSafeArea(.all)
-                VStack(alignment: .leading) {
-                    List(sessionData) { session in
-                        SessionRow(session: session)
-                    }
                     .navigationBarTitle("Recordings")
                     .edgesIgnoringSafeArea(.all)
+                VStack(alignment: .leading) {
+                    if viewModel.sessions.isEmpty {
+                        Text("No recorded sessions. Record one, and it will appear here.")
+                            .font(.body)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 50.0)
+
+                    } else {
+                        List(viewModel.sessions) { session in
+                            SessionRow(session: session)
+                        }
+                    }
                     HStack {
                         Spacer()
                         NavigationLink(destination: NewSessionView(), label: {
@@ -38,6 +74,9 @@ struct SessionList: View {
                         Spacer()
                     }
                 }
+            }
+            .onAppear {
+                viewModel.fetchSessions()
             }
         }
     }

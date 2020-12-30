@@ -10,6 +10,13 @@ import Foundation
 import Metal
 import ARKit
 
+let vertexData: [Float] = [
+    -1.0, -1.0, 1.0, 1.0,
+     1.0, -1.0, 1.0, 0.0,
+    -1.0,  1.0, 0.0, 1.0,
+     1.0,  1.0, 0.0, 0.0
+]
+
 enum RenderMode {
     case depth
     case rgb

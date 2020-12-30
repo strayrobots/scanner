@@ -36,7 +36,7 @@
                 <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00:00:00" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CWu-F8-lfZ">
                     <rect key="frame" x="208" y="616" width="166" height="41"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="24"/>
+                    <fontDescription key="fontDescription" name="CourierNewPSMT" family="Courier New" pointSize="24"/>
                     <color key="textColor" name="LightGrey"/>
                     <nil key="highlightedColor"/>
                 </label>

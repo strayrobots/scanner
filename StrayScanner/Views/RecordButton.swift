@@ -90,7 +90,6 @@ class RecordButton : UIView {
     }
 
     private func animateToRecording() {
-        print("cornerRadius: \(disk.cornerRadius)")
         let squaringAnimation = CABasicAnimation(keyPath: "cornerRadius")
         squaringAnimation.fromValue = cornerRadius(recording: false)
         squaringAnimation.toValue = cornerRadius(recording: true)
@@ -112,7 +111,6 @@ class RecordButton : UIView {
     }
 
     private func animateToIdle() {
-        print("cornerRadius: \(disk.cornerRadius)")
         let roundingAnimation = CABasicAnimation(keyPath: "cornerRadius")
         roundingAnimation.fromValue = cornerRadius(recording: true)
         roundingAnimation.toValue = cornerRadius(recording: false)

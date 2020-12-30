@@ -8,11 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		24B9204E08E8610D3CB4F2CB /* Pods_StrayScanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBC054EDDA47FB8A717AA671 /* Pods_StrayScanner.framework */; };
-		38045D522561A4FD0004F23C /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38045D512561A4FD0004F23C /* Session.swift */; };
-		38045D552561A5940004F23C /* Sessions.json in Resources */ = {isa = PBXBuildFile; fileRef = 38045D542561A5940004F23C /* Sessions.json */; };
 		38045D582561A7370004F23C /* SessionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38045D572561A7370004F23C /* SessionRow.swift */; };
 		38045D5A2561AC000004F23C /* SessionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38045D592561AC000004F23C /* SessionList.swift */; };
-		38045D5C2561AC620004F23C /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38045D5B2561AC620004F23C /* Data.swift */; };
 		380B9189259B39E300580D30 /* RecordSessionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 380B9188259B39E300580D30 /* RecordSessionView.xib */; };
 		385999BD25616F2B00F3F681 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385999BC25616F2B00F3F681 /* AppDelegate.swift */; };
 		385999BF25616F2B00F3F681 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385999BE25616F2B00F3F681 /* SceneDelegate.swift */; };
@@ -24,6 +21,9 @@
 		386E277825991163007D023B /* RecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386E277725991163007D023B /* RecordButton.swift */; };
 		3872B88925962BBA00A3370C /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3872B88825962BBA00A3370C /* Colors.xcassets */; };
 		38B54AEA258FB066009506AF /* CameraRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B54AE9258FB066009506AF /* CameraRenderer.swift */; };
+		38C17B12259BE1DA006B3FDA /* Recording+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C17B10259BE1DA006B3FDA /* Recording+CoreDataClass.swift */; };
+		38C17B13259BE1DA006B3FDA /* Recording+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C17B11259BE1DA006B3FDA /* Recording+CoreDataProperties.swift */; };
+		38C17B1B259CEF0E006B3FDA /* VideoEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C17B1A259CEF0E006B3FDA /* VideoEncoder.swift */; };
 		38E969CB2572608E00054CC4 /* NewSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E969CA2572608E00054CC4 /* NewSession.swift */; };
 		38FB730F2572A9FA007D9CB0 /* RecordSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38FB730E2572A9FA007D9CB0 /* RecordSessionViewController.swift */; };
 		38FB73162572AF63007D9CB0 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 38FB73152572AF63007D9CB0 /* Shaders.metal */; };
@@ -41,11 +41,8 @@
 
 /* Begin PBXFileReference section */
 		09A6D95A8151C51C3ECF4131 /* Pods-StrayScanner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrayScanner.release.xcconfig"; path = "Target Support Files/Pods-StrayScanner/Pods-StrayScanner.release.xcconfig"; sourceTree = "<group>"; };
-		38045D512561A4FD0004F23C /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
-		38045D542561A5940004F23C /* Sessions.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Sessions.json; sourceTree = "<group>"; };
 		38045D572561A7370004F23C /* SessionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRow.swift; sourceTree = "<group>"; };
 		38045D592561AC000004F23C /* SessionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionList.swift; sourceTree = "<group>"; };
-		38045D5B2561AC620004F23C /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		380B9188259B39E300580D30 /* RecordSessionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecordSessionView.xib; sourceTree = "<group>"; };
 		385999B925616F2B00F3F681 /* StrayScanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StrayScanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		385999BC25616F2B00F3F681 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -61,6 +58,9 @@
 		386E277725991163007D023B /* RecordButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordButton.swift; sourceTree = "<group>"; };
 		3872B88825962BBA00A3370C /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		38B54AE9258FB066009506AF /* CameraRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraRenderer.swift; sourceTree = "<group>"; };
+		38C17B10259BE1DA006B3FDA /* Recording+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Recording+CoreDataClass.swift"; sourceTree = "<group>"; };
+		38C17B11259BE1DA006B3FDA /* Recording+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Recording+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		38C17B1A259CEF0E006B3FDA /* VideoEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoEncoder.swift; sourceTree = "<group>"; };
 		38E969CA2572608E00054CC4 /* NewSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSession.swift; sourceTree = "<group>"; };
 		38FB730E2572A9FA007D9CB0 /* RecordSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordSessionViewController.swift; sourceTree = "<group>"; };
 		38FB73152572AF63007D9CB0 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
@@ -101,8 +101,8 @@
 		38045D502561A4C80004F23C /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				38045D512561A4FD0004F23C /* Session.swift */,
-				38045D5B2561AC620004F23C /* Data.swift */,
+				38C17B10259BE1DA006B3FDA /* Recording+CoreDataClass.swift */,
+				38C17B11259BE1DA006B3FDA /* Recording+CoreDataProperties.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -110,8 +110,6 @@
 		38045D532561A55A0004F23C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				380B9188259B39E300580D30 /* RecordSessionView.xib */,
-				38045D542561A5940004F23C /* Sessions.json */,
 				3872B88825962BBA00A3370C /* Colors.xcassets */,
 			);
 			path = Resources;
@@ -123,7 +121,6 @@
 				38045D572561A7370004F23C /* SessionRow.swift */,
 				38045D592561AC000004F23C /* SessionList.swift */,
 				38E969CA2572608E00054CC4 /* NewSession.swift */,
-				38B54AE9258FB066009506AF /* CameraRenderer.swift */,
 				386E277725991163007D023B /* RecordButton.swift */,
 			);
 			path = Views;
@@ -153,6 +150,8 @@
 		385999BB25616F2B00F3F681 /* StrayScanner */ = {
 			isa = PBXGroup;
 			children = (
+				38C17B19259CEEF5006B3FDA /* Helpers */,
+				38C17AE4259BCD16006B3FDA /* UI */,
 				38FB73142572AF50007D9CB0 /* Shaders */,
 				38FB730D2572A91D007D9CB0 /* Controllers */,
 				38045D562561A6D20004F23C /* Views */,
@@ -161,7 +160,6 @@
 				385999BC25616F2B00F3F681 /* AppDelegate.swift */,
 				385999BE25616F2B00F3F681 /* SceneDelegate.swift */,
 				385999C525616F3000F3F681 /* Assets.xcassets */,
-				385999CA25616F3000F3F681 /* LaunchScreen.storyboard */,
 				385999CD25616F3000F3F681 /* Info.plist */,
 				385999C025616F2B00F3F681 /* Stray_Scanner.xcdatamodeld */,
 				385999C725616F3000F3F681 /* Preview Content */,
@@ -184,6 +182,24 @@
 				385999D825616F3100F3F681 /* Info.plist */,
 			);
 			path = StrayScannerTests;
+			sourceTree = "<group>";
+		};
+		38C17AE4259BCD16006B3FDA /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				380B9188259B39E300580D30 /* RecordSessionView.xib */,
+				385999CA25616F3000F3F681 /* LaunchScreen.storyboard */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		38C17B19259CEEF5006B3FDA /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				38B54AE9258FB066009506AF /* CameraRenderer.swift */,
+				38C17B1A259CEF0E006B3FDA /* VideoEncoder.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		38FB730D2572A91D007D9CB0 /* Controllers */ = {
@@ -294,7 +310,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3872B88925962BBA00A3370C /* Colors.xcassets in Resources */,
-				38045D552561A5940004F23C /* Sessions.json in Resources */,
 				385999CC25616F3000F3F681 /* LaunchScreen.storyboard in Resources */,
 				385999C925616F3000F3F681 /* Preview Assets.xcassets in Resources */,
 				380B9189259B39E300580D30 /* RecordSessionView.xib in Resources */,
@@ -341,18 +356,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				38045D522561A4FD0004F23C /* Session.swift in Sources */,
 				38E969CB2572608E00054CC4 /* NewSession.swift in Sources */,
 				38FB730F2572A9FA007D9CB0 /* RecordSessionViewController.swift in Sources */,
 				38045D582561A7370004F23C /* SessionRow.swift in Sources */,
 				38FB73162572AF63007D9CB0 /* Shaders.metal in Sources */,
 				385999BD25616F2B00F3F681 /* AppDelegate.swift in Sources */,
+				38C17B1B259CEF0E006B3FDA /* VideoEncoder.swift in Sources */,
 				385999C225616F2B00F3F681 /* Stray_Scanner.xcdatamodeld in Sources */,
 				38045D5A2561AC000004F23C /* SessionList.swift in Sources */,
 				386E277825991163007D023B /* RecordButton.swift in Sources */,
 				385999BF25616F2B00F3F681 /* SceneDelegate.swift in Sources */,
+				38C17B13259BE1DA006B3FDA /* Recording+CoreDataProperties.swift in Sources */,
+				38C17B12259BE1DA006B3FDA /* Recording+CoreDataClass.swift in Sources */,
 				38B54AEA258FB066009506AF /* CameraRenderer.swift in Sources */,
-				38045D5C2561AC620004F23C /* Data.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,14 +9,16 @@
 import SwiftUI
 
 struct SessionRow: View {
-    var session: Session
+    var session: Recording
     var body: some View {
+        let duration = String(format: "%ds", Int(round(session.duration)))
+        let name: String = session.name ?? ""
         HStack {
             VStack(alignment: .leading) {
-                Text(session.name)
+                Text(name)
                     .multilineTextAlignment(.leading)
                     .padding(.leading, 0.0)
-                Text("\(session.length) s")
+                Text("\(duration)")
                     .font(.caption)
                     .multilineTextAlignment(.leading)
                     .padding(.leading, 0.0)
@@ -26,11 +28,3 @@ struct SessionRow: View {
     }
 }
 
-struct SessionRow_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            SessionRow(session: sessionData[0])
-        }
-        .previewLayout(.fixed(width: 300, height: 50))
-    }
-}
