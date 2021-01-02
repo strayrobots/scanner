@@ -15,7 +15,7 @@ class RecordButton : UIView {
     private let animationDuration = 0.1
     private var recording: Bool = false
     private var disk: CALayer!
-    private var callback: Optional<() -> Void> = Optional.none
+    private var callback: Optional<(Bool) -> Void> = Optional.none
 
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,14 +31,14 @@ class RecordButton : UIView {
         self.backgroundColor = UIColor.clear
     }
 
-    func setCallback(callback: @escaping () -> Void) {
+    func setCallback(callback: @escaping (Bool) -> Void) {
         self.callback = Optional.some(callback)
     }
 
     @objc func buttonPressed() {
         self.animateButton()
         self.recording = !self.recording
-        self.callback?()
+        self.callback?(self.recording)
     }
 
     private func setup() {

@@ -10,37 +10,43 @@ import Foundation
 import ARKit
 
 class VideoEncoder {
-    private var lock: NSLock = NSLock()
-    private var queue: [ARFrame?] = []
     private var rgbWriter: AVAssetWriter?
     private var rgbWriterInput: AVAssetWriterInput?
     private var rgbAdapter: AVAssetWriterInputPixelBufferAdaptor?
-    private let timeScale = CMTimeScale(60)
+    private let timeScale = CMTimeScale(600)
     private let width: CGFloat
     private let height: CGFloat
+    private let systemBootedAt: TimeInterval
+    private var done: Bool = false
     public var filePath: URL
 
-    init(recordStart: Date, videoId: UUID, width: CGFloat, height: CGFloat) {
+    init(videoId: UUID, width: CGFloat, height: CGFloat) {
+        self.systemBootedAt = ProcessInfo.processInfo.systemUptime
         self.width = width
         self.height = height
         self.filePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("\(videoId.uuidString).mp4")
+        print("File exists: \(FileManager.default.fileExists(atPath: self.filePath.absoluteString))")
         initializeFile(videoId: videoId)
-        DispatchQueue.global(qos: .utility).async {
-            self.runLoop()
-        }
+    }
+
+    func finishEncoding() {
+        self.doneRecording()
     }
 
     func addFrame(frame: ARFrame) {
-        lock.lock()
-        queue.append(frame)
-        lock.unlock()
+        while !rgbWriterInput!.isReadyForMoreMediaData {
+            print("Sleeping.")
+            Thread.sleep(until: Date() + TimeInterval(0.05))
+        }
+        print("encoding frame \(frame.timestamp).")
+        encode(frame: frame)
     }
 
     private func initializeFile(videoId: UUID) {
         do {
-            rgbWriter = try AVAssetWriter(url: self.filePath, fileType: .mp4)
+            rgbWriter = try AVAssetWriter(outputURL: self.filePath, fileType: .mp4)
             let settings: [String : Any] = [
-                AVVideoCodecKey: AVVideoCodecType.hevc,
+                AVVideoCodecKey: AVVideoCodecType.h264,
                 AVVideoWidthKey: self.width,
                 AVVideoHeightKey: self.height,
                 //AVVideoQualityKey: NSNumber(1.0)
@@ -53,6 +59,8 @@ class VideoEncoder {
             if rgbWriter!.canAdd(input) {
                 rgbWriter!.add(input)
                 rgbWriterInput = input
+                rgbWriter!.startWriting()
+                rgbWriter!.startSession(atSourceTime: .zero)
             } else {
                 print("Can't create writer.")
             }
@@ -61,34 +69,15 @@ class VideoEncoder {
         }
     }
 
-    private func runLoop() {
-        if rgbWriterInput == nil { return }
-        while true {
-            if !rgbWriterInput!.isReadyForMoreMediaData || !lock.try() {
-                Thread.sleep(until: Date() + TimeInterval(0.05))
-            } else {
-                let frame = queue.removeFirst()
-                lock.unlock()
-                if frame == nil {
-                    // Poison pill. We are done. Close up the session.
-                    doneRecording()
-                    return
-                } else {
-                    self.encode(frame: frame!)
-                }
-            }
-        }
-    }
-
     private func encode(frame: ARFrame) {
         let image: CVPixelBuffer = frame.capturedImage
-        let time = CMTime(seconds: frame.timestamp, preferredTimescale: timeScale)
-        rgbAdapter?.append(image, withPresentationTime: time)
+        let time = CMTime(seconds: frame.timestamp - self.systemBootedAt, preferredTimescale: timeScale)
+        rgbAdapter!.append(image, withPresentationTime: time)
     }
 
     private func doneRecording() {
         if rgbWriter?.status == .failed {
-            print("Something went wrong writing video.")
+            print("Something went wrong when writing video.")
         } else {
             rgbWriterInput?.markAsFinished()
             rgbWriter?.finishWriting { [weak self] in

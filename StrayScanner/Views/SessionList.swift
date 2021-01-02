@@ -45,20 +45,31 @@ struct SessionList: View {
         NavigationView {
             ZStack {
                 Color("BackgroundColor")
-                    .edgesIgnoringSafeArea(.all)
-                    .navigationBarTitle("Recordings")
+                    .navigationBarHidden(true)
                     .edgesIgnoringSafeArea(.all)
                 VStack(alignment: .leading) {
+                    Text("Recordings")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.center)
+                        .padding([.top, .leading], 15.0)
+
                     if viewModel.sessions.isEmpty {
+                        Spacer()
                         Text("No recorded sessions. Record one, and it will appear here.")
                             .font(.body)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 50.0)
-
                     } else {
-                        List(viewModel.sessions) { session in
-                            SessionRow(session: session)
+                        List {
+                            ForEach(Array(viewModel.sessions.enumerated()), id: \.element) { i, recording in
+                                NavigationLink(destination: SessionDetailView(recording: recording)) {
+                                    SessionRow(session: recording)
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                            }
                         }
+                        Spacer()
                     }
                     HStack {
                         Spacer()
@@ -71,6 +82,9 @@ struct SessionList: View {
                                 .cornerRadius(50)
                                 .padding(25)
                         })
+                        Spacer()
+                    }
+                    if (viewModel.sessions.isEmpty) {
                         Spacer()
                     }
                 }

@@ -24,7 +24,6 @@ class MetalView : UIView {
 }
 
 class RecordSessionViewController : UIViewController, ARSessionDelegate {
-    private var timer: CADisplayLink!
     private var arConfiguration: ARConfiguration?
     private let session = ARSession()
     private var renderer: CameraRenderer?
@@ -49,11 +48,8 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         setViewProperties()
         session.delegate = self
 
-        timer = CADisplayLink(target: self, selector: #selector(renderLoop))
-        timer.add(to: RunLoop.main, forMode: .default)
-
-        recordButton.setCallback {
-            self.toggleRecording()
+        recordButton.setCallback { (recording: Bool) in
+            self.toggleRecording(recording)
         }
     }
 
@@ -67,6 +63,7 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
 
     override func viewWillDisappear(_ animated: Bool) {
         updateLabelTimer?.invalidate()
+        videoEncoder = nil
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -84,11 +81,13 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         }
     }
 
-    private func toggleRecording() {
-        if self.startedRecording == nil {
+    private func toggleRecording(_ recording: Bool) {
+        if recording && self.startedRecording == nil {
             startRecording()
-        } else {
+        } else if self.startedRecording != nil && !recording {
             stopRecording()
+        } else {
+            print("This should not happen. We are either not recording and want to stop, or we are recording and want to start.")
         }
     }
 
@@ -101,10 +100,11 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         videoId = UUID()
         let width = arConfiguration!.videoFormat.imageResolution.width
         let height = arConfiguration!.videoFormat.imageResolution.height
-        videoEncoder = VideoEncoder(recordStart: self.startedRecording!, videoId: videoId!, width: width, height: height)
+        videoEncoder = VideoEncoder(videoId: videoId!, width: width, height: height)
     }
 
     private func stopRecording() {
+        videoEncoder?.finishEncoding()
         if let started = startedRecording {
             let duration = Date().timeIntervalSince(started)
             let entity = NSEntityDescription.entity(forEntityName: "Recording", in: self.dataContext)!
@@ -149,12 +149,17 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         }
     }
 
-    @objc func renderLoop() {
-        autoreleasepool {
-            guard let frame = session.currentFrame else { return }
-            self.renderer!.render(frame: frame)
+    func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        self.renderer!.render(frame: frame)
+        if startedRecording != nil {
+            if let encoder = videoEncoder {
+                encoder.addFrame(frame: frame)
+            } else {
+                print("There is no video encoder. That can't be good.")
+            }
         }
     }
+
     private func setViewProperties() {
         self.view.backgroundColor = UIColor(named: "DarkGrey")
     }
