@@ -20,6 +20,7 @@
 		385999D725616F3100F3F681 /* Stray_ScannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385999D625616F3100F3F681 /* Stray_ScannerTests.swift */; };
 		386E277825991163007D023B /* RecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386E277725991163007D023B /* RecordButton.swift */; };
 		3872B88925962BBA00A3370C /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3872B88825962BBA00A3370C /* Colors.xcassets */; };
+		38AE645C25A08286007E4EC0 /* DatasetEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AE645B25A08286007E4EC0 /* DatasetEncoder.swift */; };
 		38B54AEA258FB066009506AF /* CameraRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B54AE9258FB066009506AF /* CameraRenderer.swift */; };
 		38C17B12259BE1DA006B3FDA /* Recording+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C17B10259BE1DA006B3FDA /* Recording+CoreDataClass.swift */; };
 		38C17B13259BE1DA006B3FDA /* Recording+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C17B11259BE1DA006B3FDA /* Recording+CoreDataProperties.swift */; };
@@ -58,6 +59,7 @@
 		385999D825616F3100F3F681 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		386E277725991163007D023B /* RecordButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordButton.swift; sourceTree = "<group>"; };
 		3872B88825962BBA00A3370C /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
+		38AE645B25A08286007E4EC0 /* DatasetEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatasetEncoder.swift; sourceTree = "<group>"; };
 		38B54AE9258FB066009506AF /* CameraRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraRenderer.swift; sourceTree = "<group>"; };
 		38C17B10259BE1DA006B3FDA /* Recording+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Recording+CoreDataClass.swift"; sourceTree = "<group>"; };
 		38C17B11259BE1DA006B3FDA /* Recording+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Recording+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -201,6 +203,7 @@
 			children = (
 				38B54AE9258FB066009506AF /* CameraRenderer.swift */,
 				38C17B1A259CEF0E006B3FDA /* VideoEncoder.swift */,
+				38AE645B25A08286007E4EC0 /* DatasetEncoder.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -372,6 +375,7 @@
 				385999BF25616F2B00F3F681 /* SceneDelegate.swift in Sources */,
 				38C17B13259BE1DA006B3FDA /* Recording+CoreDataProperties.swift in Sources */,
 				38C17B12259BE1DA006B3FDA /* Recording+CoreDataClass.swift in Sources */,
+				38AE645C25A08286007E4EC0 /* DatasetEncoder.swift in Sources */,
 				38B54AEA258FB066009506AF /* CameraRenderer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -529,6 +533,7 @@
 			baseConfigurationReference = AC52749A3B5AED09C9753120 /* Pods-StrayScanner.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"StrayScanner/Preview Content\"";
 				DEVELOPMENT_TEAM = 2QREBG9C6Y;
@@ -541,6 +546,7 @@
 				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "dev.keke.Stray-Scanner";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = StrayScanner/BridgeHeader.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -552,6 +558,7 @@
 			baseConfigurationReference = 09A6D95A8151C51C3ECF4131 /* Pods-StrayScanner.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"StrayScanner/Preview Content\"";
 				DEVELOPMENT_TEAM = 2QREBG9C6Y;
@@ -564,6 +571,7 @@
 				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "dev.keke.Stray-Scanner";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = StrayScanner/BridgeHeader.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

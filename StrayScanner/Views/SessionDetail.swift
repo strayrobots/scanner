@@ -34,15 +34,35 @@ struct SessionDetailView: View {
     var recording: Recording
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
 
-    let defaultUrl = URL(fileURLWithPath: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")
+    let defaultUrl = URL(fileURLWithPath: "")
 
     var body: some View {
+        ZStack {
+        Color("BackgroundColor")
+            .edgesIgnoringSafeArea(.all)
         VStack {
-            Text(recording.name ?? "Untitled")
-            VideoPlayer(player: AVPlayer(url: recording.rgbFilePath ?? defaultUrl))
+            let player = AVPlayer(url: recording.absoluteRgbPath() ?? defaultUrl)
+            let depthPlayer = AVPlayer(url: recording.absoluteDepthPath() ?? defaultUrl)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(alignment: .top, spacing: 0) {
+                    VideoPlayer(player: player)
+                        .frame(width: 390, height: 520)
+                        .padding(.horizontal, 0.0)
+                    VideoPlayer(player: depthPlayer)
+                        .frame(width: 390, height: 520)
+                        .padding(.horizontal, 0.0)
+                } .onAppear {
+            }
+
+            }
+            .padding(.horizontal)
+            .frame(width: 390.0, height: 520.0)
             Button(action: deleteItem) {
                 Text("Delete").foregroundColor(Color("DangerColor"))
             }
+        }
+        .navigationBarTitle(recording.name ?? "Untitled")
+        .background(Color("BackgroundColor"))
         }
     }
 

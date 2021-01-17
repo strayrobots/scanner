@@ -14,8 +14,8 @@ import CoreData
 public class Recording: NSManagedObject {
 
     func deleteFiles() {
-        deleteFile(self.rgbFilePath)
-        deleteFile(self.depthFilePath)
+        deleteFile(self.absoluteRgbPath())
+        deleteFile(self.absoluteDepthPath())
 
     }
 
@@ -24,6 +24,7 @@ public class Recording: NSManagedObject {
             if FileManager.default.fileExists(atPath: filePath.absoluteString) {
                 do {
                     try FileManager.default.removeItem(atPath: filePath.absoluteString)
+                    print("Deleted file \(filePath.absoluteString)")
                 } catch let error as NSError {
                     print("Could not delete file \(filePath.absoluteString). \(error), \(error.userInfo)")
                 }

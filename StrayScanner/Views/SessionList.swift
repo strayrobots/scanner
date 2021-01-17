@@ -42,56 +42,63 @@ struct SessionList: View {
     }
 
     var body: some View {
+        ZStack {
+        Color.black
+        .ignoresSafeArea()
         NavigationView {
-            ZStack {
-                Color("BackgroundColor")
-                    .navigationBarHidden(true)
-                    .edgesIgnoringSafeArea(.all)
-                VStack(alignment: .leading) {
-                    Text("Recordings")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .multilineTextAlignment(.center)
-                        .padding([.top, .leading], 15.0)
+            VStack(alignment: .leading) {
+                Text("Recordings")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .multilineTextAlignment(.center)
+                    .padding([.top, .leading], 15.0)
 
-                    if viewModel.sessions.isEmpty {
-                        Spacer()
-                        Text("No recorded sessions. Record one, and it will appear here.")
-                            .font(.body)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, 50.0)
-                    } else {
-                        List {
-                            ForEach(Array(viewModel.sessions.enumerated()), id: \.element) { i, recording in
-                                NavigationLink(destination: SessionDetailView(recording: recording)) {
-                                    SessionRow(session: recording)
-                                }
-                                .buttonStyle(PlainButtonStyle())
+                if !viewModel.sessions.isEmpty {
+                    List {
+                        ForEach(Array(viewModel.sessions.enumerated()), id: \.element) { i, recording in
+                            NavigationLink(destination: SessionDetailView(recording: recording)) {
+                                SessionRow(session: recording)
                             }
                         }
-                        Spacer()
                     }
-                    HStack {
-                        Spacer()
-                        NavigationLink(destination: NewSessionView(), label: {
-                            Text("Record new session")
-                                .font(.title)
-                                .padding(25)
-                                .background(Color("DarkGrey"))
-                                .foregroundColor(Color.white)
-                                .cornerRadius(50)
-                                .padding(25)
-                        })
-                        Spacer()
-                    }
-                    if (viewModel.sessions.isEmpty) {
-                        Spacer()
-                    }
+                    Spacer()
+                } else {
+                    Spacer()
+                    Text("No recorded sessions. Record one, and it will appear here.")
+                        .font(.body)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 50.0)
+                }
+                HStack {
+                    Spacer()
+                    NavigationLink(destination: NewSessionView(), label: {
+                        Text("Record new session")
+                            .font(.title)
+                            .padding(25)
+                            .background(Color("DarkGrey"))
+                            .foregroundColor(Color.white)
+                            .cornerRadius(50)
+                            .padding(25)
+                    })
+                    Spacer()
+                }
+                if (viewModel.sessions.isEmpty) {
+                    Spacer()
                 }
             }
+            .navigationBarHidden(true)
+            .background(Color("BackgroundColor").ignoresSafeArea())
             .onAppear {
-                viewModel.fetchSessions()
-            }
+                DispatchQueue.main.async {
+                    viewModel.fetchSessions()
+                }
+                FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).forEach({ url in
+                    let relative = url.relativeString
+                    print("relative url: \(relative)")
+                })
+        }
+        }
+        .background(Color("BackgroundColor").edgesIgnoringSafeArea(.all))
         }
     }
 }

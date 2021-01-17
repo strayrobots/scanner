@@ -2,11 +2,11 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="19H2" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Recording" representedClassName="Recording" syncable="YES" coreSpotlightDisplayNameExpression="Scan">
         <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="depthFilePath" optional="YES" attributeType="URI"/>
+        <attribute name="depthFilePath" optional="YES" attributeType="String"/>
         <attribute name="duration" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" attributeType="String" spotlightIndexingEnabled="YES"/>
-        <attribute name="rgbFilePath" optional="YES" attributeType="URI"/>
+        <attribute name="rgbFilePath" optional="YES" attributeType="String"/>
     </entity>
     <elements>
         <element name="Recording" positionX="-63" positionY="-18" width="128" height="133"/>

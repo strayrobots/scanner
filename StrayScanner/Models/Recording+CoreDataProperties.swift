@@ -21,9 +21,27 @@ extension Recording {
     @NSManaged public var duration: Double
     @NSManaged public var name: String?
     @NSManaged public var id: UUID?
-    @NSManaged public var rgbFilePath: URL?
-    @NSManaged public var depthFilePath: URL?
+    @NSManaged public var rgbFilePath: String?
+    @NSManaged public var depthFilePath: String?
 
+
+    func absoluteRgbPath() -> URL? {
+        if let path = self.rgbFilePath {
+            return URL(fileURLWithPath: path, relativeTo: pathsRelativeTo())
+        }
+        return Optional.none
+    }
+
+    func absoluteDepthPath() -> URL? {
+        if let path = self.depthFilePath {
+            return URL(fileURLWithPath: path, relativeTo: pathsRelativeTo())
+        }
+        return Optional.none
+    }
+
+    private func pathsRelativeTo() -> URL {
+        return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    }
 }
 
 extension Recording : Identifiable {

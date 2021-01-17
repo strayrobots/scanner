@@ -9,42 +9,53 @@
 import Foundation
 import ARKit
 
+struct VideoEncoderInput {
+    let buffer: CVPixelBuffer
+    let time: TimeInterval // Relative to boot time.
+}
+
 class VideoEncoder {
-    private var rgbWriter: AVAssetWriter?
-    private var rgbWriterInput: AVAssetWriterInput?
-    private var rgbAdapter: AVAssetWriterInputPixelBufferAdaptor?
+    enum EncodingStatus {
+        case allGood
+        case error
+    }
+    
+    private var videoWriter: AVAssetWriter?
+    private var videoWriterInput: AVAssetWriterInput?
+    private var videoAdapter: AVAssetWriterInputPixelBufferAdaptor?
     private let timeScale = CMTimeScale(600)
-    private let width: CGFloat
-    private let height: CGFloat
+    public let width: CGFloat
+    public let height: CGFloat
     private let systemBootedAt: TimeInterval
     private var done: Bool = false
+    private let depth: Bool
     public var filePath: URL
+    public var status: EncodingStatus = EncodingStatus.allGood
 
-    init(videoId: UUID, width: CGFloat, height: CGFloat) {
+    init(file: URL, width: CGFloat, height: CGFloat, depth: Bool) {
+        self.depth = depth
         self.systemBootedAt = ProcessInfo.processInfo.systemUptime
+        self.filePath = file
         self.width = width
         self.height = height
-        self.filePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("\(videoId.uuidString).mp4")
-        print("File exists: \(FileManager.default.fileExists(atPath: self.filePath.absoluteString))")
-        initializeFile(videoId: videoId)
+        initializeFile()
     }
 
     func finishEncoding() {
         self.doneRecording()
     }
 
-    func addFrame(frame: ARFrame) {
-        while !rgbWriterInput!.isReadyForMoreMediaData {
+    func addFrame(frame: VideoEncoderInput) {
+        while !videoWriterInput!.isReadyForMoreMediaData {
             print("Sleeping.")
-            Thread.sleep(until: Date() + TimeInterval(0.05))
+            Thread.sleep(until: Date() + TimeInterval(0.01))
         }
-        print("encoding frame \(frame.timestamp).")
         encode(frame: frame)
     }
 
-    private func initializeFile(videoId: UUID) {
+    private func initializeFile() {
         do {
-            rgbWriter = try AVAssetWriter(outputURL: self.filePath, fileType: .mp4)
+            videoWriter = try AVAssetWriter(outputURL: self.filePath, fileType: .mp4)
             let settings: [String : Any] = [
                 AVVideoCodecKey: AVVideoCodecType.h264,
                 AVVideoWidthKey: self.width,
@@ -55,12 +66,12 @@ class VideoEncoder {
             input.expectsMediaDataInRealTime = true
             input.mediaTimeScale = timeScale
             input.transform = CGAffineTransform(rotationAngle: .pi/2) // Portrait mode.
-            rgbAdapter = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: input, sourcePixelBufferAttributes: nil)
-            if rgbWriter!.canAdd(input) {
-                rgbWriter!.add(input)
-                rgbWriterInput = input
-                rgbWriter!.startWriting()
-                rgbWriter!.startSession(atSourceTime: .zero)
+            videoAdapter = createVideoAdapter(input)
+            if videoWriter!.canAdd(input) {
+                videoWriter!.add(input)
+                videoWriterInput = input
+                videoWriter!.startWriting()
+                videoWriter!.startSession(atSourceTime: .zero)
             } else {
                 print("Can't create writer.")
             }
@@ -69,22 +80,39 @@ class VideoEncoder {
         }
     }
 
-    private func encode(frame: ARFrame) {
-        let image: CVPixelBuffer = frame.capturedImage
-        let time = CMTime(seconds: frame.timestamp - self.systemBootedAt, preferredTimescale: timeScale)
-        rgbAdapter!.append(image, withPresentationTime: time)
+    private func encode(frame: VideoEncoderInput) {
+        let image: CVPixelBuffer = frame.buffer
+        let time = CMTime(seconds: frame.time - self.systemBootedAt, preferredTimescale: timeScale)
+        print("Time: \(frame.time)")
+        let success = videoAdapter!.append(image, withPresentationTime: time)
+        if !success {
+            print("Pixel buffer could not be appended. \(videoWriter!.error!.localizedDescription)")
+        }
     }
 
     private func doneRecording() {
-        if rgbWriter?.status == .failed {
-            print("Something went wrong when writing video.")
+        if videoWriter?.status == .failed {
+            let error = videoWriter!.error
+            print("Something went wrong when writing video. \(error!.localizedDescription)")
+            self.status = .error
         } else {
-            rgbWriterInput?.markAsFinished()
-            rgbWriter?.finishWriting { [weak self] in
-                self?.rgbWriter = nil
-                self?.rgbWriterInput = nil
-                self?.rgbAdapter = nil
+            videoWriterInput?.markAsFinished()
+            videoWriter?.finishWriting { [weak self] in
+                self?.videoWriter = nil
+                self?.videoWriterInput = nil
+                self?.videoAdapter = nil
             }
+        }
+    }
+
+    private func createVideoAdapter(_ input: AVAssetWriterInput) -> AVAssetWriterInputPixelBufferAdaptor {
+        if self.depth {
+            let attributes: [String : Any] = [String(kCVPixelBufferPixelFormatTypeKey) : Int(kCVPixelFormatType_32ARGB),
+                String(kCVPixelBufferWidthKey) : Float(width),
+                String(kCVPixelBufferHeightKey) : Float(height)]
+            return AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: input, sourcePixelBufferAttributes: attributes)
+        } else {
+            return AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: input, sourcePixelBufferAttributes: nil)
         }
     }
 }

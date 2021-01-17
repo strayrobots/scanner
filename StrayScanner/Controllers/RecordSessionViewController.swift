@@ -24,14 +24,13 @@ class MetalView : UIView {
 }
 
 class RecordSessionViewController : UIViewController, ARSessionDelegate {
-    private var arConfiguration: ARConfiguration?
+    private var arConfiguration: ARWorldTrackingConfiguration?
     private let session = ARSession()
     private var renderer: CameraRenderer?
     private var updateLabelTimer: Timer?
     private var startedRecording: Date?
     private var dataContext: NSManagedObjectContext!
-    private var videoEncoder: VideoEncoder?
-    private var videoId: UUID?
+    private var datasetEncoder: DatasetEncoder?
     @IBOutlet private var rgbView: MetalView!
     @IBOutlet private var depthView: MetalView!
     @IBOutlet private var recordButton: RecordButton!
@@ -63,7 +62,7 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
 
     override func viewWillDisappear(_ animated: Bool) {
         updateLabelTimer?.invalidate()
-        videoEncoder = nil
+        datasetEncoder = nil
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -97,34 +96,57 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         updateLabelTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             self.updateTime()
         }
-        videoId = UUID()
-        let width = arConfiguration!.videoFormat.imageResolution.width
-        let height = arConfiguration!.videoFormat.imageResolution.height
-        videoEncoder = VideoEncoder(videoId: videoId!, width: width, height: height)
+        datasetEncoder = DatasetEncoder(arConfiguration: arConfiguration!)
     }
 
     private func stopRecording() {
-        videoEncoder?.finishEncoding()
-        if let started = startedRecording {
-            let duration = Date().timeIntervalSince(started)
-            let entity = NSEntityDescription.entity(forEntityName: "Recording", in: self.dataContext)!
-            let recording: Recording = Recording(entity: entity, insertInto: self.dataContext)
-            recording.id = videoId!
-            recording.duration = duration
-            recording.createdAt = started
-            recording.name = "Placeholder"
-            recording.rgbFilePath = videoEncoder?.filePath
-            do {
-                try self.dataContext.save()
-            } catch let error as NSError {
-                print("Could not save recording. \(error), \(error.userInfo)")
-            }
-            startedRecording = nil
-            updateLabelTimer?.invalidate()
-            updateLabelTimer = nil
-        } else {
+        guard let started = self.startedRecording else {
             print("Hasn't started recording. Something is wrong.")
+            return
         }
+        startedRecording = nil
+        updateLabelTimer?.invalidate()
+        updateLabelTimer = nil
+        datasetEncoder?.wrapUp()
+        if let encoder = datasetEncoder {
+            switch encoder.status {
+                case .allGood:
+                    saveRecording(started, encoder)
+                case .videoEncodingError:
+                    showError()
+                case .directoryCreationError:
+                    showError()
+            }
+        } else {
+            print("No dataset encoder. Something is wrong.")
+        }
+    }
+
+    private func saveRecording(_ started: Date, _ encoder: DatasetEncoder) {
+        let duration = Date().timeIntervalSince(started)
+        let entity = NSEntityDescription.entity(forEntityName: "Recording", in: self.dataContext)!
+        let recording: Recording = Recording(entity: entity, insertInto: self.dataContext)
+        recording.setValue(datasetEncoder!.id, forKey: "id")
+        recording.setValue(duration, forKey: "duration")
+        recording.setValue(started, forKey: "createdAt")
+        recording.setValue("Placeholder", forKey: "name")
+        recording.setValue(datasetEncoder!.rgbFilePath.relativeString, forKey: "rgbFilePath")
+        recording.setValue(datasetEncoder!.depthFilePath.relativeString, forKey: "depthFilePath")
+        do {
+            try self.dataContext.save()
+        } catch let error as NSError {
+            print("Could not save recording. \(error), \(error.userInfo)")
+        }
+    }
+
+    private func showError() {
+        let controller = UIAlertController(title: "Error",
+            message: "Something went wrong when encoding video. This should not have happened. You might want to file a bug report.",
+            preferredStyle: .alert)
+        controller.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default Action"), style: .default, handler: { _ in
+            self.dismiss(animated: true, completion: nil)
+        }))
+        self.present(controller, animated: true, completion: nil)
     }
 
     private func updateTime() {
@@ -152,7 +174,7 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         self.renderer!.render(frame: frame)
         if startedRecording != nil {
-            if let encoder = videoEncoder {
+            if let encoder = datasetEncoder {
                 encoder.addFrame(frame: frame)
             } else {
                 print("There is no video encoder. That can't be good.")
