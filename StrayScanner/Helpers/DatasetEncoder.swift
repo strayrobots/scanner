@@ -76,9 +76,9 @@ class DatasetEncoder {
                 let byteArray: [UInt8] = withUnsafeBytes(of: integerValue) {
                     Array($0)
                 }
+                let indexOut = row * width * 4 + column * 4
                 for i in 0 ..< 4 {
-                    let indexOut = row * width * 4 + column * 4 + i
-                    outPixelData[indexOut] = byteArray[i]
+                    outPixelData[indexOut + i] = byteArray[i]
 
                 }
             }
@@ -104,19 +104,6 @@ class DatasetEncoder {
                 status = .videoEncodingError
                 print("Something went wrong encoding depth.")
         }
-        //DispatchQueue.main.async {
-        //    var url = FileManager.default.urls(for: .sharedPublicDirectory, in: .allDomainsMask).first!
-        //    url = url.appendingPathComponent(self.datasetDirectory.relativeString)
-        //    do {
-        //        let publicUrl = FileManager.default.urls(for: .sharedPublicDirectory, in: .allDomainsMask).first!
-        //        if !FileManager.default.fileExists(atPath: publicUrl.absoluteString) {
-        //            try FileManager.default.createDirectory(at: publicUrl, withIntermediateDirectories: true, attributes: nil)
-        //        }
-        //        try FileManager.default.moveItem(atPath: self.datasetDirectory.absoluteString, toPath: url.absoluteString)
-        //    } catch let error {
-        //        print("Error moving directory. \(error), \(error.localizedDescription)")
-        //    }
-        //}
     }
 
     static private func createDirectory(id: inout UUID) -> URL {

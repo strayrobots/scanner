@@ -17,6 +17,11 @@ class SessionListViewModel: ObservableObject {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         dataContext = appDelegate.persistentContainer.viewContext
         self.sessions = []
+        NotificationCenter.default.addObserver(self, selector: #selector(sessionsChanged), name: NSNotification.Name("sessionsChanged"), object: nil)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     func fetchSessions() {
@@ -30,6 +35,10 @@ class SessionListViewModel: ObservableObject {
         } catch let error as NSError {
             print("Something went wrong. Error: \(error), \(error.userInfo)")
         }
+    }
+
+    @objc func sessionsChanged() {
+        fetchSessions()
     }
 
 }
@@ -96,6 +105,8 @@ struct SessionList: View {
                     let relative = url.relativeString
                     print("relative url: \(relative)")
                 })
+                let delegate = UIApplication.shared.delegate as! AppDelegate
+                delegate.appDaemon?.removeDeletedEntries()
         }
         }
         .background(Color("BackgroundColor").edgesIgnoringSafeArea(.all))

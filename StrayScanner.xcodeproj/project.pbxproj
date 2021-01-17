@@ -26,6 +26,7 @@
 		38C17B13259BE1DA006B3FDA /* Recording+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C17B11259BE1DA006B3FDA /* Recording+CoreDataProperties.swift */; };
 		38C17B1B259CEF0E006B3FDA /* VideoEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C17B1A259CEF0E006B3FDA /* VideoEncoder.swift */; };
 		38C17B23259D1C80006B3FDA /* SessionDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C17B22259D1C80006B3FDA /* SessionDetail.swift */; };
+		38E054E525B4C5B900A66A48 /* AppDaemon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E054E425B4C5B900A66A48 /* AppDaemon.swift */; };
 		38E969CB2572608E00054CC4 /* NewSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E969CA2572608E00054CC4 /* NewSession.swift */; };
 		38FB730F2572A9FA007D9CB0 /* RecordSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38FB730E2572A9FA007D9CB0 /* RecordSessionViewController.swift */; };
 		38FB73162572AF63007D9CB0 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 38FB73152572AF63007D9CB0 /* Shaders.metal */; };
@@ -65,6 +66,7 @@
 		38C17B11259BE1DA006B3FDA /* Recording+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Recording+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		38C17B1A259CEF0E006B3FDA /* VideoEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoEncoder.swift; sourceTree = "<group>"; };
 		38C17B22259D1C80006B3FDA /* SessionDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionDetail.swift; sourceTree = "<group>"; };
+		38E054E425B4C5B900A66A48 /* AppDaemon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDaemon.swift; sourceTree = "<group>"; };
 		38E969CA2572608E00054CC4 /* NewSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSession.swift; sourceTree = "<group>"; };
 		38FB730E2572A9FA007D9CB0 /* RecordSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordSessionViewController.swift; sourceTree = "<group>"; };
 		38FB73152572AF63007D9CB0 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 				38B54AE9258FB066009506AF /* CameraRenderer.swift */,
 				38C17B1A259CEF0E006B3FDA /* VideoEncoder.swift */,
 				38AE645B25A08286007E4EC0 /* DatasetEncoder.swift */,
+				38E054E425B4C5B900A66A48 /* AppDaemon.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -377,6 +380,7 @@
 				38C17B12259BE1DA006B3FDA /* Recording+CoreDataClass.swift in Sources */,
 				38AE645C25A08286007E4EC0 /* DatasetEncoder.swift in Sources */,
 				38B54AEA258FB066009506AF /* CameraRenderer.swift in Sources */,
+				38E054E525B4C5B900A66A48 /* AppDaemon.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

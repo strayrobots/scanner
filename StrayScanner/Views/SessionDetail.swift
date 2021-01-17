@@ -51,9 +51,7 @@ struct SessionDetailView: View {
                     VideoPlayer(player: depthPlayer)
                         .frame(width: 390, height: 520)
                         .padding(.horizontal, 0.0)
-                } .onAppear {
-            }
-
+                }
             }
             .padding(.horizontal)
             .frame(width: 390.0, height: 520.0)
