@@ -42,19 +42,9 @@ struct SessionDetailView: View {
             .edgesIgnoringSafeArea(.all)
         VStack {
             let player = AVPlayer(url: recording.absoluteRgbPath() ?? defaultUrl)
-            let depthPlayer = AVPlayer(url: recording.absoluteDepthPath() ?? defaultUrl)
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(alignment: .top, spacing: 0) {
-                    VideoPlayer(player: player)
-                        .frame(width: 390, height: 520)
-                        .padding(.horizontal, 0.0)
-                    VideoPlayer(player: depthPlayer)
-                        .frame(width: 390, height: 520)
-                        .padding(.horizontal, 0.0)
-                }
-            }
-            .padding(.horizontal)
-            .frame(width: 390.0, height: 520.0)
+            VideoPlayer(player: player)
+                .frame(width: 390, height: 520)
+                .padding(.horizontal, 0.0)
             Button(action: deleteItem) {
                 Text("Delete").foregroundColor(Color("DangerColor"))
             }

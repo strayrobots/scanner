@@ -28,12 +28,10 @@ class VideoEncoder {
     public let height: CGFloat
     private let systemBootedAt: TimeInterval
     private var done: Bool = false
-    private let depth: Bool
     public var filePath: URL
     public var status: EncodingStatus = EncodingStatus.allGood
 
-    init(file: URL, width: CGFloat, height: CGFloat, depth: Bool) {
-        self.depth = depth
+    init(file: URL, width: CGFloat, height: CGFloat) {
         self.systemBootedAt = ProcessInfo.processInfo.systemUptime
         self.filePath = file
         self.width = width
@@ -57,10 +55,9 @@ class VideoEncoder {
         do {
             videoWriter = try AVAssetWriter(outputURL: self.filePath, fileType: .mp4)
             let settings: [String : Any] = [
-                AVVideoCodecKey: AVVideoCodecType.h264,
+                AVVideoCodecKey: AVVideoCodecType.hevc,
                 AVVideoWidthKey: self.width,
-                AVVideoHeightKey: self.height,
-                //AVVideoQualityKey: NSNumber(1.0)
+                AVVideoHeightKey: self.height
             ]
             let input = AVAssetWriterInput(mediaType: .video, outputSettings: settings)
             input.expectsMediaDataInRealTime = true
@@ -106,13 +103,6 @@ class VideoEncoder {
     }
 
     private func createVideoAdapter(_ input: AVAssetWriterInput) -> AVAssetWriterInputPixelBufferAdaptor {
-        if self.depth {
-            let attributes: [String : Any] = [String(kCVPixelBufferPixelFormatTypeKey) : Int(kCVPixelFormatType_32ARGB),
-                String(kCVPixelBufferWidthKey) : Float(width),
-                String(kCVPixelBufferHeightKey) : Float(height)]
-            return AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: input, sourcePixelBufferAttributes: attributes)
-        } else {
-            return AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: input, sourcePixelBufferAttributes: nil)
-        }
+        return AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: input, sourcePixelBufferAttributes: nil)
     }
 }

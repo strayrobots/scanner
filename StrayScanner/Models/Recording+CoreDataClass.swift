@@ -16,7 +16,6 @@ public class Recording: NSManagedObject {
     func deleteFiles() {
         deleteFile(self.absoluteRgbPath())
         deleteFile(self.absoluteDepthPath())
-
     }
 
     private func deleteFile(_ path: URL?) {
@@ -31,5 +30,4 @@ public class Recording: NSManagedObject {
             }
         }
     }
-
 }
