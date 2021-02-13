@@ -22,9 +22,13 @@ class DatasetEncoder {
     private let rgbEncoder: VideoEncoder
     private let depthEncoder: DepthEncoder
     private let datasetDirectory: URL
+    private let odometryEncoder: OdometryEncoder
+    private var lastFrame: ARFrame?
     public let id: UUID
     public let rgbFilePath: URL // Relative to app document directory.
     public let depthFilePath: URL // Relative to app document directory.
+    public let cameraMatrixPath: URL
+    public let odometryPath: URL
     public var status = Status.allGood
 
     init(arConfiguration: ARWorldTrackingConfiguration) {
@@ -37,53 +41,24 @@ class DatasetEncoder {
         self.rgbEncoder = VideoEncoder(file: self.rgbFilePath, width: width, height: height)
         self.depthFilePath = datasetDirectory.appendingPathComponent("depth", isDirectory: true)
         self.depthEncoder = DepthEncoder(outDirectory: self.depthFilePath)
+        self.cameraMatrixPath = datasetDirectory.appendingPathComponent("camera_matrix.csv", isDirectory: false)
+        self.odometryPath = datasetDirectory.appendingPathComponent("odometry.csv", isDirectory: false)
+        self.odometryEncoder = OdometryEncoder(url: self.odometryPath)
     }
 
-    func addFrame(frame: ARFrame) {
-        self.rgbEncoder.addFrame(frame: VideoEncoderInput(buffer: frame.capturedImage, time: frame.timestamp))
+    func add(frame: ARFrame) {
+        self.rgbEncoder.add(frame: VideoEncoderInput(buffer: frame.capturedImage, time: frame.timestamp))
         if let sceneDepth = frame.sceneDepth {
-            //let newBuffer = convert(buffer: sceneDepth.depthMap)
             self.depthEncoder.encodeFrame(frame: sceneDepth.depthMap)
         }
-    }
-
-    private func convert(buffer: CVPixelBuffer) -> CVPixelBuffer {
-        let width = CVPixelBufferGetWidth(buffer)
-        let height = CVPixelBufferGetHeight(buffer)
-        let currentType = CVPixelBufferGetPixelFormatType(buffer)
-        assert(currentType == kCVPixelFormatType_DepthFloat32, "Pixels of wrong format")
-        var out: CVPixelBuffer?
-
-        let options = [ kCVPixelBufferCGImageCompatibilityKey as String: true, kCVPixelBufferCGBitmapContextCompatibilityKey as String: true ]
-        let success = CVPixelBufferCreate(kCFAllocatorDefault, width, height, kCVPixelFormatType_16Gray, options as CFDictionary, &out)
-        assert(success == kCVReturnSuccess, "Could not create CVPixelBuffer")
-        print("Width: \(width) height: \(height) success: \(success)")
-        print("Width: \(CVPixelBufferGetWidth(out!)) height: \(CVPixelBufferGetHeight(out!)) success: \(success)")
-        let outBuffer = out!
-        CVPixelBufferLockBaseAddress(buffer, CVPixelBufferLockFlags.readOnly)
-        CVPixelBufferLockBaseAddress(outBuffer, CVPixelBufferLockFlags(rawValue: 1))
-
-        let outBase = CVPixelBufferGetBaseAddress(outBuffer)
-        let inBase = CVPixelBufferGetBaseAddress(buffer)
-        let outPixelData = outBase!.assumingMemoryBound(to: UInt16.self)
-        let inPixelData = inBase!.assumingMemoryBound(to: Float32.self)
-
-        DispatchQueue.concurrentPerform(iterations: height) { row in
-            for column in 0 ..< width {
-                let indexIn = row * width + column
-                let pixelValueIn: Float32 = inPixelData[indexIn]
-                let pixelValueOut: UInt16 = UInt16(round(pixelValueIn * DepthMultiplier))
-                let indexOut = row * width + column
-                outPixelData[indexOut] = pixelValueOut
-            }
-        }
-        CVPixelBufferUnlockBaseAddress(outBuffer, CVPixelBufferLockFlags(rawValue: 0))
-        CVPixelBufferUnlockBaseAddress(buffer, CVPixelBufferLockFlags(rawValue: 0))
-        return outBuffer
+        self.odometryEncoder.add(frame: frame)
+        lastFrame = frame
     }
 
     func wrapUp() {
         self.rgbEncoder.finishEncoding()
+        self.odometryEncoder.write()
+        writeIntrinsics()
         switch self.rgbEncoder.status {
             case .allGood:
                 status = .allGood
@@ -96,6 +71,23 @@ class DatasetEncoder {
             case .frameEncodingError:
                 status = .videoEncodingError
                 print("Something went wrong encoding depth.")
+        }
+    }
+
+    private func writeIntrinsics() {
+        if let cameraMatrix = lastFrame?.camera.intrinsics {
+            let rows = cameraMatrix.transpose.columns
+            var csv: [String] = []
+            for row in [rows.0, rows.1, rows.2] {
+                let csvLine = "\(row.x), \(row.y), \(row.z)"
+                csv.append(csvLine)
+            }
+            let contents = csv.joined(separator: "\n")
+            do {
+                try contents.write(to: self.cameraMatrixPath, atomically: true, encoding: String.Encoding.utf8)
+            } catch let error {
+                print("Could not write camera matrix. \(error.localizedDescription)")
+            }
         }
     }
 

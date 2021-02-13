@@ -22,6 +22,7 @@
 		386E277825991163007D023B /* RecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386E277725991163007D023B /* RecordButton.swift */; };
 		3872B88925962BBA00A3370C /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3872B88825962BBA00A3370C /* Colors.xcassets */; };
 		38AE645C25A08286007E4EC0 /* DatasetEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AE645B25A08286007E4EC0 /* DatasetEncoder.swift */; };
+		38B43F2A25C73BB8007F828B /* OdometryEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B43F2925C73BAE007F828B /* OdometryEncoder.swift */; };
 		38B54AEA258FB066009506AF /* CameraRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B54AE9258FB066009506AF /* CameraRenderer.swift */; };
 		38C17B12259BE1DA006B3FDA /* Recording+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C17B10259BE1DA006B3FDA /* Recording+CoreDataClass.swift */; };
 		38C17B13259BE1DA006B3FDA /* Recording+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C17B11259BE1DA006B3FDA /* Recording+CoreDataProperties.swift */; };
@@ -63,6 +64,7 @@
 		386E277725991163007D023B /* RecordButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordButton.swift; sourceTree = "<group>"; };
 		3872B88825962BBA00A3370C /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		38AE645B25A08286007E4EC0 /* DatasetEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatasetEncoder.swift; sourceTree = "<group>"; };
+		38B43F2925C73BAE007F828B /* OdometryEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OdometryEncoder.swift; sourceTree = "<group>"; };
 		38B54AE9258FB066009506AF /* CameraRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraRenderer.swift; sourceTree = "<group>"; };
 		38C17B10259BE1DA006B3FDA /* Recording+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Recording+CoreDataClass.swift"; sourceTree = "<group>"; };
 		38C17B11259BE1DA006B3FDA /* Recording+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Recording+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -205,6 +207,7 @@
 		38C17B19259CEEF5006B3FDA /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				38B43F2925C73BAE007F828B /* OdometryEncoder.swift */,
 				38B54AE9258FB066009506AF /* CameraRenderer.swift */,
 				38C17B1A259CEF0E006B3FDA /* VideoEncoder.swift */,
 				38AE645B25A08286007E4EC0 /* DatasetEncoder.swift */,
@@ -369,6 +372,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				38E969CB2572608E00054CC4 /* NewSession.swift in Sources */,
+				38B43F2A25C73BB8007F828B /* OdometryEncoder.swift in Sources */,
 				38FB730F2572A9FA007D9CB0 /* RecordSessionViewController.swift in Sources */,
 				38045D582561A7370004F23C /* SessionRow.swift in Sources */,
 				38FB73162572AF63007D9CB0 /* Shaders.metal in Sources */,

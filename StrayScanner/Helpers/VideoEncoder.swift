@@ -43,7 +43,7 @@ class VideoEncoder {
         self.doneRecording()
     }
 
-    func addFrame(frame: VideoEncoderInput) {
+    func add(frame: VideoEncoderInput) {
         while !videoWriterInput!.isReadyForMoreMediaData {
             print("Sleeping.")
             Thread.sleep(until: Date() + TimeInterval(0.01))

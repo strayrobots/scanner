@@ -36,11 +36,6 @@ class DepthEncoder {
         let filename = String(format: "%05d.png", currentFrame)
         currentFrame += 1
         let framePath = baseDirectory.appendingPathComponent(filename)
-        do {
-            try FileManager.default.createFile(atPath: framePath.absoluteString, contents: data, attributes: nil)
-        } catch let error {
-            status = Status.frameEncodingError
-            print("Could not write frame \(filename). \(error.localizedDescription)")
-        }
+        FileManager.default.createFile(atPath: framePath.absoluteString, contents: data, attributes: nil)
     }
 }

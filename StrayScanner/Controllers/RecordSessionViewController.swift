@@ -175,7 +175,7 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         self.renderer!.render(frame: frame)
         if startedRecording != nil {
             if let encoder = datasetEncoder {
-                encoder.addFrame(frame: frame)
+                encoder.add(frame: frame)
             } else {
                 print("There is no video encoder. That can't be good.")
             }
