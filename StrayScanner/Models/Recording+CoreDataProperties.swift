@@ -24,7 +24,14 @@ extension Recording {
     @NSManaged public var rgbFilePath: String?
     @NSManaged public var depthFilePath: String?
 
-
+    func directoryPath() -> URL? {
+        if let path = self.rgbFilePath {
+            let rgb = URL(fileURLWithPath: path, relativeTo: pathsRelativeTo())
+            return rgb.deletingLastPathComponent()
+        }
+        return Optional.none
+    }
+    
     func absoluteRgbPath() -> URL? {
         if let path = self.rgbFilePath {
             return URL(fileURLWithPath: path, relativeTo: pathsRelativeTo())

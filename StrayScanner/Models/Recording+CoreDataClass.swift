@@ -14,15 +14,14 @@ import CoreData
 public class Recording: NSManagedObject {
 
     func deleteFiles() {
-        deleteFile(self.absoluteRgbPath())
-        deleteFile(self.absoluteDepthPath())
+        deleteFile(directoryPath())
     }
 
     private func deleteFile(_ path: URL?) {
         if let filePath = path {
-            if FileManager.default.fileExists(atPath: filePath.absoluteString) {
+            if FileManager.default.fileExists(atPath: filePath.path) {
                 do {
-                    try FileManager.default.removeItem(atPath: filePath.absoluteString)
+                    try FileManager.default.removeItem(atPath: filePath.path)
                     print("Deleted file \(filePath.absoluteString)")
                 } catch let error as NSError {
                     print("Could not delete file \(filePath.absoluteString). \(error), \(error.userInfo)")

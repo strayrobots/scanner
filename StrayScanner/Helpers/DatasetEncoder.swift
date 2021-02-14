@@ -10,9 +10,6 @@ import Foundation
 import ARKit
 import CryptoKit
 
-let MaxDepth: Float = 25.0
-let DepthMultiplier: Float = Float(UInt16.max) / MaxDepth
-
 class DatasetEncoder {
     enum Status {
         case allGood
