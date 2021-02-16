@@ -10,8 +10,6 @@ import Foundation
 import CoreImage
 import UIKit
 
-let MaxDepth: Float32 = 25.0
-
 class DepthEncoder {
     enum Status {
         case allGood
@@ -35,7 +33,7 @@ class DepthEncoder {
         let ciImage = CIImage(cvPixelBuffer: convert(frame: frame))
         let image = UIImage(ciImage: ciImage, scale: 1.0, orientation: UIImage.Orientation.right)
         let data = image.pngData()
-        let filename = String(format: "%05d", currentFrame)
+        let filename = String(format: "%06d", currentFrame)
         let framePath = baseDirectory.absoluteURL.appendingPathComponent(filename, isDirectory: false).appendingPathExtension("png")
         do {
             try data?.write(to: framePath)
@@ -51,19 +49,29 @@ class DepthEncoder {
         let options = [ kCVPixelBufferCGImageCompatibilityKey as String: true, kCVPixelBufferCGBitmapContextCompatibilityKey as String: true ]
         let height = CVPixelBufferGetHeight(frame)
         let width = CVPixelBufferGetWidth(frame)
-        CVPixelBufferCreate(kCFAllocatorDefault, width, height, kCVPixelFormatType_DepthFloat32, options as CFDictionary, &newFrame)
+        CVPixelBufferCreate(kCFAllocatorDefault, width, height, kCVPixelFormatType_24RGB, options as CFDictionary, &newFrame)
         let outBuffer = newFrame!
         CVPixelBufferLockBaseAddress(frame, CVPixelBufferLockFlags.readOnly)
         CVPixelBufferLockBaseAddress(outBuffer, CVPixelBufferLockFlags(rawValue: 1))
-        let outBase = CVPixelBufferGetBaseAddress(outBuffer)
         let inBase = CVPixelBufferGetBaseAddress(frame)
-        let outPixelData = outBase!.assumingMemoryBound(to: Float32.self)
         let inPixelData = inBase!.assumingMemoryBound(to: Float32.self)
+        let outBase = CVPixelBufferGetBaseAddress(outBuffer)
+        let outPixelData = outBase!.assumingMemoryBound(to: UInt8.self)
         DispatchQueue.concurrentPerform(iterations: height) { row in
             for column in 1...width {
                 let index = row * width + column
-                let pixelValueIn: Float32 = inPixelData[index]
-                outPixelData[index] = min(pixelValueIn / MaxDepth, 1.0)
+                let meters: Float32 = inPixelData[index]
+                let floored: Float32 = floor(meters)
+                let residualMillimeters: Float32 = (meters - floored) * 1000.0
+                let millimeters: UInt = UInt(residualMillimeters)
+                let quadrant: UInt = UInt(floor(Float(millimeters / 256)))
+                let greenChannel: UInt = millimeters - quadrant * 256
+                assert(greenChannel < 256)
+                assert(quadrant < 256)
+                let outIndex = (row * width + column) * 3
+                outPixelData[outIndex] = UInt8(meters)
+                outPixelData[outIndex+1] = UInt8(greenChannel)
+                outPixelData[outIndex+2] = UInt8(quadrant)
             }
         }
         CVPixelBufferUnlockBaseAddress(outBuffer, CVPixelBufferLockFlags(rawValue: 0))
