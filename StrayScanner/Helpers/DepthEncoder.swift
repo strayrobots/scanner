@@ -30,17 +30,19 @@ class DepthEncoder {
     }
 
     func encodeFrame(frame: CVPixelBuffer) {
-        let ciImage = CIImage(cvPixelBuffer: convert(frame: frame))
-        let image = UIImage(ciImage: ciImage, scale: 1.0, orientation: UIImage.Orientation.right)
-        let data = image.pngData()
         let filename = String(format: "%06d", currentFrame)
-        let framePath = baseDirectory.absoluteURL.appendingPathComponent(filename, isDirectory: false).appendingPathExtension("png")
-        do {
-            try data?.write(to: framePath)
-        } catch let error {
-            print("Could not save depth image. \(error.localizedDescription)")
-        }
         currentFrame += 1
+        DispatchQueue.global(qos: .background).async {
+            let ciImage = CIImage(cvPixelBuffer: self.convert(frame: frame))
+            let image = UIImage(ciImage: ciImage, scale: 1.0, orientation: UIImage.Orientation.right)
+            let data = image.pngData()
+            let framePath = self.baseDirectory.absoluteURL.appendingPathComponent(filename, isDirectory: false).appendingPathExtension("png")
+            do {
+                try data?.write(to: framePath)
+            } catch let error {
+                print("Could not save depth image. \(error.localizedDescription)")
+            }
+        }
     }
 
     private func convert(frame: CVPixelBuffer) -> CVPixelBuffer {
@@ -57,7 +59,7 @@ class DepthEncoder {
         let inPixelData = inBase!.assumingMemoryBound(to: Float32.self)
         let outBase = CVPixelBufferGetBaseAddress(outBuffer)
         let outPixelData = outBase!.assumingMemoryBound(to: UInt8.self)
-        DispatchQueue.concurrentPerform(iterations: height) { row in
+        for row in 1...height {
             for column in 1...width {
                 let index = row * width + column
                 let meters: Float32 = inPixelData[index]

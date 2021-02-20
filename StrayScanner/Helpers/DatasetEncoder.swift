@@ -21,14 +21,17 @@ class DatasetEncoder {
     private let datasetDirectory: URL
     private let odometryEncoder: OdometryEncoder
     private var lastFrame: ARFrame?
+    private var dispatchGroup = DispatchGroup()
     public let id: UUID
     public let rgbFilePath: URL // Relative to app document directory.
     public let depthFilePath: URL // Relative to app document directory.
     public let cameraMatrixPath: URL
     public let odometryPath: URL
     public var status = Status.allGood
+    private let queue: DispatchQueue
 
     init(arConfiguration: ARWorldTrackingConfiguration) {
+        self.queue = DispatchQueue.global(qos: .default)
         let width = arConfiguration.videoFormat.imageResolution.width
         let height = arConfiguration.videoFormat.imageResolution.height
         var theId: UUID = UUID()
@@ -45,14 +48,19 @@ class DatasetEncoder {
 
     func add(frame: ARFrame) {
         self.rgbEncoder.add(frame: VideoEncoderInput(buffer: frame.capturedImage, time: frame.timestamp))
-        if let sceneDepth = frame.sceneDepth {
-            self.depthEncoder.encodeFrame(frame: sceneDepth.depthMap)
+        dispatchGroup.enter()
+        queue.async {
+            if let sceneDepth = frame.sceneDepth {
+                self.depthEncoder.encodeFrame(frame: sceneDepth.depthMap)
+            }
+            self.odometryEncoder.add(frame: frame)
+            self.lastFrame = frame
+            self.dispatchGroup.leave()
         }
-        self.odometryEncoder.add(frame: frame)
-        lastFrame = frame
     }
 
     func wrapUp() {
+        dispatchGroup.wait()
         self.rgbEncoder.finishEncoding()
         self.odometryEncoder.write()
         writeIntrinsics()
