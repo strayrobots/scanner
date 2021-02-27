@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -18,9 +18,12 @@
 		385999C625616F3000F3F681 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 385999C525616F3000F3F681 /* Assets.xcassets */; };
 		385999C925616F3000F3F681 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 385999C825616F3000F3F681 /* Preview Assets.xcassets */; };
 		385999CC25616F3000F3F681 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 385999CA25616F3000F3F681 /* LaunchScreen.storyboard */; };
-		385999D725616F3100F3F681 /* Stray_ScannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385999D625616F3100F3F681 /* Stray_ScannerTests.swift */; };
 		386E277825991163007D023B /* RecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386E277725991163007D023B /* RecordButton.swift */; };
 		3872B88925962BBA00A3370C /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3872B88825962BBA00A3370C /* Colors.xcassets */; };
+		387B576C25EA566D00132903 /* cnpy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 387B576B25EA566D00132903 /* cnpy.cpp */; };
+		387B578125EA5BB900132903 /* StrayScannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387B578025EA5BB900132903 /* StrayScannerTests.swift */; };
+		387B57B925EA680200132903 /* NPYArrayWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 387B57AB25EA63A400132903 /* NPYArrayWrapper.mm */; };
+		387B57BC25EA680300132903 /* NPYArrayWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 387B57AB25EA63A400132903 /* NPYArrayWrapper.mm */; };
 		38AE645C25A08286007E4EC0 /* DatasetEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AE645B25A08286007E4EC0 /* DatasetEncoder.swift */; };
 		38B43F2A25C73BB8007F828B /* OdometryEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B43F2925C73BAE007F828B /* OdometryEncoder.swift */; };
 		38B54AEA258FB066009506AF /* CameraRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B54AE9258FB066009506AF /* CameraRenderer.swift */; };
@@ -35,7 +38,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		385999D325616F3100F3F681 /* PBXContainerItemProxy */ = {
+		387B578325EA5BB900132903 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 385999B125616F2A00F3F681 /* Project object */;
 			proxyType = 1;
@@ -58,11 +61,15 @@
 		385999C825616F3000F3F681 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		385999CB25616F3000F3F681 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		385999CD25616F3000F3F681 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		385999D225616F3100F3F681 /* StrayScannerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StrayScannerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		385999D625616F3100F3F681 /* Stray_ScannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stray_ScannerTests.swift; sourceTree = "<group>"; };
-		385999D825616F3100F3F681 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		386E277725991163007D023B /* RecordButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordButton.swift; sourceTree = "<group>"; };
 		3872B88825962BBA00A3370C /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
+		387B576925EA564C00132903 /* cnpy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = cnpy.h; path = cnpy/cnpy.h; sourceTree = "<group>"; };
+		387B576B25EA566D00132903 /* cnpy.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = cnpy.cpp; path = cnpy/cnpy.cpp; sourceTree = "<group>"; };
+		387B577E25EA5BB900132903 /* StrayScannerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StrayScannerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		387B578025EA5BB900132903 /* StrayScannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrayScannerTests.swift; sourceTree = "<group>"; };
+		387B578225EA5BB900132903 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		387B57AB25EA63A400132903 /* NPYArrayWrapper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = NPYArrayWrapper.mm; path = cnpy/NPYArrayWrapper.mm; sourceTree = "<group>"; };
+		387B57B025EA63BE00132903 /* NPYArrayWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NPYArrayWrapper.h; path = cnpy/NPYArrayWrapper.h; sourceTree = "<group>"; };
 		38AE645B25A08286007E4EC0 /* DatasetEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatasetEncoder.swift; sourceTree = "<group>"; };
 		38B43F2925C73BAE007F828B /* OdometryEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OdometryEncoder.swift; sourceTree = "<group>"; };
 		38B54AE9258FB066009506AF /* CameraRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraRenderer.swift; sourceTree = "<group>"; };
@@ -89,7 +96,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		385999CF25616F3100F3F681 /* Frameworks */ = {
+		387B577B25EA5BB900132903 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -142,7 +149,7 @@
 			children = (
 				38FB73242573ECE2007D9CB0 /* BridgeHeader.h */,
 				385999BB25616F2B00F3F681 /* StrayScanner */,
-				385999D525616F3100F3F681 /* StrayScannerTests */,
+				387B577F25EA5BB900132903 /* StrayScannerTests */,
 				385999BA25616F2B00F3F681 /* Products */,
 				0905A155A958CE7B22575DF5 /* Pods */,
 				41382767AE5D9ABDCEFAD16D /* Frameworks */,
@@ -153,7 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				385999B925616F2B00F3F681 /* StrayScanner.app */,
-				385999D225616F3100F3F681 /* StrayScannerTests.xctest */,
+				387B577E25EA5BB900132903 /* StrayScannerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -161,6 +168,7 @@
 		385999BB25616F2B00F3F681 /* StrayScanner */ = {
 			isa = PBXGroup;
 			children = (
+				387B576825EA55AC00132903 /* CCode */,
 				38C17B19259CEEF5006B3FDA /* Helpers */,
 				38C17AE4259BCD16006B3FDA /* UI */,
 				38FB73142572AF50007D9CB0 /* Shaders */,
@@ -186,11 +194,22 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		385999D525616F3100F3F681 /* StrayScannerTests */ = {
+		387B576825EA55AC00132903 /* CCode */ = {
 			isa = PBXGroup;
 			children = (
-				385999D625616F3100F3F681 /* Stray_ScannerTests.swift */,
-				385999D825616F3100F3F681 /* Info.plist */,
+				387B576925EA564C00132903 /* cnpy.h */,
+				387B576B25EA566D00132903 /* cnpy.cpp */,
+				387B57AB25EA63A400132903 /* NPYArrayWrapper.mm */,
+				387B57B025EA63BE00132903 /* NPYArrayWrapper.h */,
+			);
+			path = CCode;
+			sourceTree = "<group>";
+		};
+		387B577F25EA5BB900132903 /* StrayScannerTests */ = {
+			isa = PBXGroup;
+			children = (
+				387B578025EA5BB900132903 /* StrayScannerTests.swift */,
+				387B578225EA5BB900132903 /* Info.plist */,
 			);
 			path = StrayScannerTests;
 			sourceTree = "<group>";
@@ -263,22 +282,22 @@
 			productReference = 385999B925616F2B00F3F681 /* StrayScanner.app */;
 			productType = "com.apple.product-type.application";
 		};
-		385999D125616F3100F3F681 /* StrayScannerTests */ = {
+		387B577D25EA5BB900132903 /* StrayScannerTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 385999DE25616F3100F3F681 /* Build configuration list for PBXNativeTarget "StrayScannerTests" */;
+			buildConfigurationList = 387B578525EA5BB900132903 /* Build configuration list for PBXNativeTarget "StrayScannerTests" */;
 			buildPhases = (
-				385999CE25616F3100F3F681 /* Sources */,
-				385999CF25616F3100F3F681 /* Frameworks */,
-				385999D025616F3100F3F681 /* Resources */,
+				387B577A25EA5BB900132903 /* Sources */,
+				387B577B25EA5BB900132903 /* Frameworks */,
+				387B577C25EA5BB900132903 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				385999D425616F3100F3F681 /* PBXTargetDependency */,
+				387B578425EA5BB900132903 /* PBXTargetDependency */,
 			);
 			name = StrayScannerTests;
 			productName = StrayScannerTests;
-			productReference = 385999D225616F3100F3F681 /* StrayScannerTests.xctest */;
+			productReference = 387B577E25EA5BB900132903 /* StrayScannerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -287,21 +306,22 @@
 		385999B125616F2A00F3F681 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1170;
+				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1220;
 				ORGANIZATIONNAME = "Stray Robots";
 				TargetAttributes = {
 					385999B825616F2A00F3F681 = {
 						CreatedOnToolsVersion = 11.7;
 					};
-					385999D125616F3100F3F681 = {
-						CreatedOnToolsVersion = 11.7;
+					387B577D25EA5BB900132903 = {
+						CreatedOnToolsVersion = 12.4;
+						LastSwiftMigration = 1240;
 						TestTargetID = 385999B825616F2A00F3F681;
 					};
 				};
 			};
 			buildConfigurationList = 385999B425616F2A00F3F681 /* Build configuration list for PBXProject "StrayScanner" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 11.4";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -314,7 +334,7 @@
 			projectRoot = "";
 			targets = (
 				385999B825616F2A00F3F681 /* StrayScanner */,
-				385999D125616F3100F3F681 /* StrayScannerTests */,
+				387B577D25EA5BB900132903 /* StrayScannerTests */,
 			);
 		};
 /* End PBXProject section */
@@ -332,7 +352,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		385999D025616F3100F3F681 /* Resources */ = {
+		387B577C25EA5BB900132903 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -373,6 +393,7 @@
 			files = (
 				38E969CB2572608E00054CC4 /* NewSession.swift in Sources */,
 				38B43F2A25C73BB8007F828B /* OdometryEncoder.swift in Sources */,
+				387B57B925EA680200132903 /* NPYArrayWrapper.mm in Sources */,
 				38FB730F2572A9FA007D9CB0 /* RecordSessionViewController.swift in Sources */,
 				38045D582561A7370004F23C /* SessionRow.swift in Sources */,
 				38FB73162572AF63007D9CB0 /* Shaders.metal in Sources */,
@@ -384,6 +405,7 @@
 				386E277825991163007D023B /* RecordButton.swift in Sources */,
 				3816A18C25BDE21800E39246 /* DepthEncoder.swift in Sources */,
 				385999BF25616F2B00F3F681 /* SceneDelegate.swift in Sources */,
+				387B576C25EA566D00132903 /* cnpy.cpp in Sources */,
 				38C17B13259BE1DA006B3FDA /* Recording+CoreDataProperties.swift in Sources */,
 				38C17B12259BE1DA006B3FDA /* Recording+CoreDataClass.swift in Sources */,
 				38AE645C25A08286007E4EC0 /* DatasetEncoder.swift in Sources */,
@@ -392,21 +414,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		385999CE25616F3100F3F681 /* Sources */ = {
+		387B577A25EA5BB900132903 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				385999D725616F3100F3F681 /* Stray_ScannerTests.swift in Sources */,
+				387B578125EA5BB900132903 /* StrayScannerTests.swift in Sources */,
+				387B57BC25EA680300132903 /* NPYArrayWrapper.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		385999D425616F3100F3F681 /* PBXTargetDependency */ = {
+		387B578425EA5BB900132903 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 385999B825616F2A00F3F681 /* StrayScanner */;
-			targetProxy = 385999D325616F3100F3F681 /* PBXContainerItemProxy */;
+			targetProxy = 387B578325EA5BB900132903 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -479,7 +502,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OBJC_BRIDGING_HEADER = "Stray\\ Scanner/BridgeHeader.h";
+				SWIFT_OBJC_BRIDGING_HEADER = StrayScanner/BridgeHeader.h;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -534,7 +557,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OBJC_BRIDGING_HEADER = "Stray\\ Scanner/BridgeHeader.h";
+				SWIFT_OBJC_BRIDGING_HEADER = StrayScanner/BridgeHeader.h;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -551,6 +574,7 @@
 				DEVELOPMENT_TEAM = 2QREBG9C6Y;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = StrayScanner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -576,6 +600,7 @@
 				DEVELOPMENT_TEAM = 2QREBG9C6Y;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = StrayScanner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -590,46 +615,49 @@
 			};
 			name = Release;
 		};
-		385999DF25616F3100F3F681 /* Debug */ = {
+		387B578625EA5BB900132903 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2QREBG9C6Y;
 				INFOPLIST_FILE = StrayScannerTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "dev.keke.Stray-ScannerTests";
+				PRODUCT_BUNDLE_IDENTIFIER = dev.keke.StrayScannerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,6";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StrayScanner.app/StrayScanner";
 			};
 			name = Debug;
 		};
-		385999E025616F3100F3F681 /* Release */ = {
+		387B578725EA5BB900132903 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2QREBG9C6Y;
 				INFOPLIST_FILE = StrayScannerTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "dev.keke.Stray-ScannerTests";
+				PRODUCT_BUNDLE_IDENTIFIER = dev.keke.StrayScannerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,6";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StrayScanner.app/StrayScanner";
 			};
 			name = Release;
@@ -655,11 +683,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		385999DE25616F3100F3F681 /* Build configuration list for PBXNativeTarget "StrayScannerTests" */ = {
+		387B578525EA5BB900132903 /* Build configuration list for PBXNativeTarget "StrayScannerTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				385999DF25616F3100F3F681 /* Debug */,
-				385999E025616F3100F3F681 /* Release */,
+				387B578625EA5BB900132903 /* Debug */,
+				387B578725EA5BB900132903 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

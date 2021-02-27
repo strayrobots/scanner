@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import Stray_Scanner
+@testable import StrayScanner
 
 class Stray_ScannerTests: XCTestCase {
 
@@ -22,6 +22,7 @@ class Stray_ScannerTests: XCTestCase {
     func testExample() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+        XCTAssert(2 == 2)
     }
 
     func testPerformanceExample() throws {

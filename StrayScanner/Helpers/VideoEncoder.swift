@@ -62,7 +62,6 @@ class VideoEncoder {
             let input = AVAssetWriterInput(mediaType: .video, outputSettings: settings)
             input.expectsMediaDataInRealTime = true
             input.mediaTimeScale = timeScale
-            input.transform = CGAffineTransform(rotationAngle: .pi/2) // Portrait mode.
             videoAdapter = createVideoAdapter(input)
             if videoWriter!.canAdd(input) {
                 videoWriter!.add(input)

@@ -7,7 +7,6 @@ from PIL import Image
 import cv2
 import skvideo.io
 
-MAX_DEPTH = 25.0
 DEPTH_WIDTH = 256
 DEPTH_HEIGHT = 192
 
@@ -20,11 +19,6 @@ def read_args():
     parser.add_argument('--every', type=int, default=50)
     return parser.parse_args()
 
-T_AC = np.array([[0., 1., 0., 0.],
-        [1., 0., 0., 0.],
-        [0., 0., -1., 0.],
-        [0., 0., 0., 1.]])
-
 def _resize_camera_matrix(camera_matrix, scale_x, scale_y):
     fx = camera_matrix[0, 0]
     fy = camera_matrix[1, 1]
@@ -34,26 +28,27 @@ def _resize_camera_matrix(camera_matrix, scale_x, scale_y):
         [0., fy * scale_y, cy * scale_y],
         [0., 0., 1.0]])
 
-
 def read_data(flags):
     intrinsics = np.loadtxt(os.path.join(flags.path, 'camera_matrix.csv'), delimiter=',')
     odometry = np.loadtxt(os.path.join(flags.path, 'odometry.csv'), delimiter=',')
     poses = []
+    # T_AC = np.eye(4)
+    # T_AC[:3, :3] = Rotation.from_rotvec([0.0, 0.0, np.deg2rad(180)]).as_matrix() @ Rotation.from_rotvec([0.0, np.deg2rad(180), 0.0]).as_matrix()
+
     for line in odometry:
         # x, y, z, qx, qy, qz, qw
         position = line[:3]
         quaternion = line[3:]
-        T_WA = np.eye(4)
-        T_WA[:3, :3] = Rotation.from_quat(quaternion).as_matrix()
-        T_WA[:3, 3] = position
-        poses.append(T_WA @ T_AC)
+        T_WC = np.eye(4)
+        T_WC[:3, :3] = Rotation.from_quat(quaternion).as_matrix()
+        T_WC[:3, 3] = position
+        poses.append(T_WC)
     return { 'poses': poses, 'intrinsics': intrinsics }
 
 def load_depth(path):
-    depth = Image.open(path).resize((DEPTH_HEIGHT, DEPTH_WIDTH), resample=Image.NEAREST)
-    depth = np.array(depth).astype(np.uint16)
-    meters = (depth[:, :, 0] + (depth[:, :, 1] + 256 * depth[:, :, 2]) / 1000.0).astype(np.float32)
-    return o3d.geometry.Image(meters)
+    depth_mm = np.load(path)
+    depth_m = depth_mm.astype(np.float32) / 1000.0
+    return o3d.geometry.Image(depth_m)
 
 def main():
     flags = read_args()
@@ -65,13 +60,13 @@ def main():
     if flags.point_clouds:
         geometries += point_clouds(flags, data)
     if flags.integrate:
-        geometries = integrate(flags, data)
+        geometries += integrate(flags, data)
     o3d.visualization.draw_geometries(geometries)
 
 def get_intrinsics(intrinsics):
     intrinsics_scaled = _resize_camera_matrix(intrinsics, DEPTH_WIDTH / 1920, DEPTH_HEIGHT / 1280)
-    return o3d.camera.PinholeCameraIntrinsic(width=DEPTH_HEIGHT, height=DEPTH_WIDTH, fx=intrinsics_scaled[1, 1],
-        fy=intrinsics_scaled[0, 0], cx=intrinsics_scaled[1, 2], cy=intrinsics_scaled[0, 2])
+    return o3d.camera.PinholeCameraIntrinsic(width=DEPTH_WIDTH, height=DEPTH_HEIGHT, fx=intrinsics_scaled[0, 0],
+        fy=intrinsics_scaled[1, 1], cx=intrinsics_scaled[0, 2], cy=intrinsics_scaled[1, 2])
 
 def show_frames(flags, data):
     frames = [o3d.geometry.TriangleMesh.create_coordinate_frame().scale(0.25, np.zeros(3))]
@@ -93,15 +88,15 @@ def point_clouds(flags, data):
             continue
         print(f"Point cloud {i}", end="\r")
         T_CW = np.linalg.inv(T_WC)
-        depth = load_depth(os.path.join(flags.path, 'depth', f'{i:06}.png'))
+        depth = load_depth(os.path.join(flags.path, 'depth', f'{i:06}.npy'))
         X = o3d.geometry.PointCloud.create_from_depth_image(depth, intrinsics, extrinsic=T_CW, depth_scale=1.0)
-        pc += X.uniform_down_sample(every_k_points=5)
+        pc += X.uniform_down_sample(every_k_points=10)
     return [pc]
 
 def integrate(flags, data):
     volume = o3d.pipelines.integration.ScalableTSDFVolume(
-            voxel_length=4.0 / 256.0,
-            sdf_trunc=0.04,
+            voxel_length=4.0 / 1024.0,
+            sdf_trunc=0.05,
             color_type=o3d.pipelines.integration.TSDFVolumeColorType.RGB8)
 
     intrinsics = get_intrinsics(data['intrinsics'])
@@ -110,14 +105,14 @@ def integrate(flags, data):
     video = skvideo.io.vreader(rgb_path)
     for i, (T_WC, rgb) in enumerate(zip(data['poses'], video)):
         print(f"Integrating frame {i:06}", end='\r')
-        depth_path = os.path.join(flags.path, 'depth', f'{i:06}.png')
+        depth_path = os.path.join(flags.path, 'depth', f'{i:06}.npy')
         depth = load_depth(depth_path)
         rgb = Image.fromarray(rgb)
-        rgb = rgb.resize((DEPTH_HEIGHT, DEPTH_WIDTH))
+        rgb = rgb.resize((DEPTH_WIDTH, DEPTH_HEIGHT))
         rgb = np.array(rgb)
         rgbd = o3d.geometry.RGBDImage.create_from_color_and_depth(
             o3d.geometry.Image(rgb), depth,
-            depth_scale=1.0, convert_rgb_to_intensity=False)
+            depth_scale=1.0, depth_trunc=4.0, convert_rgb_to_intensity=False)
 
         volume.integrate(rgbd, intrinsics, np.linalg.inv(T_WC))
     mesh = volume.extract_triangle_mesh()

@@ -18,6 +18,7 @@ class OdometryEncoder {
     var currentFrame: Int = 0
     var status: Status = Status.allGood
     let path: URL
+    let q_AC = simd_quatf(ix: 1.0, iy: 0.0, iz: 0.0, r: 0.0)
     var transforms: [simd_float4x4] = []
 
     init(url: URL) {
@@ -34,7 +35,8 @@ class OdometryEncoder {
         var lines: [String] = []
         for transform in transforms {
             let xyz: vector_float3 = getTranslation(T: transform)
-            let q: vector_float4 = simd_quatf(transform).vector
+            let q_WA = simd_quatf(transform)
+            let q: vector_float4 = (q_WA * q_AC).vector
             let line = "\(xyz.x), \(xyz.y), \(xyz.z), \(q.x), \(q.y), \(q.z), \(q.w)"
             lines.append(line)
         }
