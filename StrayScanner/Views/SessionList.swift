@@ -45,6 +45,7 @@ class SessionListViewModel: ObservableObject {
 
 struct SessionList: View {
     @ObservedObject var viewModel = SessionListViewModel()
+    @State private var showingInfo = false
 
     init() {
         UITableView.appearance().backgroundColor = UIColor(named: "BackgroundColor")
@@ -56,11 +57,26 @@ struct SessionList: View {
         .ignoresSafeArea()
         NavigationView {
             VStack(alignment: .leading) {
-                Text("Recordings")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .multilineTextAlignment(.center)
-                    .padding([.top, .leading], 15.0)
+                HStack {
+                    Text("Recordings")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.center)
+                        .padding([.top, .leading], 15.0)
+                    Spacer()
+                    Button(action: {
+                        showingInfo.toggle()
+                    }, label: {
+                        Image(systemName: "info.circle")
+                            .resizable()
+                            .frame(width: 25, height: 25, alignment: .center)
+                            .padding(.top, 17)
+                            .padding(.trailing, 20)
+                            .foregroundColor(Color("DarkGrey"))
+                    }).sheet(isPresented: $showingInfo) {
+                        InformationView()
+                    }
+                }
 
                 if !viewModel.sessions.isEmpty {
                     List {
@@ -82,12 +98,12 @@ struct SessionList: View {
                     Spacer()
                     NavigationLink(destination: NewSessionView(), label: {
                         Text("Record new session")
-                            .font(.title)
-                            .padding(25)
+                            .font(.title3)
+                            .padding(20)
                             .background(Color("DarkGrey"))
                             .foregroundColor(Color.white)
-                            .cornerRadius(50)
-                            .padding(25)
+                            .cornerRadius(35)
+                            .padding(20)
                     })
                     Spacer()
                 }

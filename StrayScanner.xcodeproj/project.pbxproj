@@ -24,6 +24,7 @@
 		387B578125EA5BB900132903 /* StrayScannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387B578025EA5BB900132903 /* StrayScannerTests.swift */; };
 		387B57B925EA680200132903 /* NPYArrayWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 387B57AB25EA63A400132903 /* NPYArrayWrapper.mm */; };
 		387B57BC25EA680300132903 /* NPYArrayWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 387B57AB25EA63A400132903 /* NPYArrayWrapper.mm */; };
+		387B57C225EC065600132903 /* InformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387B57C125EC065600132903 /* InformationView.swift */; };
 		38AE645C25A08286007E4EC0 /* DatasetEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AE645B25A08286007E4EC0 /* DatasetEncoder.swift */; };
 		38B43F2A25C73BB8007F828B /* OdometryEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B43F2925C73BAE007F828B /* OdometryEncoder.swift */; };
 		38B54AEA258FB066009506AF /* CameraRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B54AE9258FB066009506AF /* CameraRenderer.swift */; };
@@ -70,6 +71,7 @@
 		387B578225EA5BB900132903 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		387B57AB25EA63A400132903 /* NPYArrayWrapper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = NPYArrayWrapper.mm; path = cnpy/NPYArrayWrapper.mm; sourceTree = "<group>"; };
 		387B57B025EA63BE00132903 /* NPYArrayWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NPYArrayWrapper.h; path = cnpy/NPYArrayWrapper.h; sourceTree = "<group>"; };
+		387B57C125EC065600132903 /* InformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationView.swift; sourceTree = "<group>"; };
 		38AE645B25A08286007E4EC0 /* DatasetEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatasetEncoder.swift; sourceTree = "<group>"; };
 		38B43F2925C73BAE007F828B /* OdometryEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OdometryEncoder.swift; sourceTree = "<group>"; };
 		38B54AE9258FB066009506AF /* CameraRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraRenderer.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				38E969CA2572608E00054CC4 /* NewSession.swift */,
 				386E277725991163007D023B /* RecordButton.swift */,
 				38C17B22259D1C80006B3FDA /* SessionDetail.swift */,
+				387B57C125EC065600132903 /* InformationView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -391,6 +394,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				387B57C225EC065600132903 /* InformationView.swift in Sources */,
 				38E969CB2572608E00054CC4 /* NewSession.swift in Sources */,
 				38B43F2A25C73BB8007F828B /* OdometryEncoder.swift in Sources */,
 				387B57B925EA680200132903 /* NPYArrayWrapper.mm in Sources */,
@@ -579,7 +583,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = "dev.keke.Stray-Scanner";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -605,7 +609,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = "dev.keke.Stray-Scanner";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
