@@ -24,6 +24,7 @@ class MetalView : UIView {
 }
 
 class RecordSessionViewController : UIViewController, ARSessionDelegate {
+    private var unsupported: Bool = false
     private var arConfiguration: ARWorldTrackingConfiguration?
     private let session = ARSession()
     private var renderer: CameraRenderer?
@@ -35,6 +36,11 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     @IBOutlet private var depthView: MetalView!
     @IBOutlet private var recordButton: RecordButton!
     @IBOutlet private var timeLabel: UILabel!
+    var dismissFunction: Optional<() -> Void> = Optional.none
+    
+    func setDismissFunction(_ fn: Optional<() -> Void>) {
+        self.dismissFunction = fn
+    }
 
     override func viewDidLoad() {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
@@ -74,6 +80,7 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         arConfiguration = config
         if !ARWorldTrackingConfiguration.isSupported || !ARWorldTrackingConfiguration.supportsFrameSemantics(.sceneDepth) {
             print("AR is not supported.")
+            unsupported = true
         } else {
             config.frameSemantics.insert(.sceneDepth)
             session.run(config)
@@ -81,6 +88,10 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     }
 
     private func toggleRecording(_ recording: Bool) {
+        if unsupported {
+            showUnsupportedAlert()
+            return
+        }
         if recording && self.startedRecording == nil {
             startRecording()
         } else if self.startedRecording != nil && !recording {
@@ -120,6 +131,7 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         } else {
             print("No dataset encoder. Something is wrong.")
         }
+        self.dismissFunction?()
     }
 
     private func saveRecording(_ started: Date, _ encoder: DatasetEncoder) {
@@ -183,6 +195,14 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     }
 
     private func setViewProperties() {
-        self.view.backgroundColor = UIColor(named: "DarkGrey")
+        self.view.backgroundColor = UIColor(named: "BackgroundColor")
+    }
+    
+    private func showUnsupportedAlert() {
+        let alert = UIAlertController(title: "Unsupported device", message: "This device doesn't seem to have the required level of ARKit support.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+            self.dismissFunction?()
+        }))
+        self.present(alert, animated: true)
     }
 }

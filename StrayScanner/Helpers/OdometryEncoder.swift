@@ -32,7 +32,7 @@ class OdometryEncoder {
     }
 
     func write() {
-        var lines: [String] = []
+        var lines: [String] = ["x, y, z, qx, qy, qz, qw"]
         for transform in transforms {
             let xyz: vector_float3 = getTranslation(T: transform)
             let q_WA = simd_quatf(transform)

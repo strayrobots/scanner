@@ -56,7 +56,7 @@ class RecordButton : UIView {
         path.addArc(center: CGPoint(x: x, y: y), radius: circleRadius, startAngle: CGFloat(0), endAngle: CGFloat(Float.pi * 2.0), clockwise: false)
         circleLayer.path = path
         circleLayer.fillColor = UIColor.clear.cgColor
-        circleLayer.strokeColor = UIColor.white.cgColor
+        circleLayer.strokeColor = UIColor(named: "DarkColor")!.cgColor
         circleLayer.lineWidth = circleStroke
         circleLayer.opacity = 1.0
         self.layer.addSublayer(circleLayer)

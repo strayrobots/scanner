@@ -22,15 +22,22 @@ struct NavigationConfigurator: UIViewControllerRepresentable {
 }
 
 struct RecordSessionManager: UIViewControllerRepresentable {
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     func makeUIViewController(context: Context) -> some UIViewController {
-        return RecordSessionViewController(nibName: "RecordSessionView", bundle: nil)
+        let viewController = RecordSessionViewController(nibName: "RecordSessionView", bundle: nil)
+        viewController.setDismissFunction {
+            presentationMode.wrappedValue.dismiss()
+            viewController.setDismissFunction(Optional.none)
+        }
+        return viewController
     }
 
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
 }
 
 struct NewSessionView : View {
-
+    
     var body: some View {
         RecordSessionManager()
             .padding(.vertical, 0.0)

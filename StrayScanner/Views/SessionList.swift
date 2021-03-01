@@ -59,6 +59,7 @@ struct SessionList: View {
             VStack(alignment: .leading) {
                 HStack {
                     Text("Recordings")
+                        .foregroundColor(Color("TextColor"))
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .multilineTextAlignment(.center)
@@ -72,7 +73,7 @@ struct SessionList: View {
                             .frame(width: 25, height: 25, alignment: .center)
                             .padding(.top, 17)
                             .padding(.trailing, 20)
-                            .foregroundColor(Color("DarkGrey"))
+                            .foregroundColor(Color("TextColor"))
                     }).sheet(isPresented: $showingInfo) {
                         InformationView()
                     }
@@ -100,8 +101,8 @@ struct SessionList: View {
                         Text("Record new session")
                             .font(.title3)
                             .padding(20)
-                            .background(Color("DarkGrey"))
-                            .foregroundColor(Color.white)
+                            .background(Color("TextColor"))
+                            .foregroundColor(Color("LightColor"))
                             .cornerRadius(35)
                             .padding(20)
                     })

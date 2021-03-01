@@ -28,7 +28,7 @@ This app lets you record video and depth datasets using the camera and LIDAR sca
                 bodyText("""
 The recorded datasets can be transfered to your desktop computer by connecting your device to it with the lightning cable.
 
-On Mac, you can access the files through Finder. In the sidebar, select your device. Under the "Files" tab, you should see an entry for StrayScanner. Expand it, then drag the files to the desired location.
+On Mac, you can access the files through Finder. In the sidebar, select your device. Under the "Files" tab, you should see an entry for StrayScanner. Expand it, then drag the folders to the desired location. There is one folder per dataset, each named after a random alphanumerical hash.
 
 On Windows, you should be able to access the files through iTunes.
 """)
@@ -39,13 +39,12 @@ On Windows, you should be able to access the files through iTunes.
                 
                 link(text: "Usage example", destination: "https://keke.dev")
                 
-                
                 heading("Disclaimer")
                 
                 bodyText("""
-This app is provided as is.
+This application is provided as is.
 
-In no event shall the authors or copyright holders be liable for any claim, damages or other liability arising from using the app or in connection with using the software.
+In no event shall the authors or copyright holders be liable for any claim, damages or other liability arising from using, or in connection with using the software.
 """)
                 Spacer()
             }.padding(.all, paddingLeftRight)
