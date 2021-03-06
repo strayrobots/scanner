@@ -17,6 +17,18 @@ class SessionDetailViewModel: ObservableObject {
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         self.dataContext = appDelegate?.persistentContainer.viewContext
     }
+    
+    func title(recording: Recording) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .long
+        dateFormatter.timeStyle = .short
+        
+        if let created = recording.createdAt {
+            return dateFormatter.string(from: created)
+        } else {
+            return recording.name ?? "Recording"
+        }
+    }
 
     func delete(recording: Recording) {
         recording.deleteFiles()
@@ -37,19 +49,21 @@ struct SessionDetailView: View {
     let defaultUrl = URL(fileURLWithPath: "")
 
     var body: some View {
+        let width = UIScreen.main.bounds.size.width
+        let height = width * 0.75
         ZStack {
         Color("BackgroundColor")
             .edgesIgnoringSafeArea(.all)
         VStack {
             let player = AVPlayer(url: recording.absoluteRgbPath() ?? defaultUrl)
             VideoPlayer(player: player)
-                .frame(width: 390, height: 520)
+                .frame(width: width, height: height)
                 .padding(.horizontal, 0.0)
             Button(action: deleteItem) {
                 Text("Delete").foregroundColor(Color("DangerColor"))
             }
         }
-        .navigationBarTitle(recording.name ?? "Untitled")
+        .navigationBarTitle(viewModel.title(recording: recording))
         .background(Color("BackgroundColor"))
         }
     }
@@ -60,17 +74,17 @@ struct SessionDetailView: View {
     }
 }
 
-func createRecording() -> Recording {
-    let rec = Recording()
-    rec.id = UUID()
-    rec.name = "Placeholder name"
-    rec.createdAt = Date()
-    rec.duration = 30.0
-    return rec
-}
+
 
 struct SessionDetailView_Previews: PreviewProvider {
-    static var recording = createRecording()
+    static var recording: Recording = { () -> Recording in
+        let rec = Recording()
+        rec.id = UUID()
+        rec.name = "Placeholder name"
+        rec.createdAt = Date()
+        rec.duration = 30.0
+        return rec
+    }()
 
     static var previews: some View {
         SessionDetailView(recording: recording)
