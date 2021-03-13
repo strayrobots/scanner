@@ -49,7 +49,7 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
 
         depthView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(viewTapped)))
         rgbView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(viewTapped)))
-
+        
         setViewProperties()
         session.delegate = self
 
@@ -60,10 +60,6 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
 
     override func viewDidDisappear(_ animated: Bool) {
         session.pause();
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        startSession()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
