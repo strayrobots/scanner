@@ -18,6 +18,7 @@ class DatasetEncoder {
     }
     private let rgbEncoder: VideoEncoder
     private let depthEncoder: DepthEncoder
+    private let confidenceEncoder: ConfidenceEncoder
     private let datasetDirectory: URL
     private let odometryEncoder: OdometryEncoder
     private var lastFrame: ARFrame?
@@ -41,6 +42,8 @@ class DatasetEncoder {
         self.rgbEncoder = VideoEncoder(file: self.rgbFilePath, width: width, height: height)
         self.depthFilePath = datasetDirectory.appendingPathComponent("depth", isDirectory: true)
         self.depthEncoder = DepthEncoder(outDirectory: self.depthFilePath)
+        let confidenceFilePath = datasetDirectory.appendingPathComponent("confidence", isDirectory: true)
+        self.confidenceEncoder = ConfidenceEncoder(outDirectory: confidenceFilePath)
         self.cameraMatrixPath = datasetDirectory.appendingPathComponent("camera_matrix.csv", isDirectory: false)
         self.odometryPath = datasetDirectory.appendingPathComponent("odometry.csv", isDirectory: false)
         self.odometryEncoder = OdometryEncoder(url: self.odometryPath)
@@ -52,6 +55,9 @@ class DatasetEncoder {
         queue.async {
             if let sceneDepth = frame.sceneDepth {
                 self.depthEncoder.encodeFrame(frame: sceneDepth.depthMap)
+                if let confidence = sceneDepth.confidenceMap {
+                    self.confidenceEncoder.encodeFrame(frame: confidence)
+                }
             }
             self.odometryEncoder.add(frame: frame)
             self.lastFrame = frame
@@ -76,6 +82,13 @@ class DatasetEncoder {
             case .frameEncodingError:
                 status = .videoEncodingError
                 print("Something went wrong encoding depth.")
+        }
+        switch self.confidenceEncoder.status {
+            case .allGood:
+                status = .allGood
+            case .encodingError:
+                status = .videoEncodingError
+                print("Something went wrong encoding confidence values.")
         }
     }
 

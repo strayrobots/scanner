@@ -18,6 +18,35 @@
 		385999C625616F3000F3F681 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 385999C525616F3000F3F681 /* Assets.xcassets */; };
 		385999C925616F3000F3F681 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 385999C825616F3000F3F681 /* Preview Assets.xcassets */; };
 		385999CC25616F3000F3F681 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 385999CA25616F3000F3F681 /* LaunchScreen.storyboard */; };
+		3863FE5725FCAF6E00C1DA4F /* ConfidenceEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3863FE5625FCAF6E00C1DA4F /* ConfidenceEncoder.swift */; };
+		3863FE5D25FCBB0E00C1DA4F /* ConfidenceEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3863FE5625FCAF6E00C1DA4F /* ConfidenceEncoder.swift */; };
+		3863FE5E25FCBB0E00C1DA4F /* InformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387B57C125EC065600132903 /* InformationView.swift */; };
+		3863FE5F25FCBB0E00C1DA4F /* NewSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E969CA2572608E00054CC4 /* NewSession.swift */; };
+		3863FE6025FCBB0E00C1DA4F /* OdometryEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B43F2925C73BAE007F828B /* OdometryEncoder.swift */; };
+		3863FE6125FCBB0E00C1DA4F /* NPYArrayWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 387B57AB25EA63A400132903 /* NPYArrayWrapper.mm */; };
+		3863FE6225FCBB0E00C1DA4F /* RecordSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38FB730E2572A9FA007D9CB0 /* RecordSessionViewController.swift */; };
+		3863FE6325FCBB0E00C1DA4F /* SessionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38045D572561A7370004F23C /* SessionRow.swift */; };
+		3863FE6425FCBB0E00C1DA4F /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 38FB73152572AF63007D9CB0 /* Shaders.metal */; };
+		3863FE6525FCBB0E00C1DA4F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385999BC25616F2B00F3F681 /* AppDelegate.swift */; };
+		3863FE6625FCBB0E00C1DA4F /* SessionDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C17B22259D1C80006B3FDA /* SessionDetail.swift */; };
+		3863FE6725FCBB0E00C1DA4F /* VideoEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C17B1A259CEF0E006B3FDA /* VideoEncoder.swift */; };
+		3863FE6825FCBB0E00C1DA4F /* Stray_Scanner.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 385999C025616F2B00F3F681 /* Stray_Scanner.xcdatamodeld */; };
+		3863FE6925FCBB0E00C1DA4F /* SessionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38045D592561AC000004F23C /* SessionList.swift */; };
+		3863FE6A25FCBB0E00C1DA4F /* RecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386E277725991163007D023B /* RecordButton.swift */; };
+		3863FE6B25FCBB0E00C1DA4F /* DepthEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3816A18B25BDE21800E39246 /* DepthEncoder.swift */; };
+		3863FE6C25FCBB0E00C1DA4F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385999BE25616F2B00F3F681 /* SceneDelegate.swift */; };
+		3863FE6D25FCBB0E00C1DA4F /* cnpy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 387B576B25EA566D00132903 /* cnpy.cpp */; };
+		3863FE6E25FCBB0E00C1DA4F /* Recording+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C17B11259BE1DA006B3FDA /* Recording+CoreDataProperties.swift */; };
+		3863FE6F25FCBB0E00C1DA4F /* Recording+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C17B10259BE1DA006B3FDA /* Recording+CoreDataClass.swift */; };
+		3863FE7025FCBB0E00C1DA4F /* DatasetEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AE645B25A08286007E4EC0 /* DatasetEncoder.swift */; };
+		3863FE7125FCBB0E00C1DA4F /* CameraRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B54AE9258FB066009506AF /* CameraRenderer.swift */; };
+		3863FE7225FCBB0E00C1DA4F /* AppDaemon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E054E425B4C5B900A66A48 /* AppDaemon.swift */; };
+		3863FE7425FCBB0E00C1DA4F /* Pods_StrayScanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBC054EDDA47FB8A717AA671 /* Pods_StrayScanner.framework */; };
+		3863FE7625FCBB0E00C1DA4F /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3872B88825962BBA00A3370C /* Colors.xcassets */; };
+		3863FE7725FCBB0E00C1DA4F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 385999CA25616F3000F3F681 /* LaunchScreen.storyboard */; };
+		3863FE7825FCBB0E00C1DA4F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 385999C825616F3000F3F681 /* Preview Assets.xcassets */; };
+		3863FE7925FCBB0E00C1DA4F /* RecordSessionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 380B9188259B39E300580D30 /* RecordSessionView.xib */; };
+		3863FE7A25FCBB0E00C1DA4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 385999C525616F3000F3F681 /* Assets.xcassets */; };
 		386E277825991163007D023B /* RecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386E277725991163007D023B /* RecordButton.swift */; };
 		3872B88925962BBA00A3370C /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3872B88825962BBA00A3370C /* Colors.xcassets */; };
 		387B576C25EA566D00132903 /* cnpy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 387B576B25EA566D00132903 /* cnpy.cpp */; };
@@ -62,6 +91,9 @@
 		385999C825616F3000F3F681 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		385999CB25616F3000F3F681 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		385999CD25616F3000F3F681 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3863FE5625FCAF6E00C1DA4F /* ConfidenceEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfidenceEncoder.swift; sourceTree = "<group>"; };
+		3863FE7E25FCBB0E00C1DA4F /* StrayScanner debug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "StrayScanner debug.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3863FE8225FCBB0F00C1DA4F /* StrayScanner copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "StrayScanner copy-Info.plist"; path = "/Users/kennethblomqvist/Hack/scanner/StrayScanner copy-Info.plist"; sourceTree = "<absolute>"; };
 		386E277725991163007D023B /* RecordButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordButton.swift; sourceTree = "<group>"; };
 		3872B88825962BBA00A3370C /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		387B576925EA564C00132903 /* cnpy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = cnpy.h; path = cnpy/cnpy.h; sourceTree = "<group>"; };
@@ -95,6 +127,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				24B9204E08E8610D3CB4F2CB /* Pods_StrayScanner.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3863FE7325FCBB0E00C1DA4F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3863FE7425FCBB0E00C1DA4F /* Pods_StrayScanner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -156,6 +196,7 @@
 				385999BA25616F2B00F3F681 /* Products */,
 				0905A155A958CE7B22575DF5 /* Pods */,
 				41382767AE5D9ABDCEFAD16D /* Frameworks */,
+				3863FE8225FCBB0F00C1DA4F /* StrayScanner copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -164,6 +205,7 @@
 			children = (
 				385999B925616F2B00F3F681 /* StrayScanner.app */,
 				387B577E25EA5BB900132903 /* StrayScannerTests.xctest */,
+				3863FE7E25FCBB0E00C1DA4F /* StrayScanner debug.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -235,6 +277,7 @@
 				38AE645B25A08286007E4EC0 /* DatasetEncoder.swift */,
 				38E054E425B4C5B900A66A48 /* AppDaemon.swift */,
 				3816A18B25BDE21800E39246 /* DepthEncoder.swift */,
+				3863FE5625FCAF6E00C1DA4F /* ConfidenceEncoder.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -283,6 +326,24 @@
 			name = StrayScanner;
 			productName = StrayScanner;
 			productReference = 385999B925616F2B00F3F681 /* StrayScanner.app */;
+			productType = "com.apple.product-type.application";
+		};
+		3863FE5A25FCBB0E00C1DA4F /* StrayScanner debug */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3863FE7B25FCBB0E00C1DA4F /* Build configuration list for PBXNativeTarget "StrayScanner debug" */;
+			buildPhases = (
+				3863FE5B25FCBB0E00C1DA4F /* [CP] Check Pods Manifest.lock */,
+				3863FE5C25FCBB0E00C1DA4F /* Sources */,
+				3863FE7325FCBB0E00C1DA4F /* Frameworks */,
+				3863FE7525FCBB0E00C1DA4F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "StrayScanner debug";
+			productName = StrayScanner;
+			productReference = 3863FE7E25FCBB0E00C1DA4F /* StrayScanner debug.app */;
 			productType = "com.apple.product-type.application";
 		};
 		387B577D25EA5BB900132903 /* StrayScannerTests */ = {
@@ -338,6 +399,7 @@
 			targets = (
 				385999B825616F2A00F3F681 /* StrayScanner */,
 				387B577D25EA5BB900132903 /* StrayScannerTests */,
+				3863FE5A25FCBB0E00C1DA4F /* StrayScanner debug */,
 			);
 		};
 /* End PBXProject section */
@@ -355,6 +417,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3863FE7525FCBB0E00C1DA4F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3863FE7625FCBB0E00C1DA4F /* Colors.xcassets in Resources */,
+				3863FE7725FCBB0E00C1DA4F /* LaunchScreen.storyboard in Resources */,
+				3863FE7825FCBB0E00C1DA4F /* Preview Assets.xcassets in Resources */,
+				3863FE7925FCBB0E00C1DA4F /* RecordSessionView.xib in Resources */,
+				3863FE7A25FCBB0E00C1DA4F /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		387B577C25EA5BB900132903 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -365,6 +439,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		3863FE5B25FCBB0E00C1DA4F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-StrayScanner-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		4DB8A597843EA39DA438F658 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -394,6 +490,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3863FE5725FCAF6E00C1DA4F /* ConfidenceEncoder.swift in Sources */,
 				387B57C225EC065600132903 /* InformationView.swift in Sources */,
 				38E969CB2572608E00054CC4 /* NewSession.swift in Sources */,
 				38B43F2A25C73BB8007F828B /* OdometryEncoder.swift in Sources */,
@@ -415,6 +512,35 @@
 				38AE645C25A08286007E4EC0 /* DatasetEncoder.swift in Sources */,
 				38B54AEA258FB066009506AF /* CameraRenderer.swift in Sources */,
 				38E054E525B4C5B900A66A48 /* AppDaemon.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3863FE5C25FCBB0E00C1DA4F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3863FE5D25FCBB0E00C1DA4F /* ConfidenceEncoder.swift in Sources */,
+				3863FE5E25FCBB0E00C1DA4F /* InformationView.swift in Sources */,
+				3863FE5F25FCBB0E00C1DA4F /* NewSession.swift in Sources */,
+				3863FE6025FCBB0E00C1DA4F /* OdometryEncoder.swift in Sources */,
+				3863FE6125FCBB0E00C1DA4F /* NPYArrayWrapper.mm in Sources */,
+				3863FE6225FCBB0E00C1DA4F /* RecordSessionViewController.swift in Sources */,
+				3863FE6325FCBB0E00C1DA4F /* SessionRow.swift in Sources */,
+				3863FE6425FCBB0E00C1DA4F /* Shaders.metal in Sources */,
+				3863FE6525FCBB0E00C1DA4F /* AppDelegate.swift in Sources */,
+				3863FE6625FCBB0E00C1DA4F /* SessionDetail.swift in Sources */,
+				3863FE6725FCBB0E00C1DA4F /* VideoEncoder.swift in Sources */,
+				3863FE6825FCBB0E00C1DA4F /* Stray_Scanner.xcdatamodeld in Sources */,
+				3863FE6925FCBB0E00C1DA4F /* SessionList.swift in Sources */,
+				3863FE6A25FCBB0E00C1DA4F /* RecordButton.swift in Sources */,
+				3863FE6B25FCBB0E00C1DA4F /* DepthEncoder.swift in Sources */,
+				3863FE6C25FCBB0E00C1DA4F /* SceneDelegate.swift in Sources */,
+				3863FE6D25FCBB0E00C1DA4F /* cnpy.cpp in Sources */,
+				3863FE6E25FCBB0E00C1DA4F /* Recording+CoreDataProperties.swift in Sources */,
+				3863FE6F25FCBB0E00C1DA4F /* Recording+CoreDataClass.swift in Sources */,
+				3863FE7025FCBB0E00C1DA4F /* DatasetEncoder.swift in Sources */,
+				3863FE7125FCBB0E00C1DA4F /* CameraRenderer.swift in Sources */,
+				3863FE7225FCBB0E00C1DA4F /* AppDaemon.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -619,6 +745,58 @@
 			};
 			name = Release;
 		};
+		3863FE7C25FCBB0E00C1DA4F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AC52749A3B5AED09C9753120 /* Pods-StrayScanner.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"StrayScanner/Preview Content\"";
+				DEVELOPMENT_TEAM = 994C2WLGU3;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "StrayScanner copy-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.keke.StrayScannerDebug;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = StrayScanner/BridgeHeader.h;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		3863FE7D25FCBB0E00C1DA4F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 09A6D95A8151C51C3ECF4131 /* Pods-StrayScanner.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"StrayScanner/Preview Content\"";
+				DEVELOPMENT_TEAM = 994C2WLGU3;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "StrayScanner copy-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.keke.StrayScannerDebug;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = StrayScanner/BridgeHeader.h;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 		387B578625EA5BB900132903 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -683,6 +861,15 @@
 			buildConfigurations = (
 				385999DC25616F3100F3F681 /* Debug */,
 				385999DD25616F3100F3F681 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3863FE7B25FCBB0E00C1DA4F /* Build configuration list for PBXNativeTarget "StrayScanner debug" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3863FE7C25FCBB0E00C1DA4F /* Debug */,
+				3863FE7D25FCBB0E00C1DA4F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
