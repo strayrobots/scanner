@@ -28,6 +28,7 @@ class VideoEncoder {
     public let height: CGFloat
     private let systemBootedAt: TimeInterval
     private var done: Bool = false
+    private var previousFrame: Int = -1
     public var filePath: URL
     public var status: EncodingStatus = EncodingStatus.allGood
 
@@ -43,7 +44,9 @@ class VideoEncoder {
         self.doneRecording()
     }
 
-    func add(frame: VideoEncoderInput) {
+    func add(frame: VideoEncoderInput, currentFrame: Int) {
+        assert(currentFrame == (previousFrame + 1), "Skipped an rgb frame.")
+        previousFrame = currentFrame
         while !videoWriterInput!.isReadyForMoreMediaData {
             print("Sleeping.")
             Thread.sleep(until: Date() + TimeInterval(0.01))
@@ -79,7 +82,6 @@ class VideoEncoder {
     private func encode(frame: VideoEncoderInput) {
         let image: CVPixelBuffer = frame.buffer
         let time = CMTime(seconds: frame.time - self.systemBootedAt, preferredTimescale: timeScale)
-        print("Time: \(frame.time)")
         let success = videoAdapter!.append(image, withPresentationTime: time)
         if !success {
             print("Pixel buffer could not be appended. \(videoWriter!.error!.localizedDescription)")

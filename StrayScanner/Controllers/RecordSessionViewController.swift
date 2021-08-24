@@ -11,6 +11,7 @@ import UIKit
 import Metal
 import ARKit
 import CoreData
+import CoreMotion
 
 class MetalView : UIView {
     override class var layerClass: AnyClass {
@@ -27,11 +28,13 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     private var unsupported: Bool = false
     private var arConfiguration: ARWorldTrackingConfiguration?
     private let session = ARSession()
+    private let motionManager = CMMotionManager()
     private var renderer: CameraRenderer?
     private var updateLabelTimer: Timer?
     private var startedRecording: Date?
     private var dataContext: NSManagedObjectContext!
     private var datasetEncoder: DatasetEncoder?
+    private let imuOperationQueue = OperationQueue()
     @IBOutlet private var rgbView: MetalView!
     @IBOutlet private var depthView: MetalView!
     @IBOutlet private var recordButton: RecordButton!
@@ -56,6 +59,8 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         recordButton.setCallback { (recording: Bool) in
             self.toggleRecording(recording)
         }
+        
+        imuOperationQueue.qualityOfService = .userInitiated
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -82,6 +87,23 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
             session.run(config)
         }
     }
+    
+    private func startAccelerometer() {
+        if self.motionManager.isAccelerometerAvailable {
+            self.motionManager.deviceMotionUpdateInterval = 1.0 / 1200.0
+            self.motionManager.startDeviceMotionUpdates(to: imuOperationQueue, withHandler: motionHandler)
+        }
+    }
+    
+    private func stopAccelerometer() {
+        self.motionManager.stopDeviceMotionUpdates()
+    }
+    
+    private func motionHandler(motion: CMDeviceMotion?, error: Error?) -> Void {
+        if motion != nil && datasetEncoder != nil {
+            datasetEncoder!.addIMU(motion: motion!)
+        }
+    }
 
     private func toggleRecording(_ recording: Bool) {
         if unsupported {
@@ -104,6 +126,7 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
             self.updateTime()
         }
         datasetEncoder = DatasetEncoder(arConfiguration: arConfiguration!)
+        startAccelerometer()
     }
 
     private func stopRecording() {
@@ -114,6 +137,7 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         startedRecording = nil
         updateLabelTimer?.invalidate()
         updateLabelTimer = nil
+        stopAccelerometer()
         datasetEncoder?.wrapUp()
         if let encoder = datasetEncoder {
             switch encoder.status {

@@ -9,6 +9,7 @@
 import Foundation
 import ARKit
 import CryptoKit
+import CoreMotion
 
 class DatasetEncoder {
     enum Status {
@@ -21,18 +22,22 @@ class DatasetEncoder {
     private let confidenceEncoder: ConfidenceEncoder
     private let datasetDirectory: URL
     private let odometryEncoder: OdometryEncoder
+    private let imuEncoder: IMUEncoder
     private var lastFrame: ARFrame?
     private var dispatchGroup = DispatchGroup()
+    private var currentFrame: Int = 0
     public let id: UUID
     public let rgbFilePath: URL // Relative to app document directory.
     public let depthFilePath: URL // Relative to app document directory.
     public let cameraMatrixPath: URL
     public let odometryPath: URL
+    public let imuPath: URL
     public var status = Status.allGood
     private let queue: DispatchQueue
 
     init(arConfiguration: ARWorldTrackingConfiguration) {
-        self.queue = DispatchQueue.global(qos: .default)
+        self.queue = DispatchQueue(label: "encoderQueue")
+        
         let width = arConfiguration.videoFormat.imageResolution.width
         let height = arConfiguration.videoFormat.imageResolution.height
         var theId: UUID = UUID()
@@ -47,28 +52,45 @@ class DatasetEncoder {
         self.cameraMatrixPath = datasetDirectory.appendingPathComponent("camera_matrix.csv", isDirectory: false)
         self.odometryPath = datasetDirectory.appendingPathComponent("odometry.csv", isDirectory: false)
         self.odometryEncoder = OdometryEncoder(url: self.odometryPath)
+        self.imuPath = datasetDirectory.appendingPathComponent("imu.csv", isDirectory: false)
+        self.imuEncoder = IMUEncoder(url: self.imuPath)
     }
 
     func add(frame: ARFrame) {
-        self.rgbEncoder.add(frame: VideoEncoderInput(buffer: frame.capturedImage, time: frame.timestamp))
+        let frameNumber: Int = currentFrame
         dispatchGroup.enter()
         queue.async {
             if let sceneDepth = frame.sceneDepth {
-                self.depthEncoder.encodeFrame(frame: sceneDepth.depthMap)
+                self.depthEncoder.encodeFrame(frame: sceneDepth.depthMap, currentFrame: frameNumber)
                 if let confidence = sceneDepth.confidenceMap {
-                    self.confidenceEncoder.encodeFrame(frame: confidence)
+                    self.confidenceEncoder.encodeFrame(frame: confidence, currentFrame: frameNumber)
+                } else {
+                    print("warning: confidence map missing.")
                 }
+            } else {
+                print("warning: scene depth missing.")
             }
-            self.odometryEncoder.add(frame: frame)
+            self.rgbEncoder.add(frame: VideoEncoderInput(buffer: frame.capturedImage, time: frame.timestamp), currentFrame: frameNumber)
+            self.odometryEncoder.add(frame: frame, currentFrame: frameNumber)
             self.lastFrame = frame
             self.dispatchGroup.leave()
         }
+        currentFrame = currentFrame + 1
+    }
+    
+    func addIMU(motion: CMDeviceMotion) -> Void {
+        let rotationRate: simd_double3 = simd_double3(motion.rotationRate.x, motion.rotationRate.y, motion.rotationRate.z)
+        let acceleration: simd_double3 = simd_double3(motion.userAcceleration.x, motion.userAcceleration.y, motion.userAcceleration.z)
+        let gravity: simd_double3 = simd_double3(motion.gravity.x, motion.gravity.y, motion.gravity.z)
+        let a = acceleration + gravity
+        imuEncoder.add(timestamp: motion.timestamp, linear: a, angular: rotationRate)
     }
 
     func wrapUp() {
         dispatchGroup.wait()
         self.rgbEncoder.finishEncoding()
-        self.odometryEncoder.write()
+        self.imuEncoder.done()
+        self.odometryEncoder.done()
         writeIntrinsics()
         switch self.rgbEncoder.status {
             case .allGood:

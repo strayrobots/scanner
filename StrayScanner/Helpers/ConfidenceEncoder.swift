@@ -14,9 +14,9 @@ class ConfidenceEncoder {
         case allGood
         case encodingError
     }
-    private var currentFrame: UInt = 0
     private let baseDirectory: URL
     private let ciContext: CIContext
+    private var previousFrame: Int = -1
     public var status: Status = Status.allGood
 
     init(outDirectory: URL) {
@@ -30,20 +30,19 @@ class ConfidenceEncoder {
         }
     }
 
-    func encodeFrame(frame: CVPixelBuffer) {
+    func encodeFrame(frame: CVPixelBuffer, currentFrame: Int) {
+        assert((previousFrame+1) == currentFrame, "Confidence skipped a frame. \(previousFrame+1) != \(currentFrame)")
+        previousFrame = currentFrame
         let filename = String(format: "%06d", currentFrame)
-        currentFrame += 1
-        DispatchQueue.global(qos: .background).async {
-            let image = CIImage(cvPixelBuffer: frame)
-            assert(CVPixelBufferGetPixelFormatType(frame) == kCVPixelFormatType_OneComponent8)
-            let framePath = self.baseDirectory.absoluteURL.appendingPathComponent(filename, isDirectory: false).appendingPathExtension("png")
+        let image = CIImage(cvPixelBuffer: frame)
+        assert(CVPixelBufferGetPixelFormatType(frame) == kCVPixelFormatType_OneComponent8)
+        let framePath = self.baseDirectory.absoluteURL.appendingPathComponent(filename, isDirectory: false).appendingPathExtension("png")
 
-            if let colorSpace = CGColorSpace(name: CGColorSpace.extendedGray) {
-                do {
-                    try self.ciContext.writePNGRepresentation(of: image, to: framePath, format: CIFormat.L8, colorSpace: colorSpace)
-                } catch let error {
-                    print("Could not save confidence value. \(error.localizedDescription)")
-                }
+        if let colorSpace = CGColorSpace(name: CGColorSpace.extendedGray) {
+            do {
+                try self.ciContext.writePNGRepresentation(of: image, to: framePath, format: CIFormat.L8, colorSpace: colorSpace)
+            } catch let error {
+                print("Could not save confidence value. \(error.localizedDescription)")
             }
         }
     }

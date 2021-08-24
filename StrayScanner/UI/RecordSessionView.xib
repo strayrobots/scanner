@@ -24,14 +24,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="top" translatesAutoresizingMaskIntoConstraints="NO" id="hCd-f8-w77" userLabel="DepthView" customClass="MetalView" customModule="StrayScanner" customModuleProvider="target">
-                    <rect key="frame" x="-26" y="44" width="442" height="588"/>
+                    <rect key="frame" x="-25.666666666666657" y="44" width="441.33333333333326" height="588"/>
                     <color key="backgroundColor" name="MediumGrey"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="hCd-f8-w77" secondAttribute="height" multiplier="1440:1920" id="ki7-KE-kpm"/>
                     </constraints>
                 </view>
                 <view hidden="YES" tag="1" contentMode="top" translatesAutoresizingMaskIntoConstraints="NO" id="qwG-2k-qYO" userLabel="RGBView" customClass="MetalView" customModule="StrayScanner" customModuleProvider="target">
-                    <rect key="frame" x="-26" y="44" width="442" height="588"/>
+                    <rect key="frame" x="-25.666666666666657" y="44" width="441.33333333333326" height="588"/>
                     <color key="backgroundColor" name="MediumGrey"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="qwG-2k-qYO" secondAttribute="height" multiplier="1440:1920" id="SmV-5Z-Xkh"/>
@@ -46,7 +46,7 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CWu-F8-lfZ">
-                    <rect key="frame" x="174" y="637" width="200" height="27"/>
+                    <rect key="frame" x="174" y="637" width="200" height="27.333333333333371"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="200" id="KhQ-eW-fvg"/>
                     </constraints>

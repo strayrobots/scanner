@@ -35,10 +35,10 @@ On Windows, you should be able to access the files through iTunes.
 
                 heading("Using The Data")
                 
-                bodyText("Below is a Python script which uses Open3D to make a 3D reconstruction of the scene. Here is also a detailed description of the data model.")
+                bodyText("Below is a link to an example project which visualizes the data collected by the app. You can use that as a reference and starting point for your own applications. Below, is a detailed description of the collected data.")
                 
-                link(text: "Example script", destination: "https://gist.github.com/kekeblom/f0e7925d514db3c733df8bc30dc1ff4b")
-                link(text: "Data model", destination: "https://www.notion.so/Stray-Scanner-Data-Model-aea95b702b484d41b2de12d2e90781ce")
+                link(text: "Usage examples and tools", destination: "https://github.com/kekeblom/StrayVisualizer")
+                link(text: "Data model", destination: "https://github.com/kekeblom/StrayVisualizer/wiki/Stray-Scanner-Data-Model")
                     
                 }
                 Group {

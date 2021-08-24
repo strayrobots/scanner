@@ -15,7 +15,6 @@ class DepthEncoder {
         case allGood
         case frameEncodingError
     }
-    private var currentFrame: UInt = 0
     private let baseDirectory: URL
     public var status: Status = Status.allGood
 
@@ -29,18 +28,15 @@ class DepthEncoder {
         }
     }
 
-    func encodeFrame(frame: CVPixelBuffer) {
+    func encodeFrame(frame: CVPixelBuffer, currentFrame: Int) {
         let filename = String(format: "%06d", currentFrame)
-        currentFrame += 1
-        DispatchQueue.global(qos: .background).async {
-            let npyArray = self.convert(frame: frame)
-            let data = npyArray.npyFileContents()
-            let framePath = self.baseDirectory.absoluteURL.appendingPathComponent(filename, isDirectory: false).appendingPathExtension("npy")
-            do {
-                try data?.write(to: framePath)
-            } catch let error {
-                print("Could not save depth image. \(error.localizedDescription)")
-            }
+        let npyArray = self.convert(frame: frame)
+        let data = npyArray.npyFileContents()
+        let framePath = self.baseDirectory.absoluteURL.appendingPathComponent(filename, isDirectory: false).appendingPathExtension("npy")
+        do {
+            try data?.write(to: framePath)
+        } catch let error {
+            print("Could not save depth image \(currentFrame). \(error.localizedDescription)")
         }
     }
 
