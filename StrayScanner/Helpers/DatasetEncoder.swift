@@ -82,7 +82,7 @@ class DatasetEncoder {
         let rotationRate: simd_double3 = simd_double3(motion.rotationRate.x, motion.rotationRate.y, motion.rotationRate.z)
         let acceleration: simd_double3 = simd_double3(motion.userAcceleration.x, motion.userAcceleration.y, motion.userAcceleration.z)
         let gravity: simd_double3 = simd_double3(motion.gravity.x, motion.gravity.y, motion.gravity.z)
-        let a = acceleration + gravity
+        let a = (acceleration + gravity) * 9.81
         imuEncoder.add(timestamp: motion.timestamp, linear: a, angular: rotationRate)
     }
 

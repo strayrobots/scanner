@@ -23,7 +23,7 @@ class VideoEncoder {
     private var videoWriter: AVAssetWriter?
     private var videoWriterInput: AVAssetWriterInput?
     private var videoAdapter: AVAssetWriterInputPixelBufferAdaptor?
-    private let timeScale = CMTimeScale(600)
+    private let timeScale = CMTimeScale(60)
     public let width: CGFloat
     public let height: CGFloat
     private let systemBootedAt: TimeInterval
@@ -51,7 +51,7 @@ class VideoEncoder {
             print("Sleeping.")
             Thread.sleep(until: Date() + TimeInterval(0.01))
         }
-        encode(frame: frame)
+        encode(frame: frame, frameNumber: currentFrame)
     }
 
     private func initializeFile() {
@@ -65,6 +65,7 @@ class VideoEncoder {
             let input = AVAssetWriterInput(mediaType: .video, outputSettings: settings)
             input.expectsMediaDataInRealTime = true
             input.mediaTimeScale = timeScale
+            input.performsMultiPassEncodingIfSupported = false
             videoAdapter = createVideoAdapter(input)
             if videoWriter!.canAdd(input) {
                 videoWriter!.add(input)
@@ -79,9 +80,9 @@ class VideoEncoder {
         }
     }
 
-    private func encode(frame: VideoEncoderInput) {
+    private func encode(frame: VideoEncoderInput, frameNumber: Int) {
         let image: CVPixelBuffer = frame.buffer
-        let time = CMTime(seconds: frame.time - self.systemBootedAt, preferredTimescale: timeScale)
+        let time = CMTime(value: Int64(frameNumber), timescale: timeScale)
         let success = videoAdapter!.append(image, withPresentationTime: time)
         if !success {
             print("Pixel buffer could not be appended. \(videoWriter!.error!.localizedDescription)")
