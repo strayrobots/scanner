@@ -61,6 +61,7 @@
 		387B57B925EA680200132903 /* NPYArrayWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 387B57AB25EA63A400132903 /* NPYArrayWrapper.mm */; };
 		387B57BC25EA680300132903 /* NPYArrayWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 387B57AB25EA63A400132903 /* NPYArrayWrapper.mm */; };
 		387B57C225EC065600132903 /* InformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387B57C125EC065600132903 /* InformationView.swift */; };
+		38ABA53D26D6323A002169BD /* Info-debug.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38ABA53C26D63239002169BD /* Info-debug.plist */; };
 		38C17B12259BE1DA006B3FDA /* Recording+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C17B10259BE1DA006B3FDA /* Recording+CoreDataClass.swift */; };
 		38C17B13259BE1DA006B3FDA /* Recording+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C17B11259BE1DA006B3FDA /* Recording+CoreDataProperties.swift */; };
 		38C17B23259D1C80006B3FDA /* SessionDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C17B22259D1C80006B3FDA /* SessionDetail.swift */; };
@@ -93,7 +94,6 @@
 		385999CB25616F3000F3F681 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		385999CD25616F3000F3F681 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3863FE7E25FCBB0E00C1DA4F /* StrayScanner debug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "StrayScanner debug.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3863FE8225FCBB0F00C1DA4F /* StrayScanner copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "StrayScanner copy-Info.plist"; path = "/Users/kennethblomqvist/Hack/scanner/StrayScanner copy-Info.plist"; sourceTree = "<absolute>"; };
 		38694C6C26D2C66F00546EA1 /* DatasetEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatasetEncoder.swift; sourceTree = "<group>"; };
 		38694C6D26D2C66F00546EA1 /* ConfidenceEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfidenceEncoder.swift; sourceTree = "<group>"; };
 		38694C6E26D2C66F00546EA1 /* VideoEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoEncoder.swift; sourceTree = "<group>"; };
@@ -112,6 +112,7 @@
 		387B57AB25EA63A400132903 /* NPYArrayWrapper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = NPYArrayWrapper.mm; path = cnpy/NPYArrayWrapper.mm; sourceTree = "<group>"; };
 		387B57B025EA63BE00132903 /* NPYArrayWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NPYArrayWrapper.h; path = cnpy/NPYArrayWrapper.h; sourceTree = "<group>"; };
 		387B57C125EC065600132903 /* InformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationView.swift; sourceTree = "<group>"; };
+		38ABA53C26D63239002169BD /* Info-debug.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-debug.plist"; sourceTree = "<group>"; };
 		38C17B10259BE1DA006B3FDA /* Recording+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Recording+CoreDataClass.swift"; sourceTree = "<group>"; };
 		38C17B11259BE1DA006B3FDA /* Recording+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Recording+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		38C17B22259D1C80006B3FDA /* SessionDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionDetail.swift; sourceTree = "<group>"; };
@@ -199,7 +200,6 @@
 				385999BA25616F2B00F3F681 /* Products */,
 				0905A155A958CE7B22575DF5 /* Pods */,
 				41382767AE5D9ABDCEFAD16D /* Frameworks */,
-				3863FE8225FCBB0F00C1DA4F /* StrayScanner copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -228,6 +228,7 @@
 				385999BE25616F2B00F3F681 /* SceneDelegate.swift */,
 				385999C525616F3000F3F681 /* Assets.xcassets */,
 				385999CD25616F3000F3F681 /* Info.plist */,
+				38ABA53C26D63239002169BD /* Info-debug.plist */,
 				385999C025616F2B00F3F681 /* Stray_Scanner.xcdatamodeld */,
 				385999C725616F3000F3F681 /* Preview Content */,
 			);
@@ -425,6 +426,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38ABA53D26D6323A002169BD /* Info-debug.plist in Resources */,
 				3863FE7625FCBB0E00C1DA4F /* Colors.xcassets in Resources */,
 				3863FE7725FCBB0E00C1DA4F /* LaunchScreen.storyboard in Resources */,
 				3863FE7825FCBB0E00C1DA4F /* Preview Assets.xcassets in Resources */,
@@ -763,7 +765,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"StrayScanner/Preview Content\"";
 				DEVELOPMENT_TEAM = 994C2WLGU3;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = "StrayScanner copy-Info.plist";
+				INFOPLIST_FILE = "StrayScanner/Info-debug.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -789,7 +791,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"StrayScanner/Preview Content\"";
 				DEVELOPMENT_TEAM = 994C2WLGU3;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = "StrayScanner copy-Info.plist";
+				INFOPLIST_FILE = "StrayScanner/Info-debug.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
