@@ -23,28 +23,31 @@ struct InformationView: View {
 This app lets you record video and depth datasets using the camera and LIDAR scanner.
 """)
 
-                heading("Transfering Datasets To Your Desktop")
+                heading("Transfering Datasets To Your Desktop Computer")
                 
                 bodyText("""
-The recorded datasets can be transferred to your desktop computer by connecting your device to it with the lightning cable.
+The recorded datasets can be exported by connecting your device to it with the lightning cable.
 
-On Mac, you can access the files through Finder. In the sidebar, select your device. Under the "Files" tab, you should see an entry for StrayScanner. Expand it, then drag the folders to the desired location. There is one folder per dataset, each named after a random alphanumerical hash.
+On Mac, you can access the files through Finder. In the sidebar, select your device. Under the "Files" tab, you should see an entry for Stray Scanner. Expand it, then drag the folders to the desired location. There is one folder per dataset, each named after a random alphanumerical hash.
 
-On Windows, you should be able to access the files through iTunes.
+On Windows, you can access the files through iTunes.
+
+Alternatively, you can access the data in the Files app under "Browse > On My iPhone > Stray Scanner" and export them to another app or move them to your iCloud drive.
 """)
+                link(text: "Exporting Data in Docs", destination: "https://docs.strayrobots.io/apps/scanner/export.html")
 
                 heading("Using The Data")
                 
                 bodyText("Below is a link to an example project which visualizes the data collected by the app. You can use that as a reference and starting point for your own applications. Below, is a detailed description of the collected data.")
                 
                 link(text: "Usage examples and tools", destination: "https://github.com/kekeblom/StrayVisualizer")
-                link(text: "Data model", destination: "https://github.com/kekeblom/StrayVisualizer/wiki/Stray-Scanner-Data-Model")
+                link(text: "Data model", destination: "https://docs.strayrobots.io/apps/scanner/format.html")
                     
                 }
                 Group {
                 heading("Privacy Policy")
 
-                bodyText("We do not track you. All of the data you record is stored on your device. We never call home or otherwise collect data about how you use the app.")
+                bodyText("We do not track you. All of the data you record is stored on your device. We don't call home or otherwise collect data about how you use the app.")
 
                 link(text: "Privacy policy", destination: "https://www.notion.so/Privacy-Policy-f1a6b1bcf7ed48098ffe2f50281e5c34")
 
