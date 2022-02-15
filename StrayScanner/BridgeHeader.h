@@ -9,6 +9,6 @@
 #ifndef BridgeHeader_h
 #define BridgeHeader_h
 #include "ShaderTypes.h"
-#include "NPYArrayWrapper.h"
+#include "PngEncoder.h"
 
 #endif /* BridgeHeader_h */

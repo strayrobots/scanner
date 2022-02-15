@@ -64,7 +64,6 @@ class DatasetEncoder {
         let frameNumber: Int = savedFrames
         currentFrame = currentFrame + 1
         if (currentFrame % frameInterval != 0) {
-            print("Skipping frame \(currentFrame)")
             return
         }
         dispatchGroup.enter()

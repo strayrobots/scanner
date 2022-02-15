@@ -30,18 +30,17 @@ class DepthEncoder {
 
     func encodeFrame(frame: CVPixelBuffer, frameNumber: Int) {
         let filename = String(format: "%06d", frameNumber)
-        let npyArray = self.convert(frame: frame)
-        let data = npyArray.npyFileContents()
-        let framePath = self.baseDirectory.absoluteURL.appendingPathComponent(filename, isDirectory: false).appendingPathExtension("npy")
+        let encoder = self.convert(frame: frame)
+        let data = encoder.fileContents()
+        let framePath = self.baseDirectory.absoluteURL.appendingPathComponent(filename, isDirectory: false).appendingPathExtension("png")
         do {
             try data?.write(to: framePath)
         } catch let error {
             print("Could not save depth image \(frameNumber). \(error.localizedDescription)")
         }
     }
-
-    private func convert(frame: CVPixelBuffer) -> NPYArrayWrapper {
-        // Converts a CVPixelBuffer from the depth camera to a numpy array.
+    
+    private func convert(frame: CVPixelBuffer) -> PngEncoder {
         assert(CVPixelBufferGetPixelFormatType(frame) == kCVPixelFormatType_DepthFloat32)
         let height = CVPixelBufferGetHeight(frame)
         let width = CVPixelBufferGetWidth(frame)
@@ -49,10 +48,8 @@ class DepthEncoder {
         let inBase = CVPixelBufferGetBaseAddress(frame)
         let inPixelData = inBase!.assumingMemoryBound(to: Float32.self)
         
-        let outArray = NPYArrayWrapper.init(depth: inPixelData, width: Int32(width), height: Int32(height))!
-        
+        let out = PngEncoder.init(depth: inPixelData, width: Int32(width), height: Int32(height))!
         CVPixelBufferUnlockBaseAddress(frame, CVPixelBufferLockFlags(rawValue: 0))
-
-        return outArray;
+        return out
     }
 }
