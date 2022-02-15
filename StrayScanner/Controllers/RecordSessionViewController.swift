@@ -15,6 +15,7 @@ import CoreMotion
 
 let FpsDividers: [Int] = [1, 2, 4, 12, 60]
 let AvailableFpsSettings: [Int] = FpsDividers.map { Int(60 / $0) }
+let FpsUserDefaultsKey: String = "FPS"
 
 class MetalView : UIView {
     override class var layerClass: AnyClass {
@@ -38,7 +39,7 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     private var dataContext: NSManagedObjectContext!
     private var datasetEncoder: DatasetEncoder?
     private let imuOperationQueue = OperationQueue()
-    private var chosenFpsSetting = 0
+    private var chosenFpsSetting: Int = 0
     @IBOutlet private var rgbView: MetalView!
     @IBOutlet private var depthView: MetalView!
     @IBOutlet private var recordButton: RecordButton!
@@ -48,6 +49,10 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     
     func setDismissFunction(_ fn: Optional<() -> Void>) {
         self.dismissFunction = fn
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        self.chosenFpsSetting = UserDefaults.standard.integer(forKey: FpsUserDefaultsKey)
+        updateFpsSetting()
     }
 
     override func viewDidLoad() {
@@ -80,7 +85,6 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        updateFpsSetting()
         startSession()
     }
 
@@ -215,8 +219,8 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     
     @IBAction func fpsButtonTapped() {
         chosenFpsSetting = (chosenFpsSetting + 1) % AvailableFpsSettings.count
-        print("Chose fps \(AvailableFpsSettings[chosenFpsSetting])")
         updateFpsSetting()
+        UserDefaults.standard.set(chosenFpsSetting, forKey: FpsUserDefaultsKey)
     }
 
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
