@@ -28,15 +28,15 @@ class DepthEncoder {
         }
     }
 
-    func encodeFrame(frame: CVPixelBuffer, currentFrame: Int) {
-        let filename = String(format: "%06d", currentFrame)
+    func encodeFrame(frame: CVPixelBuffer, frameNumber: Int) {
+        let filename = String(format: "%06d", frameNumber)
         let npyArray = self.convert(frame: frame)
         let data = npyArray.npyFileContents()
         let framePath = self.baseDirectory.absoluteURL.appendingPathComponent(filename, isDirectory: false).appendingPathExtension("npy")
         do {
             try data?.write(to: framePath)
         } catch let error {
-            print("Could not save depth image \(currentFrame). \(error.localizedDescription)")
+            print("Could not save depth image \(frameNumber). \(error.localizedDescription)")
         }
     }
 

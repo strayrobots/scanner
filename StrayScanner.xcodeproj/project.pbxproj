@@ -61,7 +61,6 @@
 		387B57B925EA680200132903 /* NPYArrayWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 387B57AB25EA63A400132903 /* NPYArrayWrapper.mm */; };
 		387B57BC25EA680300132903 /* NPYArrayWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 387B57AB25EA63A400132903 /* NPYArrayWrapper.mm */; };
 		387B57C225EC065600132903 /* InformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387B57C125EC065600132903 /* InformationView.swift */; };
-		38ABA53D26D6323A002169BD /* Info-debug.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38ABA53C26D63239002169BD /* Info-debug.plist */; };
 		38C17B12259BE1DA006B3FDA /* Recording+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C17B10259BE1DA006B3FDA /* Recording+CoreDataClass.swift */; };
 		38C17B13259BE1DA006B3FDA /* Recording+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C17B11259BE1DA006B3FDA /* Recording+CoreDataProperties.swift */; };
 		38C17B23259D1C80006B3FDA /* SessionDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C17B22259D1C80006B3FDA /* SessionDetail.swift */; };
@@ -376,7 +375,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1240;
-				LastUpgradeCheck = 1220;
+				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = "Stray Robots";
 				TargetAttributes = {
 					385999B825616F2A00F3F681 = {
@@ -426,7 +425,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				38ABA53D26D6323A002169BD /* Info-debug.plist in Resources */,
 				3863FE7625FCBB0E00C1DA4F /* Colors.xcassets in Resources */,
 				3863FE7725FCBB0E00C1DA4F /* LaunchScreen.storyboard in Resources */,
 				3863FE7825FCBB0E00C1DA4F /* Preview Assets.xcassets in Resources */,

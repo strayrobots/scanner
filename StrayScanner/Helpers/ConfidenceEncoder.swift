@@ -30,10 +30,10 @@ class ConfidenceEncoder {
         }
     }
 
-    func encodeFrame(frame: CVPixelBuffer, currentFrame: Int) {
-        assert((previousFrame+1) == currentFrame, "Confidence skipped a frame. \(previousFrame+1) != \(currentFrame)")
-        previousFrame = currentFrame
-        let filename = String(format: "%06d", currentFrame)
+    func encodeFrame(frame: CVPixelBuffer, frameNumber: Int) {
+        assert((previousFrame+1) == frameNumber, "Confidence skipped a frame. \(previousFrame+1) != \(frameNumber)")
+        previousFrame = frameNumber
+        let filename = String(format: "%06d", frameNumber)
         let image = CIImage(cvPixelBuffer: frame)
         assert(CVPixelBufferGetPixelFormatType(frame) == kCVPixelFormatType_OneComponent8)
         let framePath = self.baseDirectory.absoluteURL.appendingPathComponent(filename, isDirectory: false).appendingPathExtension("png")

@@ -13,6 +13,9 @@ import ARKit
 import CoreData
 import CoreMotion
 
+let FpsDividers: [Int] = [1, 2, 4, 12, 60]
+let AvailableFpsSettings: [Int] = FpsDividers.map { Int(60 / $0) }
+
 class MetalView : UIView {
     override class var layerClass: AnyClass {
         get {
@@ -35,10 +38,12 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     private var dataContext: NSManagedObjectContext!
     private var datasetEncoder: DatasetEncoder?
     private let imuOperationQueue = OperationQueue()
+    private var chosenFpsSetting = 0
     @IBOutlet private var rgbView: MetalView!
     @IBOutlet private var depthView: MetalView!
     @IBOutlet private var recordButton: RecordButton!
     @IBOutlet private var timeLabel: UILabel!
+    @IBOutlet weak var fpsButton: UIButton!
     var dismissFunction: Optional<() -> Void> = Optional.none
     
     func setDismissFunction(_ fn: Optional<() -> Void>) {
@@ -59,6 +64,8 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         recordButton.setCallback { (recording: Bool) in
             self.toggleRecording(recording)
         }
+        fpsButton.layer.masksToBounds = true
+        fpsButton.layer.cornerRadius = 12.0
         
         imuOperationQueue.qualityOfService = .userInitiated
     }
@@ -73,6 +80,7 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     }
 
     override func viewDidAppear(_ animated: Bool) {
+        updateFpsSetting()
         startSession()
     }
 
@@ -125,7 +133,7 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         updateLabelTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             self.updateTime()
         }
-        datasetEncoder = DatasetEncoder(arConfiguration: arConfiguration!)
+        datasetEncoder = DatasetEncoder(arConfiguration: arConfiguration!, fpsDivider: FpsDividers[chosenFpsSetting])
         startAccelerometer()
     }
 
@@ -204,6 +212,12 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
                 rgbView.isHidden = true
         }
     }
+    
+    @IBAction func fpsButtonTapped() {
+        chosenFpsSetting = (chosenFpsSetting + 1) % AvailableFpsSettings.count
+        print("Chose fps \(AvailableFpsSettings[chosenFpsSetting])")
+        updateFpsSetting()
+    }
 
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         self.renderer!.render(frame: frame)
@@ -218,6 +232,12 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
 
     private func setViewProperties() {
         self.view.backgroundColor = UIColor(named: "BackgroundColor")
+    }
+    
+    private func updateFpsSetting() {
+        let fps = AvailableFpsSettings[chosenFpsSetting]
+        let buttonLabel: String = "\(fps) fps"
+        fpsButton.setTitle(buttonLabel, for: UIControl.State.normal)
     }
     
     private func showUnsupportedAlert() {

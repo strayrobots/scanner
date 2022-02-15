@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1240"
+   LastUpgradeVersion = "1250"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -32,7 +32,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "385999D125616F3100F3F681"
+               BlueprintIdentifier = "387B577D25EA5BB900132903"
                BuildableName = "StrayScannerTests.xctest"
                BlueprintName = "StrayScannerTests"
                ReferencedContainer = "container:StrayScanner.xcodeproj">

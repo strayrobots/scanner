@@ -45,7 +45,6 @@ class VideoEncoder {
     }
 
     func add(frame: VideoEncoderInput, currentFrame: Int) {
-        assert(currentFrame == (previousFrame + 1), "Skipped an rgb frame.")
         previousFrame = currentFrame
         while !videoWriterInput!.isReadyForMoreMediaData {
             print("Sleeping.")

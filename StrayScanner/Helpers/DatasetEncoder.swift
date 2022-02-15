@@ -25,7 +25,9 @@ class DatasetEncoder {
     private let imuEncoder: IMUEncoder
     private var lastFrame: ARFrame?
     private var dispatchGroup = DispatchGroup()
-    private var currentFrame: Int = 0
+    private var currentFrame: Int = -1
+    private var savedFrames: Int = 0
+    private let frameInterval: Int // Only save every frameInterval-th frame.
     public let id: UUID
     public let rgbFilePath: URL // Relative to app document directory.
     public let depthFilePath: URL // Relative to app document directory.
@@ -35,7 +37,8 @@ class DatasetEncoder {
     public var status = Status.allGood
     private let queue: DispatchQueue
 
-    init(arConfiguration: ARWorldTrackingConfiguration) {
+    init(arConfiguration: ARWorldTrackingConfiguration, fpsDivider: Int = 1) {
+        self.frameInterval = fpsDivider
         self.queue = DispatchQueue(label: "encoderQueue")
         
         let width = arConfiguration.videoFormat.imageResolution.width
@@ -57,25 +60,31 @@ class DatasetEncoder {
     }
 
     func add(frame: ARFrame) {
-        let frameNumber: Int = currentFrame
+        let totalFrames: Int = currentFrame
+        let frameNumber: Int = savedFrames
+        currentFrame = currentFrame + 1
+        if (currentFrame % frameInterval != 0) {
+            print("Skipping frame \(currentFrame)")
+            return
+        }
         dispatchGroup.enter()
         queue.async {
             if let sceneDepth = frame.sceneDepth {
-                self.depthEncoder.encodeFrame(frame: sceneDepth.depthMap, currentFrame: frameNumber)
+                self.depthEncoder.encodeFrame(frame: sceneDepth.depthMap, frameNumber: frameNumber)
                 if let confidence = sceneDepth.confidenceMap {
-                    self.confidenceEncoder.encodeFrame(frame: confidence, currentFrame: frameNumber)
+                    self.confidenceEncoder.encodeFrame(frame: confidence, frameNumber: frameNumber)
                 } else {
                     print("warning: confidence map missing.")
                 }
             } else {
                 print("warning: scene depth missing.")
             }
-            self.rgbEncoder.add(frame: VideoEncoderInput(buffer: frame.capturedImage, time: frame.timestamp), currentFrame: frameNumber)
+            self.rgbEncoder.add(frame: VideoEncoderInput(buffer: frame.capturedImage, time: frame.timestamp), currentFrame: totalFrames)
             self.odometryEncoder.add(frame: frame, currentFrame: frameNumber)
             self.lastFrame = frame
             self.dispatchGroup.leave()
         }
-        currentFrame = currentFrame + 1
+        savedFrames = savedFrames + 1
     }
     
     func addIMU(motion: CMDeviceMotion) -> Void {
