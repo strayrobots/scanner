@@ -35,6 +35,12 @@ On Windows, you can access the files through iTunes.
 Alternatively, you can access the data in the Files app under "Browse > On My iPhone > Stray Scanner" and export them to another app or move them to your iCloud drive.
 """)
                 link(text: "Exporting Data in Docs", destination: "https://docs.strayrobots.io/apps/scanner/export.html")
+                }
+                Group {
+                heading("Post-processing and Annotating Datasets Using Stray Studio")
+                bodyText("Stray Studio can compute optimized camera poses, point cloud and mesh reconstructions of your scans. You can also use it to annotate your datasets with semantic labels and export the datasets to train computer vision models.")
+                    
+                link(text: "Stray Studio", destination: "https://www.strayrobots.io/components/stray-3d-studio")
 
                 heading("Using The Data")
                 
