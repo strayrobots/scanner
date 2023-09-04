@@ -11,7 +11,7 @@ Documentation can be found under the [docs](docs/) directory. The document [docs
 
 ## Related projects
 
-- [StrayVisualizer](https://github.com/kekeblom/StrayVisualize://github.com/kekeblom/StrayVisualizer): a project to visualize the raw data collected by the app
+- [StrayVisualizer](https://github.com/kekeblom/StrayVisualizer): a project to visualize the raw data collected by the app
 - [MATLAB Scripts](https://github.com/PyojinKim/StrayScannerVisualizer): a set of tools to work with the data format in Matlab
 - [Autolabel](https://github.com/ethz-asl/autolabel): an interactive volumetric labeling tool
 
