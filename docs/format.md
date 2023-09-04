@@ -1,7 +1,7 @@
 
 # Data Specification
 
-This document describes the data format recorded by the [Stray Scanner iOS app](https://apps.apple.com/us/app/stray-scanner/id1557051662). Note, that it is slightly different from the [dataset format](/formats/data.md). Stray Scanner datasets can be converted using the [import command](/tutorials/import.md).
+This document describes the data format recorded by the app.
 
 The collected datasets are each contained in a folder, named after a random hash, for example `71de12f9`. A dataset folder has the following directory structure:
 
