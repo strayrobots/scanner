@@ -3,7 +3,7 @@
 
 The goal of this app, is to allow easy access to raw RGB-D video datasets recorded using LiDAR enabled iOS devices. The app can be downloaded for free [on the iOS App Store](https://apps.apple.com/us/app/stray-scanner/id1557051662).
 
-![Stray Scanner RGB-D scanning view](images/screenshot.jpg)
+![Stray Scanner RGB-D scanning view](images/screenshot.jpg | width=240)
 
 ## Usage
 
