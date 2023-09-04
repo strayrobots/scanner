@@ -34,32 +34,20 @@ On Windows, you can access the files through iTunes.
 
 Alternatively, you can access the data in the Files app under "Browse > On My iPhone > Stray Scanner" and export them to another app or move them to your iCloud drive.
 """)
-                link(text: "Exporting Data in Docs", destination: "https://docs.strayrobots.io/apps/scanner/export.html")
+}
+                Group {
+                heading("Source Code")
+                bodyText("This app is open source. You can find the source code behind the link below. The Github project also contains documentation and links to other related projects.")
+                    
+                bodyText("To report bugs, please open an issue on the Github project.")
+                    
+                link(text: "Github project", destination:
+                    "https://github.com/StrayRobots/scanner")
+
                 }
                 Group {
-                heading("Post-processing and Annotating Datasets Using Stray Studio")
-                bodyText("Stray Studio can compute optimized camera poses, point cloud and mesh reconstructions of your scans. You can also use it to annotate your datasets with semantic labels and export the datasets to train computer vision models.")
-                    
-                link(text: "Stray Studio", destination: "https://www.strayrobots.io/components/stray-3d-studio")
-
-                heading("Using The Data")
-                
-                bodyText("Below is a link to an example project which visualizes the data collected by the app. You can use that as a reference and starting point for your own applications. Below, is a detailed description of the collected data.")
-                
-                link(text: "Usage examples and tools", destination: "https://github.com/kekeblom/StrayVisualizer")
-                link(text: "Data model", destination: "https://docs.strayrobots.io/apps/scanner/format.html")
-                    
-                }
-                Group {
-                heading("Privacy Policy")
-
-                bodyText("We do not track you. All of the data you record is stored on your device. We don't call home or otherwise collect data about how you use the app.")
-
-                link(text: "Privacy policy", destination: "https://www.notion.so/Privacy-Policy-f1a6b1bcf7ed48098ffe2f50281e5c34")
-
                 heading("Disclaimer")
                 bodyText("This application is provided as is.\nIn no event shall the authors or copyright holders be liable for any claim, damages or other liability arising from using, or in connection with using the software.")
-                
                 Spacer()
                 }
             }.padding(.all, paddingLeftRight)
