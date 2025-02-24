@@ -142,12 +142,6 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
             print("Stopped gyroscope updates.")
         }
     }
-    
-    private func motionHandler(motion: CMDeviceMotion?, error: Error?) -> Void {
-        if motion != nil && datasetEncoder != nil {
-            datasetEncoder!.addIMU(motion: motion!)
-        }
-    }
 
     private func toggleRecording(_ recording: Bool) {
         if unsupported {
@@ -171,7 +165,7 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         }
         startRawIMU()
         datasetEncoder = DatasetEncoder(arConfiguration: arConfiguration!, fpsDivider: FpsDividers[chosenFpsSetting])
-        startAccelerometer()
+        startRawIMU()
     }
 
     private func stopRecording() {

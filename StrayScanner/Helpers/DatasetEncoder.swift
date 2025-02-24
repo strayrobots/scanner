@@ -27,6 +27,8 @@ class DatasetEncoder {
     private var dispatchGroup = DispatchGroup()
     private var currentFrame: Int = -1
     private var savedFrames: Int = 0
+    private var latestAccelerometerData: (timestamp: TimeInterval, data: simd_double3)?
+    private var latestGyroscopeData: (timestamp: TimeInterval, data: simd_double3)?
     private let frameInterval: Int // Only save every frameInterval-th frame.
     public let id: UUID
     public let rgbFilePath: URL // Relative to app document directory.
