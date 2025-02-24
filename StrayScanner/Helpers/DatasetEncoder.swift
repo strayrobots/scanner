@@ -36,6 +36,10 @@ class DatasetEncoder {
     public let imuPath: URL
     public var status = Status.allGood
     private let queue: DispatchQueue
+    
+    private var latestAccelerometerData: (timestamp: Double, data: simd_double3)?
+    private var latestGyroscopeData: (timestamp: Double, data: simd_double3)?
+
 
     init(arConfiguration: ARWorldTrackingConfiguration, fpsDivider: Int = 1) {
         self.frameInterval = fpsDivider
