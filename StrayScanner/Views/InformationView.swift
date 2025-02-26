@@ -39,7 +39,7 @@ Alternatively, you can access the data in the Files app under "Browse > On My iP
                 heading("Source Code")
                 bodyText("This app is open source. You can find the source code behind the link below. The Github project also contains documentation and links to other related projects.")
                     
-                bodyText("To report bugs, please open an issue on the Github project.")
+                bodyText("To report bugs, please open an issue on the Github project. Contributions are more than welcome.")
                     
                 link(text: "Github project", destination:
                     "https://github.com/StrayRobots/scanner")
