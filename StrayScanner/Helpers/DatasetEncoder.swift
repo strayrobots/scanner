@@ -36,6 +36,10 @@ class DatasetEncoder {
     public let imuPath: URL
     public var status = Status.allGood
     private let queue: DispatchQueue
+    
+    private var latestAccelerometerData: (timestamp: Double, data: simd_double3)?
+    private var latestGyroscopeData: (timestamp: Double, data: simd_double3)?
+
 
     init(arConfiguration: ARWorldTrackingConfiguration, fpsDivider: Int = 1) {
         self.frameInterval = fpsDivider
@@ -86,12 +90,37 @@ class DatasetEncoder {
         savedFrames = savedFrames + 1
     }
     
-    func addIMU(motion: CMDeviceMotion) -> Void {
-        let rotationRate: simd_double3 = simd_double3(motion.rotationRate.x, motion.rotationRate.y, motion.rotationRate.z)
-        let acceleration: simd_double3 = simd_double3(motion.userAcceleration.x, motion.userAcceleration.y, motion.userAcceleration.z)
-        let gravity: simd_double3 = simd_double3(motion.gravity.x, motion.gravity.y, motion.gravity.z)
-        let a = (acceleration + gravity) * 9.81
-        imuEncoder.add(timestamp: motion.timestamp, linear: a, angular: rotationRate)
+   func addRawAccelerometer(data: CMAccelerometerData) {
+        let acceleration = simd_double3(data.acceleration.x, data.acceleration.y, data.acceleration.z)
+        latestAccelerometerData = (timestamp: data.timestamp, data: acceleration)
+        tryWritingIMUData()
+    }
+
+    func addRawGyroscope(data: CMGyroData) {
+        let rotationRate = simd_double3(data.rotationRate.x, data.rotationRate.y, data.rotationRate.z)
+        latestGyroscopeData = (timestamp: data.timestamp, data: rotationRate)
+        tryWritingIMUData()
+    }
+
+    private func tryWritingIMUData() {
+        guard
+            let accelerometer = latestAccelerometerData,
+            let gyroscope = latestGyroscopeData
+        else {
+            return
+        }
+
+        // Write the row to the CSV with the most recent timestamp
+        let timestamp = max(accelerometer.timestamp, gyroscope.timestamp)
+        imuEncoder.add(
+            timestamp: timestamp,
+            linear: accelerometer.data,
+            angular: gyroscope.data
+        )
+
+        // Clear the buffers after writing
+        latestAccelerometerData = nil
+        latestGyroscopeData = nil
     }
 
     func wrapUp() {

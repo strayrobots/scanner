@@ -100,23 +100,49 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         }
     }
     
-    private func startAccelerometer() {
+    private func startRawIMU() {
         if self.motionManager.isAccelerometerAvailable {
-            self.motionManager.deviceMotionUpdateInterval = 1.0 / 1200.0
-            self.motionManager.startDeviceMotionUpdates(to: imuOperationQueue, withHandler: motionHandler)
+            self.motionManager.accelerometerUpdateInterval = 1.0 / 1200.0 // Set update rate
+            self.motionManager.startAccelerometerUpdates(to: imuOperationQueue) { (data, error) in
+                guard let data = data else {
+                    if let error = error {
+                        print("Error retrieving accelerometer data: \(error.localizedDescription)")
+                    }
+                    return
+                }
+                self.datasetEncoder?.addRawAccelerometer(data: data)
+            }
+        } else {
+            print("Accelerometer not available on this device.")
         }
-    }
-    
-    private func stopAccelerometer() {
-        self.motionManager.stopDeviceMotionUpdates()
-    }
-    
-    private func motionHandler(motion: CMDeviceMotion?, error: Error?) -> Void {
-        if motion != nil && datasetEncoder != nil {
-            datasetEncoder!.addIMU(motion: motion!)
+
+        if self.motionManager.isGyroAvailable {
+            self.motionManager.gyroUpdateInterval = 1.0 / 1200.0 // Set update rate
+            self.motionManager.startGyroUpdates(to: imuOperationQueue) { (data, error) in
+                guard let data = data else {
+                    if let error = error {
+                        print("Error retrieving gyroscope data: \(error.localizedDescription)")
+                    }
+                    return
+                }
+                self.datasetEncoder?.addRawGyroscope(data: data)
+            }
+        } else {
+            print("Gyroscope not available on this device.")
         }
     }
 
+    private func stopRawIMU() {
+        if self.motionManager.isAccelerometerActive {
+            self.motionManager.stopAccelerometerUpdates()
+            print("Stopped accelerometer updates.")
+        }
+        if self.motionManager.isGyroActive {
+            self.motionManager.stopGyroUpdates()
+            print("Stopped gyroscope updates.")
+        }
+    }
+    
     private func toggleRecording(_ recording: Bool) {
         if unsupported {
             showUnsupportedAlert()
@@ -137,8 +163,9 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         updateLabelTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             self.updateTime()
         }
+        startRawIMU()
         datasetEncoder = DatasetEncoder(arConfiguration: arConfiguration!, fpsDivider: FpsDividers[chosenFpsSetting])
-        startAccelerometer()
+        startRawIMU()
     }
 
     private func stopRecording() {
@@ -149,7 +176,8 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         startedRecording = nil
         updateLabelTimer?.invalidate()
         updateLabelTimer = nil
-        stopAccelerometer()
+        // Stop IMU updates
+        stopRawIMU()
         datasetEncoder?.wrapUp()
         if let encoder = datasetEncoder {
             switch encoder.status {
