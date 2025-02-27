@@ -26,7 +26,6 @@ class DatasetEncoder {
     private var lastFrame: ARFrame?
     private var dispatchGroup = DispatchGroup()
     private var currentFrame: Int = -1
-    private var savedFrames: Int = 0
     private let frameInterval: Int // Only save every frameInterval-th frame.
     public let id: UUID
     public let rgbFilePath: URL // Relative to app document directory.
@@ -35,13 +34,17 @@ class DatasetEncoder {
     public let odometryPath: URL
     public let imuPath: URL
     public var status = Status.allGood
+    public var savedFrames: Int  // ✅ Now it can be set externally
     private let queue: DispatchQueue
     
     private var latestAccelerometerData: (timestamp: Double, data: simd_double3)?
     private var latestGyroscopeData: (timestamp: Double, data: simd_double3)?
+    
+    
 
 
-    init(arConfiguration: ARWorldTrackingConfiguration, fpsDivider: Int = 1) {
+    init(arConfiguration: ARWorldTrackingConfiguration, fpsDivider: Int = 1, startFrame: Int = 0) {
+        self.savedFrames = startFrame  // ✅ Use externally set frame number
         self.frameInterval = fpsDivider
         self.queue = DispatchQueue(label: "encoderQueue")
         
