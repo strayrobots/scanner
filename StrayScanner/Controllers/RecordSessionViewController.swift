@@ -46,6 +46,9 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     @IBOutlet private var timeLabel: UILabel!
     @IBOutlet weak var fpsButton: UIButton!
     var dismissFunction: Optional<() -> Void> = Optional.none
+    var datasetResetTimer: Timer?
+    var lastSavedFrameNumber: Int = 0  // ✅ Keeps track of frames across resets
+
     
     func setDismissFunction(_ fn: Optional<() -> Void>) {
         self.dismissFunction = fn
@@ -163,9 +166,27 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         updateLabelTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             self.updateTime()
         }
-        startRawIMU()
+        
         datasetEncoder = DatasetEncoder(arConfiguration: arConfiguration!, fpsDivider: FpsDividers[chosenFpsSetting])
         startRawIMU()
+        
+        datasetResetTimer = Timer.scheduledTimer(withTimeInterval: 30.0, repeats: true) { _ in
+            guard let datasetEncoder = self.datasetEncoder else { return }
+
+            datasetEncoder.wrapUp()  // ✅ Save current data and close files
+            self.lastSavedFrameNumber = datasetEncoder.savedFrames  // ✅ Store last saved frame number
+
+            // ✅ Create a new dataset encoder but continue frame numbering
+            self.datasetEncoder = DatasetEncoder(arConfiguration: self.arConfiguration!,
+                                                 fpsDivider: FpsDividers[self.chosenFpsSetting],
+                                                 startFrame : self.lastSavedFrameNumber)
+            print("DatasetEncoder reset, continuing from frame \(self.lastSavedFrameNumber)")
+            
+            //If you want to record for a certain period of time programmatically, i.e. want your recording to stop after lets say 5min, then uncomment the following lines
+//            Timer.scheduledTimer(withTimeInterval: 300.0, repeats: false) { _ in
+//                self.stopRecording()
+//            }
+        }
     }
 
     private func stopRecording() {
