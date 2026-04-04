@@ -10,6 +10,7 @@ import Foundation
 import ARKit
 import CryptoKit
 import CoreMotion
+import UIKit
 
 class DatasetEncoder {
     enum Status {
@@ -39,11 +40,40 @@ class DatasetEncoder {
     
     private var latestAccelerometerData: (timestamp: Double, data: simd_double3)?
     private var latestGyroscopeData: (timestamp: Double, data: simd_double3)?
+    
+    // Adaptive mode properties
+    private let adaptiveModeEnabled: Bool
+    private let positionThreshold: Float
+    private let angleThresholdCos: Float // Cosine of angle threshold for efficient comparison
+    private var lastSavedTransform: simd_float4x4?
+    private let hapticGenerator = UIImpactFeedbackGenerator(style: .light)
 
 
     init(arConfiguration: ARWorldTrackingConfiguration, fpsDivider: Int = 1) {
         self.frameInterval = fpsDivider
         self.queue = DispatchQueue(label: "encoderQueue")
+        
+        // Check if we're in adaptive mode (indicated by the FPS button selection)
+        let currentFpsSetting = UserDefaults.standard.integer(forKey: FpsUserDefaultsKey)
+        self.adaptiveModeEnabled = (currentFpsSetting == AdaptiveModeIndex)
+        
+        // Load adaptive mode thresholds with defaults
+        let posThreshold = UserDefaults.standard.double(forKey: AdaptiveThresholdPositionKey)
+        let angleThresholdDegrees = UserDefaults.standard.double(forKey: AdaptiveThresholdAngleKey)
+        self.positionThreshold = Float(posThreshold > 0 ? posThreshold : DefaultAdaptiveThresholdPosition)
+        
+        // Convert angle threshold to cosine for efficient comparison
+        let angleThresholdRadians = Float(angleThresholdDegrees > 0 ? angleThresholdDegrees : DefaultAdaptiveThresholdAngle) * Float.pi / 180.0
+        self.angleThresholdCos = cos(angleThresholdRadians) // Direct angle for forward vector comparison
+        
+        // Prepare haptic generator
+        if self.adaptiveModeEnabled {
+            hapticGenerator.prepare()
+            let angleDegreesForDebug = acos(self.angleThresholdCos) * 180.0 / Float.pi
+            print("Adaptive mode enabled: pos threshold=\(self.positionThreshold*100)cm, angle threshold=\(angleDegreesForDebug)° (forward vector)")
+        } else {
+            print("Adaptive mode disabled")
+        }
         
         let width = arConfiguration.videoFormat.imageResolution.width
         let height = arConfiguration.videoFormat.imageResolution.height
@@ -67,12 +97,67 @@ class DatasetEncoder {
         let totalFrames: Int = currentFrame
         let frameNumber: Int = savedFrames
         currentFrame = currentFrame + 1
+        
+        // Check if we should skip this frame based on frame interval
         if (currentFrame % frameInterval != 0) {
             return
         }
+        
+        // If adaptive mode is enabled, check if pose has changed significantly
+        if adaptiveModeEnabled {
+            let currentTransform = frame.camera.transform
+            
+            if let lastTransform = lastSavedTransform {
+                // Calculate position change
+                let lastPos = simd_float3(lastTransform.columns.3.x, lastTransform.columns.3.y, lastTransform.columns.3.z)
+                let currentPos = simd_float3(currentTransform.columns.3.x, currentTransform.columns.3.y, currentTransform.columns.3.z)
+                let positionDelta = simd_distance(lastPos, currentPos)
+                
+                // Calculate forward vector dot product for rotation comparison
+                // Forward is -Z in ARKit's coordinate system
+                let lastForward = -simd_float3(lastTransform.columns.2.x, lastTransform.columns.2.y, lastTransform.columns.2.z)
+                let currentForward = -simd_float3(currentTransform.columns.2.x, currentTransform.columns.2.y, currentTransform.columns.2.z)
+                let dotProduct = simd_dot(lastForward, currentForward)
+                
+                // Debug logging (remove in production)
+//                if adaptiveModeEnabled {
+//                    let angleDelta = acos(min(dotProduct, 1.0)) * 180.0 / Float.pi
+//                    let angleThresholdDegrees = acos(angleThresholdCos) * 180.0 / Float.pi
+//                    print("Adaptive mode: pos=\(positionDelta*100)cm, angle=\(angleDelta)°, thresholds: pos=\(positionThreshold*100)cm, angle=\(angleThresholdDegrees)°")
+//                }
+                
+                // Skip frame if changes are below thresholds
+                // Note: dotProduct > angleThresholdCos means angle < threshold (cosine decreases as angle increases)
+                if positionDelta < positionThreshold && dotProduct > angleThresholdCos {
+                    return
+                }
+            }
+            
+            // Update last saved transform
+            lastSavedTransform = currentTransform
+            
+            // Trigger haptic feedback for adaptive mode capture
+            DispatchQueue.main.async {
+                self.hapticGenerator.impactOccurred()
+            }
+        }
+        
+        // Extract what we need from the frame before async dispatch
+        let capturedImage = frame.capturedImage
+        let sceneDepth = frame.sceneDepth
+        let frameTimestamp = frame.timestamp
+        let frameTransform = frame.camera.transform
+        
         dispatchGroup.enter()
-        queue.async {
-            if let sceneDepth = frame.sceneDepth {
+        queue.async { [weak self] in
+            defer {
+                // Always balance enter/leave, even if self is nil
+                self?.dispatchGroup.leave()
+            }
+            
+            guard let self = self else { return }
+            
+            if let sceneDepth = sceneDepth {
                 self.depthEncoder.encodeFrame(frame: sceneDepth.depthMap, frameNumber: frameNumber)
                 if let confidence = sceneDepth.confidenceMap {
                     self.confidenceEncoder.encodeFrame(frame: confidence, frameNumber: frameNumber)
@@ -82,10 +167,10 @@ class DatasetEncoder {
             } else {
                 print("warning: scene depth missing.")
             }
-            self.rgbEncoder.add(frame: VideoEncoderInput(buffer: frame.capturedImage, time: frame.timestamp), currentFrame: totalFrames)
+            
+            self.rgbEncoder.add(frame: VideoEncoderInput(buffer: capturedImage, time: frameTimestamp), currentFrame: frameNumber)
             self.odometryEncoder.add(frame: frame, currentFrame: frameNumber)
             self.lastFrame = frame
-            self.dispatchGroup.leave()
         }
         savedFrames = savedFrames + 1
     }

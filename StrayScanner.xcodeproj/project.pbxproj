@@ -66,6 +66,8 @@
 		38E969CB2572608E00054CC4 /* NewSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E969CA2572608E00054CC4 /* NewSession.swift */; };
 		38FB730F2572A9FA007D9CB0 /* RecordSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38FB730E2572A9FA007D9CB0 /* RecordSessionViewController.swift */; };
 		38FB73162572AF63007D9CB0 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 38FB73152572AF63007D9CB0 /* Shaders.metal */; };
+		70849EC02E0E46B1007E1315 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70849EBF2E0E46B1007E1315 /* SettingsView.swift */; };
+		70849EC42E0E4CE2007E1315 /* SettingsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70849EC22E0E4CE2007E1315 /* SettingsConstants.swift */; };
 		709259192E0B79AB00A7B62E /* ShareUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709259182E0B79AB00A7B62E /* ShareUtility.swift */; };
 		70CF35492E17803700276207 /* ShareUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709259182E0B79AB00A7B62E /* ShareUtility.swift */; };
 /* End PBXBuildFile section */
@@ -121,6 +123,8 @@
 		38FB73152572AF63007D9CB0 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		38FB731F2573EABB007D9CB0 /* ShaderTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
 		38FB73242573ECE2007D9CB0 /* BridgeHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BridgeHeader.h; path = StrayScanner/BridgeHeader.h; sourceTree = "<group>"; };
+		70849EBF2E0E46B1007E1315 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		70849EC22E0E4CE2007E1315 /* SettingsConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsConstants.swift; sourceTree = "<group>"; };
 		709259182E0B79AB00A7B62E /* ShareUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareUtility.swift; sourceTree = "<group>"; };
 		AC52749A3B5AED09C9753120 /* Pods-StrayScanner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrayScanner.debug.xcconfig"; path = "Target Support Files/Pods-StrayScanner/Pods-StrayScanner.debug.xcconfig"; sourceTree = "<group>"; };
 		DBC054EDDA47FB8A717AA671 /* Pods_StrayScanner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StrayScanner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -182,6 +186,7 @@
 		38045D562561A6D20004F23C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				70849EBF2E0E46B1007E1315 /* SettingsView.swift */,
 				38045D572561A7370004F23C /* SessionRow.swift */,
 				38045D592561AC000004F23C /* SessionList.swift */,
 				38E969CA2572608E00054CC4 /* NewSession.swift */,
@@ -219,6 +224,7 @@
 			children = (
 				38694C6B26D2C66F00546EA1 /* Helpers */,
 				387B576825EA55AC00132903 /* CCode */,
+				70849EC32E0E4CE2007E1315 /* Constants */,
 				38C17AE4259BCD16006B3FDA /* UI */,
 				38FB73142572AF50007D9CB0 /* Shaders */,
 				38FB730D2572A91D007D9CB0 /* Controllers */,
@@ -312,6 +318,14 @@
 				DBC054EDDA47FB8A717AA671 /* Pods_StrayScanner.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		70849EC32E0E4CE2007E1315 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				70849EC22E0E4CE2007E1315 /* SettingsConstants.swift */,
+			);
+			path = Constants;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -512,12 +526,14 @@
 				385999BD25616F2B00F3F681 /* AppDelegate.swift in Sources */,
 				38C17B23259D1C80006B3FDA /* SessionDetail.swift in Sources */,
 				385999C225616F2B00F3F681 /* Stray_Scanner.xcdatamodeld in Sources */,
+				70849EC12E0E46B1007E1315 /* SettingsView.swift in Sources */,
 				38045D5A2561AC000004F23C /* SessionList.swift in Sources */,
 				38694C8226D2C66F00546EA1 /* AppDaemon.swift in Sources */,
 				38694C7626D2C66F00546EA1 /* ConfidenceEncoder.swift in Sources */,
 				386E277825991163007D023B /* RecordButton.swift in Sources */,
 				385999BF25616F2B00F3F681 /* SceneDelegate.swift in Sources */,
 				709259192E0B79AB00A7B62E /* ShareUtility.swift in Sources */,
+				70849EC42E0E4CE2007E1315 /* SettingsConstants.swift in Sources */,
 				38694C8026D2C66F00546EA1 /* DepthEncoder.swift in Sources */,
 				38C17B13259BE1DA006B3FDA /* Recording+CoreDataProperties.swift in Sources */,
 				38C17B12259BE1DA006B3FDA /* Recording+CoreDataClass.swift in Sources */,
@@ -537,6 +553,7 @@
 				3863FE6325FCBB0E00C1DA4F /* SessionRow.swift in Sources */,
 				38694C7526D2C66F00546EA1 /* DatasetEncoder.swift in Sources */,
 				38694C7D26D2C66F00546EA1 /* CameraRenderer.swift in Sources */,
+				70849EC02E0E46B1007E1315 /* SettingsView.swift in Sources */,
 				38694C7B26D2C66F00546EA1 /* IMUEncoder.swift in Sources */,
 				3863FE6425FCBB0E00C1DA4F /* Shaders.metal in Sources */,
 				3863FE6525FCBB0E00C1DA4F /* AppDelegate.swift in Sources */,
@@ -546,6 +563,7 @@
 				38694C8326D2C66F00546EA1 /* AppDaemon.swift in Sources */,
 				38694C7726D2C66F00546EA1 /* ConfidenceEncoder.swift in Sources */,
 				3863FE6A25FCBB0E00C1DA4F /* RecordButton.swift in Sources */,
+				70849EC52E0E4CE2007E1315 /* SettingsConstants.swift in Sources */,
 				3807421027BBD07D003194C1 /* PngEncoder.mm in Sources */,
 				3863FE6C25FCBB0E00C1DA4F /* SceneDelegate.swift in Sources */,
 				70CF35492E17803700276207 /* ShareUtility.swift in Sources */,

@@ -13,9 +13,7 @@ import ARKit
 import CoreData
 import CoreMotion
 
-let FpsDividers: [Int] = [1, 2, 4, 12, 60]
-let AvailableFpsSettings: [Int] = FpsDividers.map { Int(60 / $0) }
-let FpsUserDefaultsKey: String = "FPS"
+// Settings constants are now in SettingsConstants.swift
 
 class MetalView : UIView {
     override class var layerClass: AnyClass {
@@ -164,7 +162,10 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
             self.updateTime()
         }
         startRawIMU()
-        datasetEncoder = DatasetEncoder(arConfiguration: arConfiguration!, fpsDivider: FpsDividers[chosenFpsSetting])
+        
+        // Use fpsDivider of 1 for adaptive mode (adaptive logic handles frame skipping)
+        let fpsDivider = chosenFpsSetting == AdaptiveModeIndex ? 1 : FpsDividers[chosenFpsSetting]
+        datasetEncoder = DatasetEncoder(arConfiguration: arConfiguration!, fpsDivider: fpsDivider)
         startRawIMU()
     }
 
@@ -246,7 +247,15 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     }
     
     @IBAction func fpsButtonTapped() {
-        chosenFpsSetting = (chosenFpsSetting + 1) % AvailableFpsSettings.count
+        // Always cycle through FPS settings and adaptive mode
+        if chosenFpsSetting == AdaptiveModeIndex {
+            chosenFpsSetting = 0
+        } else if chosenFpsSetting == AvailableFpsSettings.count - 1 {
+            chosenFpsSetting = AdaptiveModeIndex
+        } else {
+            chosenFpsSetting = chosenFpsSetting + 1
+        }
+        
         updateFpsSetting()
         UserDefaults.standard.set(chosenFpsSetting, forKey: FpsUserDefaultsKey)
     }
@@ -267,8 +276,13 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     }
     
     private func updateFpsSetting() {
-        let fps = AvailableFpsSettings[chosenFpsSetting]
-        let buttonLabel: String = "\(fps) fps"
+        let buttonLabel: String
+        if chosenFpsSetting == AdaptiveModeIndex {
+            buttonLabel = "Adaptive"
+        } else {
+            let fps = AvailableFpsSettings[chosenFpsSetting]
+            buttonLabel = "\(fps) fps"
+        }
         fpsButton.setTitle(buttonLabel, for: UIControl.State.normal)
     }
     

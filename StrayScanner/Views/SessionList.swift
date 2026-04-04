@@ -46,6 +46,7 @@ class SessionListViewModel: ObservableObject {
 struct SessionList: View {
     @ObservedObject var viewModel = SessionListViewModel()
     @State private var showingInfo = false
+    @State private var showingSettings = false
 
     init() {
         UITableView.appearance().backgroundColor = UIColor(named: "BackgroundColor")
@@ -65,6 +66,18 @@ struct SessionList: View {
                         .multilineTextAlignment(.center)
                         .padding([.top, .leading], 15.0)
                     Spacer()
+                    Button(action: {
+                        showingSettings.toggle()
+                    }, label: {
+                        Image(systemName: "gearshape")
+                            .resizable()
+                            .frame(width: 25, height: 25, alignment: .center)
+                            .padding(.top, 17)
+                            .padding(.trailing, 10)
+                            .foregroundColor(Color("TextColor"))
+                    }).sheet(isPresented: $showingSettings) {
+                        SettingsView()
+                    }
                     Button(action: {
                         showingInfo.toggle()
                     }, label: {
