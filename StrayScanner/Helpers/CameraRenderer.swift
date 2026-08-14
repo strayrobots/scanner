@@ -54,6 +54,24 @@ class CameraRenderer {
         }
     }
 
+    /// Renders buffers coming from the AVFoundation capture pipeline, which has
+    /// no `ARFrame` to hand out.
+    func render(video: CVPixelBuffer, depth: CVPixelBuffer?) {
+        switch (renderMode) {
+            case .depth:
+                guard let depth = depth else { return }
+                depthTexture = createTexture(fromPixelBuffer: depth, pixelFormat: .r32Float, planeIndex: 0)
+                guard depthTexture != nil else { return }
+                renderDepth()
+            case .rgb:
+                guard let y = createTexture(fromPixelBuffer: video, pixelFormat: .r8Unorm, planeIndex: 0),
+                      let cbcr = createTexture(fromPixelBuffer: video, pixelFormat: .rg8Unorm, planeIndex: 1) else { return }
+                rgbTextureY = y
+                rgbTextureCbCr = cbcr
+                renderRGB()
+        }
+    }
+
     private func renderRGB() {
         guard let drawable = rgbLayer.nextDrawable() else { return }
         let renderPassDescriptor = MTLRenderPassDescriptor()

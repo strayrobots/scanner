@@ -25,11 +25,13 @@ class DatasetEncoder {
     private let imuEncoder: IMUEncoder
     private let distortionEncoder: DistortionEncoder
     private var lastFrame: ARFrame?
+    private var lastIntrinsics: matrix_float3x3?
     private var dispatchGroup = DispatchGroup()
     private var currentFrame: Int = -1
     private var savedFrames: Int = 0
     private let frameInterval: Int // Only save every frameInterval-th frame.
     private let encodingSemaphore = DispatchSemaphore(value: 3) // Limit queued frames to avoid ARFrame retention
+    private let mode: CaptureMode
     public let id: UUID
     public let rgbFilePath: URL // Relative to app document directory.
     public let depthFilePath: URL // Relative to app document directory.
@@ -43,12 +45,16 @@ class DatasetEncoder {
     private var latestGyroscopeData: (timestamp: Double, data: simd_double3)?
 
 
-    init(arConfiguration: ARWorldTrackingConfiguration, fpsDivider: Int = 1) {
+    convenience init(arConfiguration: ARWorldTrackingConfiguration, fpsDivider: Int = 1, mode: CaptureMode = .lidar) {
+        let resolution = arConfiguration.videoFormat.imageResolution
+        self.init(width: resolution.width, height: resolution.height, fpsDivider: fpsDivider, mode: mode)
+    }
+
+    init(width: CGFloat, height: CGFloat, fpsDivider: Int = 1, mode: CaptureMode) {
         self.frameInterval = fpsDivider
+        self.mode = mode
         self.queue = DispatchQueue(label: "encoderQueue")
-        
-        let width = arConfiguration.videoFormat.imageResolution.width
-        let height = arConfiguration.videoFormat.imageResolution.height
+
         var theId: UUID = UUID()
         datasetDirectory = DatasetEncoder.createDirectory(id: &theId)
         self.id = theId
@@ -66,38 +72,71 @@ class DatasetEncoder {
         self.distortionEncoder = DistortionEncoder(datasetDirectory: datasetDirectory)
     }
 
-    func add(frame: ARFrame) {
+    /// Returns the frame number to write to, or nil when the frame should be
+    /// skipped either due to frame rate division or because encoding is backed up.
+    private func nextFrameNumber() -> (frameNumber: Int, totalFrames: Int)? {
         let totalFrames: Int = currentFrame
         currentFrame = currentFrame + 1
         if (currentFrame % frameInterval != 0) {
-            return
+            return nil
         }
-        // Drop frame if encoding is backed up to avoid accumulating ARFrame references.
+        // Drop frame if encoding is backed up to avoid accumulating frame references.
         guard encodingSemaphore.wait(timeout: .now()) == .success else {
-            return
+            return nil
         }
         let frameNumber: Int = savedFrames
         savedFrames = savedFrames + 1
+        return (frameNumber, totalFrames)
+    }
+
+    func add(frame: ARFrame) {
+        guard let (frameNumber, totalFrames) = nextFrameNumber() else { return }
         dispatchGroup.enter()
         queue.async {
             defer {
                 self.encodingSemaphore.signal()
                 self.dispatchGroup.leave()
             }
-            if let sceneDepth = frame.sceneDepth {
-                self.depthEncoder.encodeFrame(frame: sceneDepth.depthMap, frameNumber: frameNumber)
-                if let confidence = sceneDepth.confidenceMap {
-                    self.confidenceEncoder.encodeFrame(frame: confidence, frameNumber: frameNumber)
+            if self.mode.recordsDepth {
+                if let sceneDepth = frame.sceneDepth {
+                    self.depthEncoder.encodeFrame(frame: sceneDepth.depthMap, frameNumber: frameNumber)
+                    if let confidence = sceneDepth.confidenceMap {
+                        self.confidenceEncoder.encodeFrame(frame: confidence, frameNumber: frameNumber)
+                    } else {
+                        print("warning: confidence map missing.")
+                    }
                 } else {
-                    print("warning: confidence map missing.")
+                    print("warning: scene depth missing.")
                 }
-            } else {
-                print("warning: scene depth missing.")
             }
             self.rgbEncoder.add(frame: VideoEncoderInput(buffer: frame.capturedImage, time: frame.timestamp), currentFrame: totalFrames)
             self.odometryEncoder.add(frame: frame, currentFrame: frameNumber)
             self.distortionEncoder.add(frame: frame, currentFrame: frameNumber)
+            self.lastIntrinsics = frame.camera.intrinsics
             self.lastFrame = frame
+        }
+    }
+
+    /// Encodes a frame from the AVFoundation dual camera pipeline. No pose
+    /// estimate is available in this mode.
+    func add(frame: DualCameraFrame) {
+        guard let (frameNumber, totalFrames) = nextFrameNumber() else { return }
+        dispatchGroup.enter()
+        queue.async {
+            defer {
+                self.encodingSemaphore.signal()
+                self.dispatchGroup.leave()
+            }
+            if let depth = frame.depth {
+                self.depthEncoder.encodeFrame(frame: depth, frameNumber: frameNumber)
+            } else {
+                print("warning: depth map missing.")
+            }
+            self.rgbEncoder.add(frame: VideoEncoderInput(buffer: frame.video, time: frame.timestamp), currentFrame: totalFrames)
+            self.odometryEncoder.add(timestamp: frame.timestamp, currentFrame: frameNumber, intrinsics: frame.intrinsics)
+            if let intrinsics = frame.intrinsics {
+                self.lastIntrinsics = intrinsics
+            }
         }
     }
     
@@ -154,29 +193,30 @@ class DatasetEncoder {
                 status = .videoEncodingError
                 print("Something went wrong encoding depth.")
         }
-        switch self.confidenceEncoder.status {
-            case .allGood:
-                status = .allGood
-            case .encodingError:
-                status = .videoEncodingError
-                print("Something went wrong encoding confidence values.")
+        if mode == .lidar {
+            switch self.confidenceEncoder.status {
+                case .allGood:
+                    status = .allGood
+                case .encodingError:
+                    status = .videoEncodingError
+                    print("Something went wrong encoding confidence values.")
+            }
         }
     }
 
     private func writeIntrinsics() {
-        if let cameraMatrix = lastFrame?.camera.intrinsics {
-            let rows = cameraMatrix.transpose.columns
-            var csv: [String] = []
-            for row in [rows.0, rows.1, rows.2] {
-                let csvLine = "\(row.x), \(row.y), \(row.z)"
-                csv.append(csvLine)
-            }
-            let contents = csv.joined(separator: "\n")
-            do {
-                try contents.write(to: self.cameraMatrixPath, atomically: true, encoding: String.Encoding.utf8)
-            } catch let error {
-                print("Could not write camera matrix. \(error.localizedDescription)")
-            }
+        guard let cameraMatrix = lastIntrinsics else { return }
+        let rows = cameraMatrix.transpose.columns
+        var csv: [String] = []
+        for row in [rows.0, rows.1, rows.2] {
+            let csvLine = "\(row.x), \(row.y), \(row.z)"
+            csv.append(csvLine)
+        }
+        let contents = csv.joined(separator: "\n")
+        do {
+            try contents.write(to: self.cameraMatrixPath, atomically: true, encoding: String.Encoding.utf8)
+        } catch let error {
+            print("Could not write camera matrix. \(error.localizedDescription)")
         }
     }
 

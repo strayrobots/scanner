@@ -52,6 +52,19 @@ class OdometryEncoder {
         self.fileHandle.write(line.data(using: .utf8)!)
     }
 
+    /// Used by capture pipelines that have no pose estimate, such as the
+    /// AVFoundation dual camera mode. The pose columns are written as `nan` so
+    /// downstream parsers still see the same schema.
+    func add(timestamp: TimeInterval, currentFrame: Int, intrinsics: matrix_float3x3?) {
+        let frameNumber = String(format: "%06d", currentFrame)
+        let fx = intrinsics.map { "\($0.columns.0.x)" } ?? "nan"
+        let fy = intrinsics.map { "\($0.columns.1.y)" } ?? "nan"
+        let cx = intrinsics.map { "\($0.columns.2.x)" } ?? "nan"
+        let cy = intrinsics.map { "\($0.columns.2.y)" } ?? "nan"
+        let line = "\(timestamp), \(frameNumber), nan, nan, nan, nan, nan, nan, nan, \(fx), \(fy), \(cx), \(cy), , \n"
+        self.fileHandle.write(line.data(using: .utf8)!)
+    }
+
     func done() {
         do {
             try self.fileHandle.close()
