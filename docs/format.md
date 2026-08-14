@@ -26,7 +26,20 @@ rgb.mp4
 
 `rgb.mp4` is an HEVC encoded video, which contains the recorded data from the iPhone's camera.
 
-The `depth/` directory contains the depth maps. One `.png` file per rgb frame. Each of these is a 16 bit grayscale png image. They have a height of 192 elements and width of 256 elements. The values are the measured depth in millimeters, for that pixel position. In [OpenCV](https://docs.opencv.org/4.5.5/), these can be read with `cv2.imread(depth_frame_path, -1)`.
+## Capture modes
+
+Devices with a LiDAR scanner always record the full format described below.
+
+Devices without a LiDAR scanner cannot produce an ARKit depth map, so the recording screen shows a mode button offering two alternatives:
+
+| Mode | Pipeline | `depth/` | `confidence/` | `distortion/` | Poses in `odometry.csv` |
+|---|---|---|---|---|---|
+| `no depth` | ARKit | empty | empty | absent | full 6-DoF |
+| `low-res depth` | AVFoundation dual camera | present, low resolution | empty | absent | `nan` |
+
+In `low-res depth` mode the depth maps come from the dual camera disparity estimate rather than from LiDAR. They are lower resolution and noisier, their dimensions depend on the device, and because ARKit cannot share the camera with AVFoundation there is no pose estimate. The `x`, `y`, `z`, `qx`, `qy`, `qz` and `qw` columns of `odometry.csv` are written as `nan` in that case, so the file keeps the same schema. Timestamps and intrinsics are still recorded.
+
+The `depth/` directory contains the depth maps. One `.png` file per rgb frame. Each of these is a 16 bit grayscale png image. They have a height of 192 elements and width of 256 elements. The values are the measured depth in millimeters, for that pixel position. In [OpenCV](https://docs.opencv.org/4.5.5/), these can be read with `cv2.imread(depth_frame_path, -1)`. In `low-res depth` mode the dimensions differ, so read them from the image itself rather than assuming 192 x 256.
 
 The `confidence/` directory contains confidence maps corresponding to each depth map. They are grayscale png files encoding 192 x 256 element matrices. The values are either 0, 1 or 2. A higher value means a higher confidence.
 
