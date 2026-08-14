@@ -57,6 +57,10 @@
 		38694C8226D2C66F00546EA1 /* AppDaemon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38694C7326D2C66F00546EA1 /* AppDaemon.swift */; };
 		38694C8326D2C66F00546EA1 /* AppDaemon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38694C7326D2C66F00546EA1 /* AppDaemon.swift */; };
 		70D1234B2E1800000027BEEF /* DistortionEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D1234A2E1800000027BEEF /* DistortionEncoder.swift */; };
+		70D1235E2E1800000027BEEF /* DualCameraCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D1235D2E1800000027BEEF /* DualCameraCapture.swift */; };
+		70D1235F2E1800000027BEEF /* DualCameraCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D1235D2E1800000027BEEF /* DualCameraCapture.swift */; };
+		70D1235B2E1800000027BEEF /* CaptureMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D1235A2E1800000027BEEF /* CaptureMode.swift */; };
+		70D1235C2E1800000027BEEF /* CaptureMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D1235A2E1800000027BEEF /* CaptureMode.swift */; };
 		70D1234C2E1800000027BEEF /* DistortionEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D1234A2E1800000027BEEF /* DistortionEncoder.swift */; };
 		386E277825991163007D023B /* RecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386E277725991163007D023B /* RecordButton.swift */; };
 		3872B88925962BBA00A3370C /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3872B88825962BBA00A3370C /* Colors.xcassets */; };
@@ -109,6 +113,8 @@
 		38694C7226D2C66F00546EA1 /* DepthEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DepthEncoder.swift; sourceTree = "<group>"; };
 		38694C7326D2C66F00546EA1 /* AppDaemon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDaemon.swift; sourceTree = "<group>"; };
 		70D1234A2E1800000027BEEF /* DistortionEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistortionEncoder.swift; sourceTree = "<group>"; };
+		70D1235D2E1800000027BEEF /* DualCameraCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DualCameraCapture.swift; sourceTree = "<group>"; };
+		70D1235A2E1800000027BEEF /* CaptureMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureMode.swift; sourceTree = "<group>"; };
 		386E277725991163007D023B /* RecordButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordButton.swift; sourceTree = "<group>"; };
 		3872B88825962BBA00A3370C /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		387B577E25EA5BB900132903 /* StrayScannerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StrayScannerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -259,6 +265,8 @@
 				38694C7126D2C66F00546EA1 /* OdometryEncoder.swift */,
 				38694C7226D2C66F00546EA1 /* DepthEncoder.swift */,
 				70D1234A2E1800000027BEEF /* DistortionEncoder.swift */,
+				70D1235D2E1800000027BEEF /* DualCameraCapture.swift */,
+				70D1235A2E1800000027BEEF /* CaptureMode.swift */,
 				38694C7326D2C66F00546EA1 /* AppDaemon.swift */,
 			);
 			path = Helpers;
@@ -524,6 +532,8 @@
 				709259192E0B79AB00A7B62E /* ShareUtility.swift in Sources */,
 				38694C8026D2C66F00546EA1 /* DepthEncoder.swift in Sources */,
 				70D1234B2E1800000027BEEF /* DistortionEncoder.swift in Sources */,
+				70D1235E2E1800000027BEEF /* DualCameraCapture.swift in Sources */,
+				70D1235B2E1800000027BEEF /* CaptureMode.swift in Sources */,
 				38C17B13259BE1DA006B3FDA /* Recording+CoreDataProperties.swift in Sources */,
 				38C17B12259BE1DA006B3FDA /* Recording+CoreDataClass.swift in Sources */,
 			);
@@ -556,6 +566,8 @@
 				70CF35492E17803700276207 /* ShareUtility.swift in Sources */,
 				38694C8126D2C66F00546EA1 /* DepthEncoder.swift in Sources */,
 				70D1234C2E1800000027BEEF /* DistortionEncoder.swift in Sources */,
+				70D1235F2E1800000027BEEF /* DualCameraCapture.swift in Sources */,
+				70D1235C2E1800000027BEEF /* CaptureMode.swift in Sources */,
 				3863FE6E25FCBB0E00C1DA4F /* Recording+CoreDataProperties.swift in Sources */,
 				3863FE6F25FCBB0E00C1DA4F /* Recording+CoreDataClass.swift in Sources */,
 			);

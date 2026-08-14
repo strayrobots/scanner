@@ -45,11 +45,25 @@ class DepthEncoder {
         let height = CVPixelBufferGetHeight(frame)
         let width = CVPixelBufferGetWidth(frame)
         CVPixelBufferLockBaseAddress(frame, CVPixelBufferLockFlags.readOnly)
+        defer { CVPixelBufferUnlockBaseAddress(frame, CVPixelBufferLockFlags.readOnly) }
         let inBase = CVPixelBufferGetBaseAddress(frame)
         let inPixelData = inBase!.assumingMemoryBound(to: Float32.self)
-        
-        let out = PngEncoder.init(depth: inPixelData, width: Int32(width), height: Int32(height))!
-        CVPixelBufferUnlockBaseAddress(frame, CVPixelBufferLockFlags(rawValue: 0))
-        return out
+        let bytesPerRow = CVPixelBufferGetBytesPerRow(frame)
+
+        // Depth buffers coming from AVFoundation can be row padded, whereas the
+        // encoder expects tightly packed rows.
+        if bytesPerRow == width * MemoryLayout<Float32>.size {
+            return PngEncoder.init(depth: inPixelData, width: Int32(width), height: Int32(height))!
+        }
+        var packed = [Float32](repeating: 0.0, count: width * height)
+        packed.withUnsafeMutableBufferPointer { destination in
+            for row in 0..<height {
+                let source = inBase!.advanced(by: row * bytesPerRow).assumingMemoryBound(to: Float32.self)
+                destination.baseAddress!.advanced(by: row * width).update(from: source, count: width)
+            }
+        }
+        return packed.withUnsafeMutableBufferPointer { pointer in
+            PngEncoder.init(depth: pointer.baseAddress!, width: Int32(width), height: Int32(height))!
+        }
     }
 }

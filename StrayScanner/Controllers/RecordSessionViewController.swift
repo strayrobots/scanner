@@ -16,6 +16,7 @@ import CoreMotion
 let FpsDividers: [Int] = [1, 2, 4, 12, 60]
 let AvailableFpsSettings: [Int] = FpsDividers.map { Int(60 / $0) }
 let FpsUserDefaultsKey: String = "FPS"
+let CaptureModeUserDefaultsKey: String = "CaptureMode"
 
 class MetalView : UIView {
     override class var layerClass: AnyClass {
@@ -40,6 +41,10 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     private var datasetEncoder: DatasetEncoder?
     private let imuOperationQueue = OperationQueue()
     private var chosenFpsSetting: Int = 0
+    private var availableModes: [CaptureMode] = []
+    private var captureMode: CaptureMode = .lidar
+    private var dualCameraCapture: DualCameraCapture?
+    private let modeButton = UIButton(type: .system)
     @IBOutlet private var rgbView: MetalView!
     @IBOutlet private var depthView: MetalView!
     @IBOutlet private var recordButton: RecordButton!
@@ -71,12 +76,15 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         }
         fpsButton.layer.masksToBounds = true
         fpsButton.layer.cornerRadius = 12.0
-        
+
+        setupModeButton()
+        resolveCaptureMode()
+
         imuOperationQueue.qualityOfService = .userInitiated
     }
 
     override func viewDidDisappear(_ animated: Bool) {
-        session.pause();
+        stopCapture()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -88,16 +96,114 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         startSession()
     }
 
+    private func setupModeButton() {
+        modeButton.translatesAutoresizingMaskIntoConstraints = false
+        var configuration = UIButton.Configuration.filled()
+        configuration.baseBackgroundColor = UIColor(named: "DarkColor")
+        configuration.baseForegroundColor = UIColor(named: "LightColor")
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 4.0, leading: 12.0, bottom: 4.0, trailing: 12.0)
+        configuration.background.cornerRadius = 12.0
+        configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+            var outgoing = incoming
+            outgoing.font = UIFont(name: "CourierNewPSMT", size: 15.0)
+            return outgoing
+        }
+        modeButton.configuration = configuration
+        modeButton.addTarget(self, action: #selector(modeButtonTapped), for: .touchUpInside)
+        view.addSubview(modeButton)
+        NSLayoutConstraint.activate([
+            modeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 12.0),
+            modeButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16.0)
+        ])
+    }
+
+    private func resolveCaptureMode() {
+        availableModes = CaptureMode.available
+        guard let first = availableModes.first else {
+            unsupported = true
+            modeButton.isHidden = true
+            return
+        }
+        let stored = UserDefaults.standard.integer(forKey: CaptureModeUserDefaultsKey)
+        captureMode = availableModes.first { $0.rawValue == stored } ?? first
+        // Only offer the button when there is an actual choice to make. On LiDAR
+        // devices there is exactly one, strictly better, mode.
+        modeButton.isHidden = availableModes.count < 2
+        updateModeButton()
+    }
+
+    private func updateModeButton() {
+        modeButton.setTitle(captureMode.label, for: .normal)
+        if captureMode.recordsDepth {
+            renderer?.renderMode = .depth
+            depthView.isHidden = false
+            rgbView.isHidden = true
+        } else {
+            // There is nothing to show in the depth view.
+            renderer?.renderMode = .rgb
+            rgbView.isHidden = false
+            depthView.isHidden = true
+        }
+    }
+
+    @objc private func modeButtonTapped() {
+        guard startedRecording == nil, availableModes.count > 1 else { return }
+        let index = availableModes.firstIndex(of: captureMode) ?? 0
+        captureMode = availableModes[(index + 1) % availableModes.count]
+        UserDefaults.standard.set(captureMode.rawValue, forKey: CaptureModeUserDefaultsKey)
+        updateModeButton()
+        modeButton.isEnabled = false
+        // Both pipelines need exclusive access to the camera, so the previous
+        // one has to be fully torn down before the next one starts.
+        session.pause()
+        dualCameraCapture?.stop { [weak self] in
+            guard let self = self else { return }
+            self.modeButton.isEnabled = true
+            self.startSession()
+        }
+        if dualCameraCapture == nil {
+            modeButton.isEnabled = true
+            startSession()
+        }
+    }
+
     private func startSession() {
+        guard !unsupported else {
+            print("No supported capture mode available.")
+            return
+        }
+        switch captureMode {
+        case .lidar, .noDepth:
+            startARSession()
+        case .lowResDepth:
+            startDualCameraSession()
+        }
+    }
+
+    private func startARSession() {
         let config = ARWorldTrackingConfiguration()
         arConfiguration = config
-        if !ARWorldTrackingConfiguration.isSupported || !ARWorldTrackingConfiguration.supportsFrameSemantics(.sceneDepth) {
+        guard ARWorldTrackingConfiguration.isSupported else {
             print("AR is not supported.")
             unsupported = true
-        } else {
-            config.frameSemantics.insert(.sceneDepth)
-            session.run(config)
+            return
         }
+        if captureMode == .lidar {
+            config.frameSemantics.insert(.sceneDepth)
+        }
+        session.run(config)
+    }
+
+    private func startDualCameraSession() {
+        let capture = dualCameraCapture ?? DualCameraCapture()
+        capture.delegate = self
+        dualCameraCapture = capture
+        capture.start()
+    }
+
+    private func stopCapture() {
+        session.pause()
+        dualCameraCapture?.stop()
     }
     
     private func startRawIMU() {
@@ -163,7 +269,20 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         updateLabelTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             self.updateTime()
         }
-        datasetEncoder = DatasetEncoder(arConfiguration: arConfiguration!, fpsDivider: FpsDividers[chosenFpsSetting])
+        let fpsDivider = FpsDividers[chosenFpsSetting]
+        switch captureMode {
+        case .lidar, .noDepth:
+            guard let configuration = arConfiguration else {
+                print("No AR configuration. Something is wrong.")
+                return
+            }
+            datasetEncoder = DatasetEncoder(arConfiguration: configuration, fpsDivider: fpsDivider, mode: captureMode)
+        case .lowResDepth:
+            let resolution = dualCameraCapture?.videoResolution ?? CGSize(width: 1920, height: 1440)
+            datasetEncoder = DatasetEncoder(width: resolution.width, height: resolution.height,
+                                            fpsDivider: fpsDivider, mode: captureMode)
+        }
+        modeButton.isEnabled = false
         startRawIMU()
     }
 
@@ -175,6 +294,7 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         startedRecording = nil
         updateLabelTimer?.invalidate()
         updateLabelTimer = nil
+        modeButton.isEnabled = true
         // Stop IMU updates
         stopRawIMU()
         datasetEncoder?.wrapUp()
@@ -232,6 +352,8 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     }
 
     @objc func viewTapped() {
+        // Without a depth stream there is nothing to switch to.
+        guard captureMode.recordsDepth else { return }
         switch renderer!.renderMode {
             case .depth:
                 renderer!.renderMode = RenderMode.rgb
@@ -251,6 +373,7 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     }
 
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        guard captureMode != .lowResDepth else { return }
         self.renderer!.render(frame: frame)
         if startedRecording != nil {
             if let encoder = datasetEncoder {
@@ -272,7 +395,7 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     }
     
     private func showUnsupportedAlert() {
-        let alert = UIAlertController(title: "Unsupported device", message: "This device doesn't seem to have the required level of ARKit support.", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Unsupported device", message: "This device doesn't support ARKit world tracking or depth capture.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
             self.dismissFunction?()
         }))
@@ -289,5 +412,23 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
             print("Could not fetch sessions for counting. \(error.localizedDescription)")
         }
         return 0
+    }
+}
+
+extension RecordSessionViewController: DualCameraCaptureDelegate {
+    func dualCameraCapture(_ capture: DualCameraCapture, didOutput frame: DualCameraFrame) {
+        if startedRecording != nil {
+            datasetEncoder?.add(frame: frame)
+        }
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self, self.captureMode == .lowResDepth else { return }
+            self.renderer?.render(video: frame.video, depth: frame.depth)
+        }
+    }
+
+    func dualCameraCapture(_ capture: DualCameraCapture, didFailWith message: String) {
+        let alert = UIAlertController(title: "Depth capture failed", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
 }

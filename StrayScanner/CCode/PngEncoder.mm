@@ -12,6 +12,7 @@
 #import "PngEncoder.h"
 #import "lodepng.h"
 #include <cmath>
+#include <algorithm>
 
 @implementation PngEncoder {
     std::vector<unsigned char> png;
@@ -28,7 +29,10 @@
     for (int y=0; y < height; y++) {
         for (int x=0; x < width; x++) {
             float value = content[y * width + x];
-            uint16_t converted = uint16_t(std::round(value * 1000.0f));
+            if (!std::isfinite(value) || value < 0.0f) {
+                value = 0.0f;
+            }
+            uint16_t converted = uint16_t(std::min(std::round(value * 1000.0f), 65535.0f));
             unsigned int index = (y * width + x) * 2;
             outData[index] = converted >> 8;
             outData[index+1] = converted & 0xFF;
