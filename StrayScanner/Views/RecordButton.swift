@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 
-@IBDesignable
 class RecordButton : UIView {
     private let circleStroke: CGFloat = 5.0
     private let animationDuration = 0.1
@@ -129,13 +128,6 @@ class RecordButton : UIView {
         animationGroup.fillMode = CAMediaTimingFillMode.forwards
         animationGroup.duration = animationDuration
         disk.add(animationGroup, forKey: "cornerRadius")
-    }
-
-    @objc override func prepareForInterfaceBuilder() {
-        super.prepareForInterfaceBuilder()
-        drawInner()
-        drawEdge()
-        self.backgroundColor = UIColor.clear
     }
 
     private func cornerRadius(recording: Bool) -> CGFloat {

@@ -11,62 +11,80 @@ import SwiftUI
 struct InformationView: View {
     let paddingLeftRight: CGFloat = 15
     let paddingTextTop: CGFloat = 10
+
     var body: some View {
         ZStack {
             Color("BackgroundColor").ignoresSafeArea()
             ScrollView {
-            VStack(alignment: .leading) {
-                Text("About This App").font(.title)
-                    .fontWeight(.bold)
-                Group {
-                bodyText("""
-This app lets you record video and depth datasets using the camera and LIDAR scanner.
+                VStack(alignment: .leading) {
+                    Text("About This App").font(.title)
+                        .fontWeight(.bold)
+                    bodyText("""
+This app records video and depth datasets with the camera and the LiDAR scanner.
 """)
+                    bodyText(versionText)
+                        .foregroundStyle(.secondary)
 
-                heading("Transfering Datasets To Your Desktop Computer")
-                
-                bodyText("""
+                    heading("Transferring Datasets To Your Computer")
+                    bodyText("""
 The recorded datasets can be exported in several ways:
 
-1. Share directly from the app: Tap the "Share" button inside any recording to export it as a ZIP archive via AirDrop, email, or save to Files.
+1. Share from the app: tap Share inside any recording to export it as a ZIP archive through AirDrop, Mail or Files.
 
-2. Connect your device with the lightning cable:
-   • On Mac, access files through Finder sidebar > your device > "Files" tab > Stray Scanner
-   • On Windows, access files through iTunes
-   • Drag folders to your desired location (one folder per dataset)
+2. Connect your device with a cable:
+   • On a Mac, open Finder, select your device in the sidebar, open the Files tab, then Stray Scanner.
+   • On Windows, use the Apple Devices app.
+   • Drag the folders you want to your computer. There is one folder per dataset.
 
-3. Use the Files app: Browse > On My iPhone > Stray Scanner, then export to another app or iCloud drive.
+3. Use the Files app: Browse, On My iPhone, Stray Scanner, then move a folder to another app or to iCloud Drive.
 """)
-}
-                Group {
-                heading("Source Code")
-                bodyText("This app is open source. You can find the source code behind the link below. The Github project also contains documentation and links to other related projects.")
-                    
-                bodyText("To report bugs, please open an issue on the Github project. Contributions are more than welcome.")
-                    
-                link(text: "Github project", destination:
-                    "https://github.com/StrayRobots/scanner")
 
+                    heading("What A Dataset Holds")
+                    bodyText("""
+Each dataset folder holds:
+   • rgb.mp4, the camera video in HEVC.
+   • depth, one 16 bit PNG per frame, 256 × 192, in millimetres.
+   • confidence, one 8 bit PNG per frame, with values 0, 1 or 2. Higher is more confident.
+   • odometry.csv, the camera pose and intrinsics of each frame.
+   • imu.csv, the accelerometer and gyroscope readings.
+   • camera_matrix.csv, the 3 × 3 intrinsic matrix of the last frame.
+   • distortion, the lens distortion tables, when the device provides them.
+""")
+
+                    heading("Report")
+                    bodyText("""
+Each recording shows a report under its video. It counts the video frames, depth maps, confidence maps and poses, and says whether they agree. It measures the depth and confidence of the middle frame, and lists the camera intrinsics, the motion samples and the size on disk.
+""")
+
+                    heading("Source Code")
+                    bodyText("This version is built by Izuba from the open source Stray Scanner by Stray Robots, under the MIT licence, and updated for iOS 27.")
+                    bodyText("The original project also contains the format documentation and links to related projects. Bugs in the original recorder can be reported there as issues.")
+                    link("Stray Scanner on GitHub", destination: "https://github.com/strayrobots/scanner")
+
+                    heading("Disclaimer")
+                    bodyText("This application is provided as is.\nIn no event shall the authors or copyright holders be liable for any claim, damages or other liability arising from using, or in connection with using the software.")
+                    Spacer()
                 }
-                Group {
-                heading("Disclaimer")
-                bodyText("This application is provided as is.\nIn no event shall the authors or copyright holders be liable for any claim, damages or other liability arising from using, or in connection with using the software.")
-                Spacer()
-                }
-            }.padding(.all, paddingLeftRight)
+                .padding(.all, paddingLeftRight)
             }
             .frame(minWidth: 0, maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        
         }
     }
-    
+
+    private var versionText: String {
+        let info = Bundle.main.infoDictionary
+        let version = info?["CFBundleShortVersionString"] as? String ?? "?"
+        let build = info?["CFBundleVersion"] as? String ?? "?"
+        return "Version \(version) (\(build))"
+    }
+
     private func heading(_ text: String) -> some View {
         Text(text)
             .font(.title3)
             .fontWeight(.bold)
             .padding(.top, 20)
     }
-    
+
     private func bodyText(_ text: String) -> some View {
         Text(text)
             .font(.body)
@@ -74,22 +92,17 @@ The recorded datasets can be exported in several ways:
             .lineSpacing(1.25)
             .padding(.top, paddingTextTop)
     }
-    
-    private func link(text: String, destination: String) -> some View {
-        Text(text)
-            .font(.body)
-            .foregroundColor(Color.blue)
-            .padding(.top, paddingTextTop)
-            .onTapGesture {
-                let url = URL.init(string: destination)
-                guard let destinationUrl = url else { return }
-                UIApplication.shared.open(destinationUrl)
-            }
+
+    @ViewBuilder
+    private func link(_ text: String, destination: String) -> some View {
+        if let url = URL(string: destination) {
+            Link(text, destination: url)
+                .font(.body)
+                .padding(.top, paddingTextTop)
+        }
     }
 }
 
-struct InformationView_Previews: PreviewProvider {
-    static var previews: some View {
-        InformationView()
-    }
+#Preview {
+    InformationView()
 }

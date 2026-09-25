@@ -8,16 +8,12 @@
 import Foundation
 
 /// Utility class for creating shareable archives from recording datasets
-class ShareUtility {
+enum ShareUtility {
     
     /// Creates a shareable ZIP archive from a recording's dataset
-    /// - Parameter recording: The recording to create a ZIP archive for
+    /// - Parameter sourceDirectory: The dataset folder of the recording
     /// - Returns: URL of the created ZIP file
-    static func createShareableArchive(for recording: Recording) async throws -> URL {
-        guard let sourceDirectory = recording.directoryPath() else {
-            throw NSError(domain: "ShareError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Unable to get recording directory path"])
-        }
-        
+    static func createShareableArchive(from sourceDirectory: URL) async throws -> URL {
         let tempDirectory = FileManager.default.temporaryDirectory
         let archiveURL = tempDirectory.appendingPathComponent(sourceDirectory.lastPathComponent + ".zip")
         

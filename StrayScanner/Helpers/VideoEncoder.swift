@@ -9,12 +9,13 @@
 import Foundation
 import ARKit
 
-struct VideoEncoderInput {
+struct VideoEncoderInput: @unchecked Sendable {
     let buffer: CVPixelBuffer
     let time: TimeInterval // Relative to boot time.
 }
 
-class VideoEncoder {
+// Used from the dataset encoder's queue only; finishWriting releases the writer from its own callback.
+final class VideoEncoder: @unchecked Sendable {
     enum EncodingStatus {
         case allGood
         case error

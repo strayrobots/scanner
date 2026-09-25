@@ -10,99 +10,63 @@ import SwiftUI
 import AVKit
 import CoreData
 
-class SessionDetailViewModel: ObservableObject {
-    private var dataContext: NSManagedObjectContext?
-
-    init() {
-        let appDelegate = UIApplication.shared.delegate as? AppDelegate
-        self.dataContext = appDelegate?.persistentContainer.viewContext
-    }
-    
-    func title(recording: Recording) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .long
-        dateFormatter.timeStyle = .short
-        
-        if let created = recording.createdAt {
-            return dateFormatter.string(from: created)
-        } else {
-            return recording.name ?? "Recording"
-        }
-    }
-
-    func delete(recording: Recording) {
-        recording.deleteFiles()
-        self.dataContext?.delete(recording)
-        do {
-            try self.dataContext?.save()
-        } catch let error as NSError {
-            print("Could not save recording. \(error), \(error.userInfo)")
-        }
-    }
-}
-
 struct SessionDetailView: View {
-    @ObservedObject var viewModel = SessionDetailViewModel()
-    var recording: Recording
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @ObservedObject var recording: Recording
+    @Environment(\.managedObjectContext) private var dataContext
+    @Environment(\.dismiss) private var dismiss
     @State private var showingShareSheet = false
-    @State private var tempPackageURL: URL?
+    @State private var packageURL: URL?
     @State private var isCreatingPackage = false
     @State private var player: AVPlayer?
     @State private var shareError: String?
 
-    let defaultUrl = URL(fileURLWithPath: "")
-
     var body: some View {
-        let width = UIScreen.main.bounds.size.width
-        let height = width * 0.75
-        ZStack {
-        Color("BackgroundColor")
-            .edgesIgnoringSafeArea(.all)
-        VStack {
-            VideoPlayer(player: player ?? AVPlayer(url: defaultUrl))
-                .frame(width: width, height: height)
-                .padding(.horizontal, 0.0)
-                .onAppear {
-                    if player == nil {
-                        player = AVPlayer(url: recording.absoluteRgbPath() ?? defaultUrl)
-                    }
-                }
-            
-            HStack(spacing: 20) {
-                Button(action: shareItem) {
-                    HStack {
-                        if isCreatingPackage {
-                            ProgressView()
-                                .scaleEffect(0.8)
-                        } else {
-                            Image(systemName: "square.and.arrow.up")
+        ScrollView {
+            VStack(spacing: 0) {
+                VideoPlayer(player: player)
+                    .aspectRatio(4.0 / 3.0, contentMode: .fit)
+                    .frame(maxWidth: .infinity)
+                    .onAppear {
+                        if player == nil, let url = recording.absoluteRgbPath() {
+                            player = AVPlayer(url: url)
                         }
-                        Text(isCreatingPackage ? "Preparing..." : "Share")
-                            .fixedSize()
                     }
-                    .foregroundColor(isCreatingPackage ? .gray : .blue)
-                    .frame(minWidth: 100)
+
+                HStack(spacing: 20) {
+                    Button(action: shareItem) {
+                        HStack {
+                            if isCreatingPackage {
+                                ProgressView()
+                                    .scaleEffect(0.8)
+                            } else {
+                                Image(systemName: "square.and.arrow.up")
+                            }
+                            Text(isCreatingPackage ? "Preparing..." : "Share")
+                                .fixedSize()
+                        }
+                        .foregroundStyle(isCreatingPackage ? .gray : .blue)
+                        .frame(minWidth: 100)
+                    }
+                    .disabled(isCreatingPackage)
+
+                    Button(action: deleteItem) {
+                        Text("Delete").foregroundStyle(Color("DangerColor"))
+                    }
                 }
-                .disabled(isCreatingPackage)
-                
-                Button(action: deleteItem) {
-                    Text("Delete").foregroundColor(Color("DangerColor"))
+                .padding(.top, 20)
+
+                if let directory = recording.directoryPath() {
+                    RecordingReportView(directory: directory, duration: recording.duration)
+                        .padding(.top, 28)
                 }
             }
-            .padding(.top, 20)
         }
-        .navigationBarTitle(viewModel.title(recording: recording))
-        .background(Color("BackgroundColor"))
-        .sheet(isPresented: $showingShareSheet) {
-            if let packageURL = tempPackageURL {
-                ShareSheet(activityItems: [packageURL]) { activityType, completed, returnedItems, activityError in
-                    DispatchQueue.main.async {
-                        // Clean up temporary package after sharing
-                        try? FileManager.default.removeItem(at: packageURL)
-                        tempPackageURL = nil
-                        showingShareSheet = false
-                    }
+        .navigationTitle(title)
+        .background(Color("BackgroundColor").ignoresSafeArea())
+        .sheet(isPresented: $showingShareSheet, onDismiss: removePackage) {
+            if let packageURL {
+                ShareSheet(activityItems: [packageURL]) {
+                    showingShareSheet = false
                 }
             }
         }
@@ -114,69 +78,57 @@ struct SessionDetailView: View {
         } message: {
             Text(shareError ?? "")
         }
+    }
+
+    private var title: String {
+        recording.createdAt?.formatted(date: .long, time: .shortened) ?? recording.name ?? "Recording"
+    }
+
+    private func deleteItem() {
+        recording.deleteFiles()
+        dataContext.delete(recording)
+        do {
+            try dataContext.save()
+        } catch let error as NSError {
+            print("Could not save recording. \(error), \(error.userInfo)")
+        }
+        dismiss()
+    }
+
+    private func shareItem() {
+        guard let directory = recording.directoryPath() else { return }
+        isCreatingPackage = true
+        Task {
+            do {
+                packageURL = try await ShareUtility.createShareableArchive(from: directory)
+                showingShareSheet = true
+            } catch {
+                shareError = error.localizedDescription
+            }
+            isCreatingPackage = false
         }
     }
 
-    func deleteItem() {
-        viewModel.delete(recording: recording)
-        self.presentationMode.wrappedValue.dismiss()
-    }
-    
-    func shareItem() {
-        isCreatingPackage = true
-        
-        Task {
-            do {
-                let packageURL = try await ShareUtility.createShareableArchive(for: recording)
-                await MainActor.run {
-                    tempPackageURL = packageURL
-                    isCreatingPackage = false
-                    showingShareSheet = true
-                }
-            } catch {
-                await MainActor.run {
-                    isCreatingPackage = false
-                    shareError = error.localizedDescription
-                }
-            }
+    /// Cleans up the temporary package after sharing.
+    private func removePackage() {
+        if let packageURL {
+            try? FileManager.default.removeItem(at: packageURL)
         }
+        packageURL = nil
     }
 }
 
 struct ShareSheet: UIViewControllerRepresentable {
     let activityItems: [Any]
-    let applicationActivities: [UIActivity]? = nil
-    let completionWithItemsHandler: UIActivityViewController.CompletionWithItemsHandler?
-    
-    init(activityItems: [Any], completionHandler: UIActivityViewController.CompletionWithItemsHandler? = nil) {
-        self.activityItems = activityItems
-        self.completionWithItemsHandler = completionHandler
-    }
-    
-    func makeUIViewController(context: UIViewControllerRepresentableContext<ShareSheet>) -> UIActivityViewController {
-        let controller = UIActivityViewController(
-            activityItems: activityItems,
-            applicationActivities: applicationActivities
-        )
-        controller.completionWithItemsHandler = completionWithItemsHandler
+    let onComplete: @MainActor () -> Void
+
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+        controller.completionWithItemsHandler = { _, _, _, _ in
+            onComplete()
+        }
         return controller
     }
-    
-    func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ShareSheet>) {
-    }
-}
 
-struct SessionDetailView_Previews: PreviewProvider {
-    static var recording: Recording = { () -> Recording in
-        let rec = Recording()
-        rec.id = UUID()
-        rec.name = "Placeholder name"
-        rec.createdAt = Date()
-        rec.duration = 30.0
-        return rec
-    }()
-
-    static var previews: some View {
-        SessionDetailView(recording: recording)
-    }
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }

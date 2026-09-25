@@ -9,79 +9,40 @@
 import SwiftUI
 import CoreData
 
-class SessionListViewModel: ObservableObject {
-    private var dataContext: NSManagedObjectContext?
-    @Published var sessions: [Recording] = []
-
-    init() {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        dataContext = appDelegate.persistentContainer.viewContext
-        self.sessions = []
-        NotificationCenter.default.addObserver(self, selector: #selector(sessionsChanged), name: NSNotification.Name("sessionsChanged"), object: nil)
-    }
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
-    func fetchSessions() {
-        let request = NSFetchRequest<NSManagedObject>(entityName: "Recording")
-        request.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: false)]
-        do {
-            let fetched: [NSManagedObject] = try dataContext?.fetch(request) ?? []
-            sessions = fetched.map { session in
-                return session as! Recording
-            }
-
-        } catch let error as NSError {
-            print("Something went wrong. Error: \(error), \(error.userInfo)")
-        }
-    }
-
-    @objc func sessionsChanged() {
-        fetchSessions()
-    }
-
-}
-
 struct SessionList: View {
-    @ObservedObject var viewModel = SessionListViewModel()
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Recording.createdAt, ascending: false)])
+    private var sessions: FetchedResults<Recording>
     @State private var showingInfo = false
 
     var body: some View {
-        ZStack {
-        Color.black
-        .ignoresSafeArea()
-        NavigationView {
+        NavigationStack {
             VStack(alignment: .leading) {
                 HStack {
                     Text("Recordings")
-                        .foregroundColor(Color("TextColor"))
+                        .foregroundStyle(Color("TextColor"))
                         .font(.largeTitle)
                         .fontWeight(.bold)
-                        .multilineTextAlignment(.center)
                         .padding([.top, .leading], 15.0)
                     Spacer()
-                    Button(action: {
-                        showingInfo.toggle()
-                    }, label: {
+                    Button {
+                        showingInfo = true
+                    } label: {
                         Image(systemName: "info.circle")
                             .resizable()
-                            .frame(width: 25, height: 25, alignment: .center)
+                            .frame(width: 25, height: 25)
                             .padding(.top, 17)
                             .padding(.trailing, 20)
-                            .foregroundColor(Color("TextColor"))
-                    }).sheet(isPresented: $showingInfo) {
-                        InformationView()
+                            .foregroundStyle(Color("TextColor"))
                     }
+                    .accessibilityLabel("About")
                 }
 
-                if !viewModel.sessions.isEmpty {
-                    List {
-                        ForEach(Array(viewModel.sessions.enumerated()), id: \.element) { i, recording in
-                            NavigationLink(destination: SessionDetailView(recording: recording)) {
-                                SessionRow(session: recording)
-                            }
+                if !sessions.isEmpty {
+                    List(sessions) { recording in
+                        NavigationLink {
+                            SessionDetailView(recording: recording)
+                        } label: {
+                            SessionRow(session: recording)
                         }
                     }
                     .scrollContentBackground(.hidden)
@@ -95,42 +56,31 @@ struct SessionList: View {
                 }
                 HStack {
                     Spacer()
-                    NavigationLink(destination: NewSessionView(), label: {
+                    NavigationLink {
+                        NewSessionView()
+                    } label: {
                         Text("Record new session")
                             .font(.title3)
                             .padding(20)
                             .background(Color("TextColor"))
-                            .foregroundColor(Color("LightColor"))
-                            .cornerRadius(35)
+                            .foregroundStyle(Color("LightColor"))
+                            .clipShape(.capsule)
                             .padding(20)
-                    })
+                    }
                     Spacer()
                 }
-                if (viewModel.sessions.isEmpty) {
+                if sessions.isEmpty {
                     Spacer()
                 }
             }
-            .navigationBarHidden(true)
+            .toolbar(.hidden, for: .navigationBar)
             .background(Color("BackgroundColor").ignoresSafeArea())
+            .sheet(isPresented: $showingInfo) {
+                InformationView()
+            }
             .onAppear {
-                DispatchQueue.main.async {
-                    viewModel.fetchSessions()
-                }
-                FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).forEach({ url in
-                    let relative = url.relativeString
-                    print("relative url: \(relative)")
-                })
-                let delegate = UIApplication.shared.delegate as! AppDelegate
-                delegate.appDaemon?.removeDeletedEntries()
+                (UIApplication.shared.delegate as? AppDelegate)?.appDaemon?.removeDeletedEntries()
+            }
         }
-        }
-        .background(Color("BackgroundColor").edgesIgnoringSafeArea(.all))
-        }
-    }
-}
-
-struct SessionList_Previews: PreviewProvider {
-    static var previews: some View {
-        SessionList()
     }
 }

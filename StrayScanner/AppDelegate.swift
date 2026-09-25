@@ -9,13 +9,13 @@
 import UIKit
 import CoreData
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
-    public var appDaemon: AppDaemon? = Optional.none
+@main
+final class AppDelegate: UIResponder, UIApplicationDelegate {
+    var appDaemon: AppDaemon?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        appDaemon = AppDaemon(appDelegate: self)
+        appDaemon = AppDaemon(dataContext: persistentContainer.viewContext)
         return true
     }
 

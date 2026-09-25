@@ -11,7 +11,8 @@ import ARKit
 import CryptoKit
 import CoreMotion
 
-class DatasetEncoder {
+// Frames are encoded on `queue` and IMU samples on the caller's serial queue; wrapUp waits for both.
+final class DatasetEncoder: @unchecked Sendable {
     enum Status {
         case allGood
         case videoEncodingError

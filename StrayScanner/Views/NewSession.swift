@@ -8,51 +8,28 @@
 
 import SwiftUI
 
-struct NavigationConfigurator: UIViewControllerRepresentable {
-    var configure: (UINavigationController) -> Void = { _ in }
-
-    func makeUIViewController(context: UIViewControllerRepresentableContext<NavigationConfigurator>) -> UIViewController {
-        UIViewController()
-    }
-    func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<NavigationConfigurator>) {
-        if let nc = uiViewController.navigationController {
-            self.configure(nc)
-        }
-    }
-}
-
 struct RecordSessionManager: UIViewControllerRepresentable {
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
-    func makeUIViewController(context: Context) -> some UIViewController {
+    @Environment(\.dismiss) private var dismiss
+
+    func makeUIViewController(context: Context) -> RecordSessionViewController {
         let viewController = RecordSessionViewController(nibName: "RecordSessionView", bundle: nil)
-        viewController.setDismissFunction {
-            presentationMode.wrappedValue.dismiss()
-            viewController.setDismissFunction(Optional.none)
+        viewController.setDismissFunction { [weak viewController] in
+            dismiss()
+            viewController?.setDismissFunction(nil)
         }
         return viewController
     }
 
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
+    func updateUIViewController(_ uiViewController: RecordSessionViewController, context: Context) {}
 }
 
-struct NewSessionView : View {
-    
+struct NewSessionView: View {
     var body: some View {
         RecordSessionManager()
-            .padding(.vertical, 0.0)
-            .navigationBarTitle("Recording")
+            .navigationTitle("Recording")
             .navigationBarTitleDisplayMode(.inline)
-            .edgesIgnoringSafeArea(.all)
-            .background(NavigationConfigurator { nc in
-                nc.navigationBar.barTintColor = UIColor(named: "BackgroundColor")
-            })
-
-    }
-}
-
-struct NewSessionView_Previews: PreviewProvider {
-    static var previews: some View {
-        NewSessionView()
+            .toolbarBackground(Color("BackgroundColor"), for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .ignoresSafeArea()
     }
 }
