@@ -30,6 +30,7 @@ class MetalView : UIView {
 
 class RecordSessionViewController : UIViewController, ARSessionDelegate {
     private var unsupported: Bool = false
+    private var hasDepth: Bool = false
     private var arConfiguration: ARWorldTrackingConfiguration?
     private let session = ARSession()
     private let motionManager = CMMotionManager()
@@ -91,11 +92,19 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     private func startSession() {
         let config = ARWorldTrackingConfiguration()
         arConfiguration = config
-        if !ARWorldTrackingConfiguration.isSupported || !ARWorldTrackingConfiguration.supportsFrameSemantics(.sceneDepth) {
+        if !ARWorldTrackingConfiguration.isSupported {
             print("AR is not supported.")
             unsupported = true
         } else {
-            config.frameSemantics.insert(.sceneDepth)
+            // Depth is optional: devices without LiDAR record RGB, odometry and IMU only.
+            hasDepth = ARWorldTrackingConfiguration.supportsFrameSemantics(.sceneDepth)
+            if hasDepth {
+                config.frameSemantics.insert(.sceneDepth)
+            } else {
+                renderer?.renderMode = RenderMode.rgb
+                rgbView.isHidden = false
+                depthView.isHidden = true
+            }
             session.run(config)
         }
     }
@@ -232,6 +241,7 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     }
 
     @objc func viewTapped() {
+        if !hasDepth { return }
         switch renderer!.renderMode {
             case .depth:
                 renderer!.renderMode = RenderMode.rgb

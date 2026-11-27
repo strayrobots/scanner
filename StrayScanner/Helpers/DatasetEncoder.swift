@@ -29,6 +29,7 @@ class DatasetEncoder {
     private var currentFrame: Int = -1
     private var savedFrames: Int = 0
     private let frameInterval: Int // Only save every frameInterval-th frame.
+    private let expectsDepth: Bool // False on devices without LiDAR.
     private let encodingSemaphore = DispatchSemaphore(value: 3) // Limit queued frames to avoid ARFrame retention
     public let id: UUID
     public let rgbFilePath: URL // Relative to app document directory.
@@ -45,6 +46,7 @@ class DatasetEncoder {
 
     init(arConfiguration: ARWorldTrackingConfiguration, fpsDivider: Int = 1) {
         self.frameInterval = fpsDivider
+        self.expectsDepth = arConfiguration.frameSemantics.contains(.sceneDepth)
         self.queue = DispatchQueue(label: "encoderQueue")
         
         let width = arConfiguration.videoFormat.imageResolution.width
@@ -91,7 +93,7 @@ class DatasetEncoder {
                 } else {
                     print("warning: confidence map missing.")
                 }
-            } else {
+            } else if self.expectsDepth {
                 print("warning: scene depth missing.")
             }
             self.rgbEncoder.add(frame: VideoEncoderInput(buffer: frame.capturedImage, time: frame.timestamp), currentFrame: totalFrames)
