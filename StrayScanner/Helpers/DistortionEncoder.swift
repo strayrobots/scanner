@@ -18,10 +18,7 @@ class DistortionEncoder {
         self.distortionDirectory = datasetDirectory.appendingPathComponent("distortion", isDirectory: true)
     }
 
-    func add(frame: ARFrame, currentFrame: Int) {
-        guard let calibration = frame.capturedDepthData?.cameraCalibrationData,
-              let lookupTable = calibration.lensDistortionLookupTable else { return }
-
+    func add(lookupTable: Data, currentFrame: Int) {
         if !isInitialized {
             isInitialized = true
             do {

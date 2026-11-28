@@ -3,23 +3,23 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		24866C67E744750B8654D97CC98DEDE4 /* Pods-StrayScanner-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = F5EADC50C7DC33CC7852198F1C3D3B6D /* Pods-StrayScanner-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		29C455039B03CD1151B9833ADBADBF7F /* Pods-StrayScanner-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5BD95B0E516855540792A1E3546D32 /* Pods-StrayScanner-dummy.m */; };
-		3D7F2503125A36CA443106A64A53045E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
+		3515EE5172C9BC3B1B79BBB793779D1D /* Pods-StrayScanner-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5BD95B0E516855540792A1E3546D32 /* Pods-StrayScanner-dummy.m */; };
+		82F03D0373CEBBED70773DF5BD107BB7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */; };
+		CBA7A81205C23505ED500F6EEABA7DC1 /* Pods-StrayScanner-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = F5EADC50C7DC33CC7852198F1C3D3B6D /* Pods-StrayScanner-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		3900A08661BE3B233425DD518129A775 /* Pods-StrayScanner-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-StrayScanner-acknowledgements.plist"; sourceTree = "<group>"; };
 		390C81CF744904DA5B88D0DB0F4898F4 /* Pods-StrayScanner.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-StrayScanner.modulemap"; sourceTree = "<group>"; };
-		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		7615ED2B77940E30C0BE39EAA5529253 /* Pods-StrayScanner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-StrayScanner.debug.xcconfig"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A2E0313D6F8EA35F541E317027642860 /* Pods-StrayScanner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-StrayScanner.release.xcconfig"; sourceTree = "<group>"; };
-		A3A97D92386F7D53DEB58F88452AC70B /* Pods_StrayScanner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_StrayScanner.framework; path = "Pods-StrayScanner.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A3A97D92386F7D53DEB58F88452AC70B /* Pods_StrayScanner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StrayScanner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1451AA3C604961AB6937B12E280A522 /* Pods-StrayScanner-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-StrayScanner-acknowledgements.markdown"; sourceTree = "<group>"; };
 		BE5BD95B0E516855540792A1E3546D32 /* Pods-StrayScanner-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-StrayScanner-dummy.m"; sourceTree = "<group>"; };
 		E7B762E232C5643F8DB1C2245BAA8587 /* Pods-StrayScanner-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-StrayScanner-Info.plist"; sourceTree = "<group>"; };
@@ -27,31 +27,23 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		48B4A7C032CE61480ACF82BB45AE9303 /* Frameworks */ = {
+		754F22F631F213EBDBB660F270787465 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3D7F2503125A36CA443106A64A53045E /* Foundation.framework in Frameworks */,
+				82F03D0373CEBBED70773DF5BD107BB7 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1107C1B99E04F0247618C26BEE3679D4 /* Products */ = {
+		4D48BE0F2EA4EC622FD090AC1829C1C7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				A3A97D92386F7D53DEB58F88452AC70B /* Pods_StrayScanner.framework */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		578452D2E740E91742655AC8F1636D1F /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */,
-			);
-			name = iOS;
 			sourceTree = "<group>";
 		};
 		C7B665B913A3774D5CA0063A5CD3E332 /* Targets Support Files */ = {
@@ -67,7 +59,7 @@
 			children = (
 				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
 				D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */,
-				1107C1B99E04F0247618C26BEE3679D4 /* Products */,
+				4D48BE0F2EA4EC622FD090AC1829C1C7 /* Products */,
 				C7B665B913A3774D5CA0063A5CD3E332 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
@@ -75,9 +67,17 @@
 		D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				578452D2E740E91742655AC8F1636D1F /* iOS */,
+				E4801F62A6B08CD9B5410329F1A18FDE /* iOS */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E4801F62A6B08CD9B5410329F1A18FDE /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */,
+			);
+			name = iOS;
 			sourceTree = "<group>";
 		};
 		E6994EFEFDB706E50F7EE21D591E6A1E /* Pods-StrayScanner */ = {
@@ -99,11 +99,11 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		7D7AAF7C89F3463C4BFD67121B1DE7C4 /* Headers */ = {
+		9AF00C73A9EF04C457049FE5B87459B2 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				24866C67E744750B8654D97CC98DEDE4 /* Pods-StrayScanner-umbrella.h in Headers */,
+				CBA7A81205C23505ED500F6EEABA7DC1 /* Pods-StrayScanner-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,19 +112,19 @@
 /* Begin PBXNativeTarget section */
 		95EB939FB4C0994A4A3C34ADA174C9EF /* Pods-StrayScanner */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 460ECBBCCE3D9BE36632C08CAAA8600C /* Build configuration list for PBXNativeTarget "Pods-StrayScanner" */;
+			buildConfigurationList = 96AA2BC1478B9A32EE6D191352BE4799 /* Build configuration list for PBXNativeTarget "Pods-StrayScanner" */;
 			buildPhases = (
-				7D7AAF7C89F3463C4BFD67121B1DE7C4 /* Headers */,
-				CB16C54DEAA8C86CEE5AEE6D85993C43 /* Sources */,
-				48B4A7C032CE61480ACF82BB45AE9303 /* Frameworks */,
-				A3B7CAA6AE9E96DAB7DD2B8AB9458767 /* Resources */,
+				9AF00C73A9EF04C457049FE5B87459B2 /* Headers */,
+				2A80C4187EED95DBE84E6B649A81B644 /* Sources */,
+				754F22F631F213EBDBB660F270787465 /* Frameworks */,
+				240402EC964DD58B980A035E15609C0A /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = "Pods-StrayScanner";
-			productName = "Pods-StrayScanner";
+			productName = Pods_StrayScanner;
 			productReference = A3A97D92386F7D53DEB58F88452AC70B /* Pods_StrayScanner.framework */;
 			productType = "com.apple.product-type.framework";
 		};
@@ -134,19 +134,20 @@
 		BFDFE7DC352907FC980B868725387E98 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1100;
-				LastUpgradeCheck = 1100;
+				BuildIndependentTargetsInParallel = YES;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 2640;
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 11.4";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
+				en,
 			);
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
-			productRefGroup = 1107C1B99E04F0247618C26BEE3679D4 /* Products */;
+			productRefGroup = 4D48BE0F2EA4EC622FD090AC1829C1C7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -156,7 +157,7 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		A3B7CAA6AE9E96DAB7DD2B8AB9458767 /* Resources */ = {
+		240402EC964DD58B980A035E15609C0A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -166,34 +167,33 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		CB16C54DEAA8C86CEE5AEE6D85993C43 /* Sources */ = {
+		2A80C4187EED95DBE84E6B649A81B644 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				29C455039B03CD1151B9833ADBADBF7F /* Pods-StrayScanner-dummy.m in Sources */,
+				3515EE5172C9BC3B1B79BBB793779D1D /* Pods-StrayScanner-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		2C94712AD7BB503189FD70ADAF3A496B /* Release */ = {
+		32A4E35BC3F05AA14BE377F859C663E4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A2E0313D6F8EA35F541E317027642860 /* Pods-StrayScanner.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CODE_SIGN_IDENTITY = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = "Target Support Files/Pods-StrayScanner/Pods-StrayScanner-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -201,6 +201,7 @@
 				);
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-StrayScanner/Pods-StrayScanner.modulemap";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -215,23 +216,22 @@
 			};
 			name = Release;
 		};
-		54E8C58F86114E9C07D950FA5D4D8131 /* Debug */ = {
+		46DBA220397CA0EF77D664960579170C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7615ED2B77940E30C0BE39EAA5529253 /* Pods-StrayScanner.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CODE_SIGN_IDENTITY = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = "Target Support Files/Pods-StrayScanner/Pods-StrayScanner-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -239,6 +239,7 @@
 				);
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-StrayScanner/Pods-StrayScanner.modulemap";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -252,7 +253,7 @@
 			};
 			name = Debug;
 		};
-		5B82FA55F6A12DBC8196D07B0C1EEB40 /* Release */ = {
+		BC5A9E366622BBEC241FA7FF31E0F8B7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -287,6 +288,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -302,11 +304,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRIP_INSTALLED_PRODUCT = NO;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
@@ -314,7 +316,7 @@
 			};
 			name = Release;
 		};
-		6C6178559BD9074C26E073DF5769DB42 /* Debug */ = {
+		C6BB564B74ECA2B1E05EBAC95B0BF7C8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -349,6 +351,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -367,12 +370,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRIP_INSTALLED_PRODUCT = NO;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -383,20 +386,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		460ECBBCCE3D9BE36632C08CAAA8600C /* Build configuration list for PBXNativeTarget "Pods-StrayScanner" */ = {
+		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				54E8C58F86114E9C07D950FA5D4D8131 /* Debug */,
-				2C94712AD7BB503189FD70ADAF3A496B /* Release */,
+				C6BB564B74ECA2B1E05EBAC95B0BF7C8 /* Debug */,
+				BC5A9E366622BBEC241FA7FF31E0F8B7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
+		96AA2BC1478B9A32EE6D191352BE4799 /* Build configuration list for PBXNativeTarget "Pods-StrayScanner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				6C6178559BD9074C26E073DF5769DB42 /* Debug */,
-				5B82FA55F6A12DBC8196D07B0C1EEB40 /* Release */,
+				46DBA220397CA0EF77D664960579170C /* Debug */,
+				32A4E35BC3F05AA14BE377F859C663E4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

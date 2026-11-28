@@ -12,7 +12,8 @@
 
 @interface PngEncoder : NSObject
 
-- (instancetype) initWithDepth:(float *)content width:(int)width height:(int)height;
+- (instancetype) initWithDepth:(const float *)content width:(int)width height:(int)height;
+- (instancetype) initWithGray8:(const uint8_t *)content width:(int)width height:(int)height;
 - (NSData*) fileContents;
 
 @end

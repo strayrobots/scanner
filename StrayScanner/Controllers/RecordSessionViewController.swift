@@ -13,9 +13,20 @@ import ARKit
 import CoreData
 import CoreMotion
 
-let FpsDividers: [Int] = [1, 2, 4, 12, 60]
-let AvailableFpsSettings: [Int] = FpsDividers.map { Int(60 / $0) }
-let FpsUserDefaultsKey: String = "FPS"
+// Frame rates the user can pick from. Only the ones that evenly divide the
+// active video format's native frame rate are offered (60 fps -> 60/30/15/5/1,
+// 30 fps -> 30/15/5/1), since frames are kept by skipping every n-th frame.
+let CandidateFpsSettings: [Int] = [60, 30, 15, 5, 1]
+let FpsUserDefaultsKey: String = "FPSValue"
+let LegacyFpsIndexUserDefaultsKey: String = "FPS" // Index into the old [60, 30, 15, 5, 1] list.
+let Use4KUserDefaultsKey: String = "Use4KVideo"
+// ARKit's sceneDepth map is 256x192 (4:3) for every video format, including 4K.
+let DepthMapAspectRatio: CGFloat = 192.0 / 256.0 // Portrait width:height.
+
+enum VideoResolutionSetting {
+    case standard // ARKit's default format, 1920x1440 binned from the sensor.
+    case uhd4K    // ARWorldTrackingConfiguration.recommendedVideoFormatFor4KResolution, 3840x2160.
+}
 
 class MetalView : UIView {
     override class var layerClass: AnyClass {
@@ -38,8 +49,17 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     private var startedRecording: Date?
     private var dataContext: NSManagedObjectContext!
     private var datasetEncoder: DatasetEncoder?
+    // The IMU callbacks' reference to the encoder. Only touched on imuOperationQueue,
+    // or on the main thread after IMU updates are stopped and the queue drained.
+    private var imuDatasetEncoder: DatasetEncoder?
     private let imuOperationQueue = OperationQueue()
-    private var chosenFpsSetting: Int = 0
+    // The rate the user picked, persisted in UserDefaults. It may not be available
+    // for the current video format (e.g. 60 fps in 4K), see chosenFps.
+    private var preferredFps: Int = 60
+    private var resolutionSetting: VideoResolutionSetting = .standard
+    private let standardVideoFormat: ARConfiguration.VideoFormat = ARWorldTrackingConfiguration().videoFormat
+    private let resolutionButton = UIButton(type: .system)
+    private var previewAspectConstraints: [NSLayoutConstraint] = []
     @IBOutlet private var rgbView: MetalView!
     @IBOutlet private var depthView: MetalView!
     @IBOutlet private var recordButton: RecordButton!
@@ -51,7 +71,19 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         self.dismissFunction = fn
     }
     override func viewWillAppear(_ animated: Bool) {
-        self.chosenFpsSetting = UserDefaults.standard.integer(forKey: FpsUserDefaultsKey)
+        let defaults = UserDefaults.standard
+        if defaults.object(forKey: FpsUserDefaultsKey) != nil {
+            preferredFps = defaults.integer(forKey: FpsUserDefaultsKey)
+        } else {
+            let legacyIndex = defaults.integer(forKey: LegacyFpsIndexUserDefaultsKey)
+            preferredFps = CandidateFpsSettings.indices.contains(legacyIndex) ? CandidateFpsSettings[legacyIndex] : 60
+        }
+        if defaults.bool(forKey: Use4KUserDefaultsKey) && fourKVideoFormat != nil {
+            resolutionSetting = .uhd4K
+        } else {
+            resolutionSetting = .standard
+        }
+        updateResolutionSetting()
         updateFpsSetting()
     }
 
@@ -71,8 +103,14 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         }
         fpsButton.layer.masksToBounds = true
         fpsButton.layer.cornerRadius = 12.0
-        
+        setupResolutionButton()
+        previewAspectConstraints = [rgbView, depthView].compactMap { view in
+            view.constraints.first { $0.firstAttribute == .width && $0.secondAttribute == .height }
+        }
+
         imuOperationQueue.qualityOfService = .userInitiated
+        // Accelerometer and gyro callbacks share state in DatasetEncoder, so run them one at a time.
+        imuOperationQueue.maxConcurrentOperationCount = 1
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -80,12 +118,19 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     }
 
     override func viewWillDisappear(_ animated: Bool) {
+        // Let IMU callbacks already queued finish before releasing the encoder.
+        stopRawIMU()
+        imuOperationQueue.waitUntilAllOperationsAreFinished()
+        imuDatasetEncoder = nil
         updateLabelTimer?.invalidate()
         datasetEncoder = nil
     }
 
     override func viewDidAppear(_ animated: Bool) {
         startSession()
+        // Start the IMU now so it's already running when record is pressed. Samples
+        // are discarded until a recording starts (imuDatasetEncoder is nil until then).
+        startRawIMU()
     }
 
     private func startSession() {
@@ -96,11 +141,41 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
             unsupported = true
         } else {
             config.frameSemantics.insert(.sceneDepth)
+            config.videoFormat = activeVideoFormat
+            print("Running ARKit with video format \(describe(config.videoFormat)).")
             session.run(config)
+            // Spin up the hardware video encoder for this resolution now, so the
+            // first frames of a recording don't stall while it initializes.
+            VideoEncoder.warmUp(width: config.videoFormat.imageResolution.width,
+                                height: config.videoFormat.imageResolution.height)
         }
+    }
+
+    // nil if the device can't do 4K with world tracking (needs iPhone 11 or newer).
+    private var fourKVideoFormat: ARConfiguration.VideoFormat? {
+        return ARWorldTrackingConfiguration.recommendedVideoFormatFor4KResolution
+    }
+
+    private var activeVideoFormat: ARConfiguration.VideoFormat {
+        switch resolutionSetting {
+            case .standard:
+                return standardVideoFormat
+            case .uhd4K:
+                return fourKVideoFormat ?? standardVideoFormat
+        }
+    }
+
+    private var availableFpsSettings: [Int] {
+        let nativeFps = activeVideoFormat.framesPerSecond
+        return CandidateFpsSettings.filter { $0 <= nativeFps && nativeFps % $0 == 0 }
+    }
+
+    private func describe(_ format: ARConfiguration.VideoFormat) -> String {
+        return "\(Int(format.imageResolution.width))x\(Int(format.imageResolution.height)) @ \(format.framesPerSecond) fps"
     }
     
     private func startRawIMU() {
+        if motionManager.isAccelerometerActive || motionManager.isGyroActive { return }
         if self.motionManager.isAccelerometerAvailable {
             self.motionManager.accelerometerUpdateInterval = 1.0 / 1200.0 // Set update rate
             self.motionManager.startAccelerometerUpdates(to: imuOperationQueue) { (data, error) in
@@ -110,7 +185,7 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
                     }
                     return
                 }
-                self.datasetEncoder?.addRawAccelerometer(data: data)
+                self.imuDatasetEncoder?.addRawAccelerometer(data: data)
             }
         } else {
             print("Accelerometer not available on this device.")
@@ -125,7 +200,7 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
                     }
                     return
                 }
-                self.datasetEncoder?.addRawGyroscope(data: data)
+                self.imuDatasetEncoder?.addRawGyroscope(data: data)
             }
         } else {
             print("Gyroscope not available on this device.")
@@ -163,8 +238,18 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         updateLabelTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             self.updateTime()
         }
-        datasetEncoder = DatasetEncoder(arConfiguration: arConfiguration!, fpsDivider: FpsDividers[chosenFpsSetting])
-        startRawIMU()
+        let fpsDivider = arConfiguration!.videoFormat.framesPerSecond / chosenFps
+        // Same clock as ARFrame.timestamp and CMLogItem.timestamp. Frames reach us
+        // ~100 ms after capture, so anything captured before this moment is skipped.
+        let pressedAt = CACurrentMediaTime()
+        let encoder = DatasetEncoder(arConfiguration: arConfiguration!, fpsDivider: fpsDivider, startTime: pressedAt)
+        datasetEncoder = encoder
+        // The IMU may already be running, so hand the encoder over on its queue.
+        imuOperationQueue.addOperation {
+            self.imuDatasetEncoder = encoder
+        }
+        resolutionButton.isEnabled = false
+        startRawIMU() // No-op if it's already running since the view appeared.
     }
 
     private func stopRecording() {
@@ -173,10 +258,13 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
             return
         }
         startedRecording = nil
+        resolutionButton.isEnabled = true
         updateLabelTimer?.invalidate()
         updateLabelTimer = nil
-        // Stop IMU updates
+        // Stop IMU updates, and let callbacks already queued finish before the IMU file is closed.
         stopRawIMU()
+        imuOperationQueue.waitUntilAllOperationsAreFinished()
+        imuDatasetEncoder = nil
         datasetEncoder?.wrapUp()
         if let encoder = datasetEncoder {
             switch encoder.status {
@@ -245,9 +333,73 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
     }
     
     @IBAction func fpsButtonTapped() {
-        chosenFpsSetting = (chosenFpsSetting + 1) % AvailableFpsSettings.count
+        let options = availableFpsSettings
+        let index = options.firstIndex(of: chosenFps) ?? -1
+        preferredFps = options[(index + 1) % options.count]
         updateFpsSetting()
-        UserDefaults.standard.set(chosenFpsSetting, forKey: FpsUserDefaultsKey)
+        UserDefaults.standard.set(preferredFps, forKey: FpsUserDefaultsKey)
+    }
+
+    @objc func resolutionButtonTapped() {
+        guard startedRecording == nil, fourKVideoFormat != nil else { return }
+        resolutionSetting = resolutionSetting == .standard ? .uhd4K : .standard
+        UserDefaults.standard.set(resolutionSetting == .uhd4K, forKey: Use4KUserDefaultsKey)
+        updateResolutionSetting()
+        updateFpsSetting()
+        if !unsupported && arConfiguration != nil {
+            // The video format can only change by re-running the session.
+            startSession()
+        }
+    }
+
+    private func setupResolutionButton() {
+        resolutionButton.translatesAutoresizingMaskIntoConstraints = false
+        // Match the look of the FPS button from the XIB.
+        var configuration = UIButton.Configuration.filled()
+        configuration.baseBackgroundColor = fpsButton.backgroundColor
+        configuration.baseForegroundColor = fpsButton.titleColor(for: .normal)
+        configuration.background.cornerRadius = 12.0
+        configuration.cornerStyle = .fixed
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
+        let font = fpsButton.titleLabel?.font
+        configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { attributes in
+            var attributes = attributes
+            attributes.font = font
+            return attributes
+        }
+        resolutionButton.configuration = configuration
+        resolutionButton.addTarget(self, action: #selector(resolutionButtonTapped), for: .touchUpInside)
+        resolutionButton.accessibilityLabel = "Video resolution"
+        view.addSubview(resolutionButton)
+        NSLayoutConstraint.activate([
+            resolutionButton.leadingAnchor.constraint(equalTo: fpsButton.trailingAnchor, constant: 8),
+            resolutionButton.centerYAnchor.constraint(equalTo: fpsButton.centerYAnchor),
+            resolutionButton.heightAnchor.constraint(equalTo: fpsButton.heightAnchor)
+        ])
+        // Only offer the toggle on devices where ARKit has a 4K format.
+        resolutionButton.isHidden = fourKVideoFormat == nil
+    }
+
+    private func updateResolutionSetting() {
+        resolutionButton.configuration?.title = resolutionSetting == .uhd4K ? "4K" : "HD"
+        resolutionButton.accessibilityValue = describe(activeVideoFormat)
+        updatePreviewAspectRatio()
+    }
+
+    // The preview is shown in portrait, so its width:height is the image's height:width
+    // (1440:1920 for the standard format, 2160:3840 for 4K). The depth map stays 4:3
+    // in every format, so the depth view keeps that aspect ratio.
+    private func updatePreviewAspectRatio() {
+        let resolution = activeVideoFormat.imageResolution
+        let aspectRatios: [(UIView, CGFloat)] = [
+            (rgbView, resolution.height / resolution.width),
+            (depthView, DepthMapAspectRatio)
+        ]
+        NSLayoutConstraint.deactivate(previewAspectConstraints)
+        previewAspectConstraints = aspectRatios.map { (view, aspectRatio) in
+            view.widthAnchor.constraint(equalTo: view.heightAnchor, multiplier: aspectRatio)
+        }
+        NSLayoutConstraint.activate(previewAspectConstraints)
     }
 
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
@@ -261,13 +413,27 @@ class RecordSessionViewController : UIViewController, ARSessionDelegate {
         }
     }
 
+    func session(_ session: ARSession, didFailWithError error: Error) {
+        print("ARSession failed with video format \(describe(activeVideoFormat)): \(error.localizedDescription)")
+    }
+
     private func setViewProperties() {
         self.view.backgroundColor = UIColor(named: "BackgroundColor")
     }
     
+    // The rate actually used for the current video format. If the preferred rate isn't
+    // available (e.g. 60 fps was chosen and 4K runs at 30 fps), fall back to the highest
+    // rate at or below it. The preference is kept, so switching back to HD restores it.
+    private var chosenFps: Int {
+        let options = availableFpsSettings
+        if options.contains(preferredFps) {
+            return preferredFps
+        }
+        return options.first { $0 <= preferredFps } ?? options.last!
+    }
+
     private func updateFpsSetting() {
-        let fps = AvailableFpsSettings[chosenFpsSetting]
-        let buttonLabel: String = "\(fps) fps"
+        let buttonLabel: String = "\(chosenFps) fps"
         fpsButton.setTitle(buttonLabel, for: UIControl.State.normal)
     }
     

@@ -1,4 +1,4 @@
-platform :ios, '14.2'
+platform :ios, '18.6'
 use_frameworks!
 
 target 'StrayScanner' do

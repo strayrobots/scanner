@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import CoreImage
 
 class ConfidenceEncoder {
     enum Status {
@@ -15,13 +14,11 @@ class ConfidenceEncoder {
         case encodingError
     }
     private let baseDirectory: URL
-    private let ciContext: CIContext
     private var previousFrame: Int = -1
     public var status: Status = Status.allGood
 
     init(outDirectory: URL) {
         self.baseDirectory = outDirectory
-        self.ciContext = CIContext()
         do {
             try FileManager.default.createDirectory(at: outDirectory.absoluteURL, withIntermediateDirectories: true, attributes: nil)
         } catch let error {
@@ -30,22 +27,29 @@ class ConfidenceEncoder {
         }
     }
 
-    func encodeFrame(frame: CVPixelBuffer, frameNumber: Int) {
+    // frame is a copy of a kCVPixelFormatType_OneComponent8 buffer with values 0, 1 or 2.
+    // Encoded on the CPU with lodepng, like depth, so it doesn't compete with ARKit
+    // and the preview for the GPU.
+    func encodeFrame(frame: PlaneCopy, frameNumber: Int) {
         if (previousFrame + 1) != frameNumber {
             print("warning: Confidence skipped a frame. \(previousFrame+1) != \(frameNumber)")
         }
         previousFrame = frameNumber
         let filename = String(format: "%06d", frameNumber)
-        let image = CIImage(cvPixelBuffer: frame)
-        assert(CVPixelBufferGetPixelFormatType(frame) == kCVPixelFormatType_OneComponent8)
         let framePath = self.baseDirectory.absoluteURL.appendingPathComponent(filename, isDirectory: false).appendingPathExtension("png")
-
-        if let colorSpace = CGColorSpace(name: CGColorSpace.extendedGray) {
-            do {
-                try self.ciContext.writePNGRepresentation(of: image, to: framePath, format: CIFormat.L8, colorSpace: colorSpace)
-            } catch let error {
-                print("Could not save confidence value. \(error.localizedDescription)")
-            }
+        let encoder = frame.data.withUnsafeBytes { (bytes: UnsafeRawBufferPointer) in
+            PngEncoder(gray8: bytes.bindMemory(to: UInt8.self).baseAddress!, width: Int32(frame.width), height: Int32(frame.height))!
+        }
+        guard let data = encoder.fileContents() else {
+            print("Could not encode confidence frame \(frameNumber).")
+            status = .encodingError
+            return
+        }
+        do {
+            try data.write(to: framePath)
+        } catch let error {
+            print("Could not save confidence frame \(frameNumber). \(error.localizedDescription)")
+            status = .encodingError
         }
     }
 }
